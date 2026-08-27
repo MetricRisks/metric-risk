@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calibration record — Metric Risk — مراقبة السوق</title>
+  <meta name="description" content="A transparent calibration record: are the published risk boundaries breached at the rate claimed? Educational content only.">
+  <style>
+    :root { color-scheme: light dark; }
+    body { font-family: system-ui, "Segoe UI", Tahoma, sans-serif; line-height: 1.7;
+           max-width: 860px; margin: 0 auto; padding: 1.5rem; }
+    a { color: #2563eb; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    header.site { border-bottom: 1px solid #8883; padding-bottom: .75rem; margin-bottom: 1.25rem;
+                  display: flex; gap: 1rem; font-size: .9rem; }
+    header.site .lang { margin-inline-start: auto; font-weight: 600; }
+    .banner { background: #fff7ed; color: #9a3412; border: 1px solid #fdba74; border-radius: 8px;
+              padding: .6rem .9rem; font-size: .85rem; margin-bottom: 1.5rem; }
+    h1 { font-size: 1.6rem; margin: 0 0 .5rem; }
+    .lede { font-size: 1.05rem; }
+    .note { color: #6b7280; font-size: .9rem; }
+    .meta { color: #6b7280; font-size: .8rem; margin: 0 0 1.5rem; }
+    .symbol { margin: 2rem 0; }
+    .symbol h2 { font-size: 1.25rem; margin: 0 0 .75rem; border-bottom: 1px solid #8882; padding-bottom: .3rem; }
+    .tf { font-size: .9rem; color: #6b7280; font-weight: normal; }
+    .panels { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+    .panel { background: #f8fafc10; border: 1px solid #8883; border-radius: 12px; padding: 1rem 1.15rem; }
+    .panel.wide { grid-column: 1 / -1; }
+    .panel h3 { font-size: .95rem; margin: 0 0 .6rem; }
+    .big { font-size: 2rem; font-weight: 700; margin: .2rem 0 .5rem; }
+    .big .unit { font-size: 1.1rem; font-weight: 500; }
+    .big .target { display: inline-block; font-size: .8rem; font-weight: 400; color: #6b7280; margin-inline-start: .5rem; }
+    .big-muted { font-size: 1.3rem; font-weight: 700; color: #6b7280; margin: .2rem 0; }
+    .bar { position: relative; height: 12px; border-radius: 6px; background: #8883; margin: .4rem 0 .7rem; overflow: hidden; }
+    .bar .fill { position: absolute; inset-block: 0; inset-inline-start: 0; border-radius: 6px; }
+    .bar .fill.ok { background: #10b981; }
+    .bar .fill.warn { background: #f59e0b; }
+    .bar .fill.muted { background: #9ca3af; }
+    .bar .mark { position: absolute; inset-block: -2px; width: 2px; background: #111827; opacity: .55; }
+    .pill { display: inline-block; font-size: .8rem; border-radius: 999px; padding: .12rem .6rem; }
+    .pill.ok { background: #10b98122; color: #047857; }
+    .pill.warn { background: #f59e0b22; color: #b45309; }
+    .pill.muted { background: #9ca3af22; color: #4b5563; }
+    .line { font-size: .82rem; margin: .3rem 0; }
+    .line.ok { color: #047857; } .line.warn { color: #b45309; }
+    .src { color: #6b7280; font-size: .78rem; margin: .4rem 0 0; }
+    .muted { color: #6b7280; }
+    .side { margin: .35rem 0; }
+    .side-label { display: inline-block; min-width: 5rem; }
+    table.horizons { width: 100%; border-collapse: collapse; margin: .3rem 0 .5rem; font-size: .9rem; }
+    table.horizons th, table.horizons td { text-align: start; padding: .35rem .5rem; border-bottom: 1px solid #8882; }
+    table.horizons th { color: #6b7280; font-weight: 600; font-size: .8rem; }
+    .pass { color: #047857; } .fail { color: #b45309; }
+    footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid #8883; color: #6b7280; font-size: .8rem; }
+  </style>
+</head>
+<body>
+  <header class="site">
+    <a href="index-en.html">Home</a>
+    <a href="calibration-en.html">Calibration record</a>
+    <a href="disclaimer-en.html">Disclaimer</a>
+    <a class="lang" href="calibration.html" hreflang="ar">العربية</a>
+  </header>
+  <div class="banner">⚠️ Educational content only — not a trade recommendation. Financial risk is real; manage your capital wisely.</div>
+  <main>
+    <h1>Calibration record</h1>
+    <p class="lede">There is no win rate here and no trading results — we do not have them at all. We publish one thing: are the risk boundaries printed in every report breached at the rate they claim? An honest model at 95% confidence is breached on ~5% of days only — no more (which would understate the risk) and no less (which would overstate the caution).</p>
+    <p class="note">Every figure below is computed by a point-in-time historical sweep, with no forward look. Where the sample is too small for a reliable judgement (minimum 20), we say so rather than guess.</p>
+    <p class="meta">Updated 2026-08-27 07:06 UTC</p>
+    <section class="symbol">
+      <h2>EURUSD <span class="tf">1D</span></h2>
+      <div class="panels">
+        <div class="panel">
+          <h3>Risk-boundary breaches (VaR 95%)</h3>
+          <p class="big">5.3<span class="unit">%</span> <span class="target">target 5%</span></p>
+          <div class="bar"><span class="fill ok" style="width:53%"></span><span class="mark" style="inset-inline-start:50%"></span></div>
+          <p><span class="pill ok">Sound calibration — the band describes the risk honestly</span></p>
+          <p class="line ok">✓ Formal Kupiec test: calibration not rejected at 95% confidence (p=0.32)</p>
+          <p class="line ok">✓ Timing (Christoffersen): breaches are dispersed — no clustering</p>
+          <p class="src">Sample: 4974 scored readings (25 live &#183; 4949 historical sweep) &#183; 264 actual breaches.</p>
+        </div>
+        <div class="panel">
+          <h3>Loss depth on breach days (ES 95%)</h3>
+          <p class="big">1.07<span class="unit">×</span> <span class="target">target 1.0&#215;</span></p>
+          <p><span class="pill ok">Realised losses match the declared ES (ratio ~1)</span></p>
+          <p class="src">Ratio = mean realised loss &#247; declared ES, over 264 breach days.</p>
+        </div>
+        <div class="panel wide">
+          <h3>Probability cone — each horizon on its own</h3>
+          <p class="src">Each edge is a one-sided 95% bound: the healthy standard is ~5% broken per side, at every horizon.</p>
+          <table class="horizons"><thead><tr><th>Horizon</th><th>Lower edge</th><th>Upper edge</th></tr></thead><tbody>
+            <tr><td>1 day</td><td><span class="pass">5.3% ✓</span></td><td><span class="pass">5.2% ✓</span></td></tr>
+            <tr><td>5 day</td><td><span class="pass">5.6% ✓</span></td><td><span class="pass">5% ✓</span></td></tr>
+            <tr><td>10 day</td><td><span class="pass">5.5% ✓</span></td><td><span class="pass">4.8% ✓</span></td></tr>
+            <tr><td>20 day</td><td><span class="fail">6.3% ⚠</span></td><td><span class="pass">4.8% ✓</span></td></tr>
+          </tbody></table>
+          <p class="src">For horizons &gt; 1 the evaluation windows overlap, so Kupiec is indicative there rather than conclusive — the rate itself stays unbiased.</p>
+        </div>
+        <div class="panel">
+          <h3>Holding rate of tested support/resistance</h3>
+          <p class="side"><span class="side-label">Supports</span> <span class="pill warn">51.2% held</span> <span class="src">(1356 of 2649 tests)</span></p>
+          <p class="side"><span class="side-label">Resistances</span> <span class="pill warn">56.5% held</span> <span class="src">(1611 of 2849 tests)</span></p>
+        </div>
+      </div>
+    </section>
+    <section class="symbol">
+      <h2>XAUUSD <span class="tf">1D</span></h2>
+      <div class="panels">
+        <div class="panel">
+          <h3>Risk-boundary breaches (VaR 95%)</h3>
+          <p class="big">5.6<span class="unit">%</span> <span class="target">target 5%</span></p>
+          <div class="bar"><span class="fill ok" style="width:56%"></span><span class="mark" style="inset-inline-start:50%"></span></div>
+          <p><span class="pill ok">Sound calibration — the band describes the risk honestly</span></p>
+          <p class="line ok">✓ Formal Kupiec test: calibration not rejected at 95% confidence (p=0.08)</p>
+          <p class="line ok">✓ Timing (Christoffersen): breaches are dispersed — no clustering</p>
+          <p class="src">Sample: 3921 scored readings (14 live &#183; 3907 historical sweep) &#183; 220 actual breaches.</p>
+        </div>
+        <div class="panel">
+          <h3>Loss depth on breach days (ES 95%)</h3>
+          <p class="big">1.14<span class="unit">×</span> <span class="target">target 1.0&#215;</span></p>
+          <p><span class="pill ok">Realised losses match the declared ES (ratio ~1)</span></p>
+          <p class="src">Ratio = mean realised loss &#247; declared ES, over 220 breach days.</p>
+        </div>
+        <div class="panel wide">
+          <h3>Probability cone — each horizon on its own</h3>
+          <p class="src">Each edge is a one-sided 95% bound: the healthy standard is ~5% broken per side, at every horizon.</p>
+          <table class="horizons"><thead><tr><th>Horizon</th><th>Lower edge</th><th>Upper edge</th></tr></thead><tbody>
+            <tr><td>1 day</td><td><span class="pass">5.6% ✓</span></td><td><span class="pass">5.1% ✓</span></td></tr>
+            <tr><td>5 day</td><td><span class="pass">5.5% ✓</span></td><td><span class="fail">6% ⚠</span></td></tr>
+            <tr><td>10 day</td><td><span class="pass">5.3% ✓</span></td><td><span class="fail">6.7% ⚠</span></td></tr>
+            <tr><td>20 day</td><td><span class="pass">4.7% ✓</span></td><td><span class="fail">8.2% ⚠</span></td></tr>
+          </tbody></table>
+          <p class="src">For horizons &gt; 1 the evaluation windows overlap, so Kupiec is indicative there rather than conclusive — the rate itself stays unbiased.</p>
+        </div>
+        <div class="panel">
+          <h3>Holding rate of tested support/resistance</h3>
+          <p class="side"><span class="side-label">Supports</span> <span class="pill warn">51.9% held</span> <span class="src">(926 of 1783 tests)</span></p>
+          <p class="side"><span class="side-label">Resistances</span> <span class="pill muted">40.8% held</span> <span class="src">(743 of 1821 tests)</span></p>
+        </div>
+      </div>
+    </section>
+    <section class="symbol">
+      <h2>XAGUSD <span class="tf">1D</span></h2>
+      <div class="panels">
+        <div class="panel">
+          <h3>Risk-boundary breaches (VaR 95%)</h3>
+          <p class="muted big-muted">Sample too small</p><p class="src">13 scored readings — minimum 20.</p>
+        </div>
+        <div class="panel">
+          <h3>Loss depth on breach days (ES 95%)</h3>
+          <p class="muted big-muted">Sample too small</p><p class="src">0 breach days with a recorded ES — minimum 10.</p>
+        </div>
+        <div class="panel wide">
+          <h3>Probability cone — each horizon on its own</h3>
+          <p class="src">Each edge is a one-sided 95% bound: the healthy standard is ~5% broken per side, at every horizon.</p>
+          <table class="horizons"><thead><tr><th>Horizon</th><th>Lower edge</th><th>Upper edge</th></tr></thead><tbody>
+            <tr><td>1 day</td><td><span class="pass">5.1% ✓</span></td><td><span class="pass">5.1% ✓</span></td></tr>
+            <tr><td>5 day</td><td><span class="fail">5.7% ⚠</span></td><td><span class="fail">6.2% ⚠</span></td></tr>
+            <tr><td>10 day</td><td><span class="fail">6.1% ⚠</span></td><td><span class="fail">7.7% ⚠</span></td></tr>
+            <tr><td>20 day</td><td><span class="pass">4.8% ✓</span></td><td><span class="fail">7.7% ⚠</span></td></tr>
+          </tbody></table>
+          <p class="src">For horizons &gt; 1 the evaluation windows overlap, so Kupiec is indicative there rather than conclusive — the rate itself stays unbiased.</p>
+        </div>
+        <div class="panel">
+          <h3>Holding rate of tested support/resistance</h3>
+          <p class="side"><span class="side-label">Supports</span> <span class="pill warn">49% held</span> <span class="src">(1005 of 2053 tests)</span></p>
+          <p class="side"><span class="side-label">Resistances</span> <span class="pill warn">47.8% held</span> <span class="src">(974 of 2037 tests)</span></p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <footer>
+    <p>Educational content only — not a trade recommendation. Financial risk is real; manage your capital wisely.</p>
+  </footer>
+</body>
+</html>

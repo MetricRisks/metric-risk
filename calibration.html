@@ -13,6 +13,7 @@
     a:hover { text-decoration: underline; }
     header.site { border-bottom: 1px solid #8883; padding-bottom: .75rem; margin-bottom: 1.25rem;
                   display: flex; gap: 1rem; font-size: .9rem; }
+    header.site .lang { margin-inline-start: auto; font-weight: 600; }
     .banner { background: #fff7ed; color: #9a3412; border: 1px solid #fdba74; border-radius: 8px;
               padding: .6rem .9rem; font-size: .85rem; margin-bottom: 1.5rem; }
     h1 { font-size: 1.6rem; margin: 0 0 .5rem; }
@@ -58,13 +59,14 @@
     <a href="index.html">الرئيسية</a>
     <a href="calibration.html">سجل المعايرة</a>
     <a href="disclaimer.html">إخلاء المسؤولية</a>
+    <a class="lang" href="calibration-en.html" hreflang="en">English</a>
   </header>
   <div class="banner">⚠️ محتوى تعليمي توعوي فقط — ليس توصية تداول. المخاطر المالية حقيقية؛ أدر رأس مالك بحكمة.</div>
   <main>
     <h1>سجل المعايرة</h1>
     <p class="lede">لا نعرض هنا نسبة ربح ولا نتائج تداول — هذه غير موجودة عندنا بالمرّة. نعرض شيئاً واحداً: هل حدود المخاطرة التي ننشرها في كل تقرير تُخرَق بالمعدّل الذي تدّعيه؟ نموذج صادق عند ثقة 95% يُخرَق ~5% من الأيام فقط — لا أكثر (فيقلّل المخاطر) ولا أقل (فيبالغ في الحذر).</p>
     <p class="note">كل رقم أدناه محسوب بمسح تاريخي نقطة-زمنية، بلا أي نظر مستقبلي. حين لا تكفي العيّنة لحكم موثوق (الحد الأدنى 20)، نقول ذلك بدل أن نخمّن.</p>
-    <p class="meta">حُدِّث في 2026-08-20 09:40 UTC</p>
+    <p class="meta">حُدِّث في 2026-08-27 07:06 UTC</p>
     <section class="symbol">
       <h2>EURUSD <span class="tf">1D</span></h2>
       <div class="panels">
@@ -75,13 +77,13 @@
           <p><span class="pill ok">معايرة سليمة — النطاق يصف المخاطر بأمانة</span></p>
           <p class="line ok">✓ اختبار Kupiec الرسمي: لا نرفض صحّة المعايرة عند ثقة 95% (p=0.32)</p>
           <p class="line ok">✓ توزّع زمني (Christoffersen): الخروقات متفرّقة — لا تكتُّل</p>
-          <p class="src">عيّنة: 4972 نتيجة (حيّة 23 · محاكاة تاريخية 4949) · خرق فعلي 264.</p>
+          <p class="src">عيّنة: 4974 نتيجة (حيّة 25 &#183; محاكاة تاريخية 4949) &#183; خرق فعلي 264.</p>
         </div>
         <div class="panel">
           <h3>عمق الخسارة في أيام الخرق (ES 95%)</h3>
-          <p class="big">1.07<span class="unit">×</span> <span class="target">الهدف 1.0×</span></p>
+          <p class="big">1.07<span class="unit">×</span> <span class="target">الهدف 1.0&#215;</span></p>
           <p><span class="pill ok">الخسائر الفعلية تطابق الـ ES المُعلَن (النسبة ~1)</span></p>
-          <p class="src">النسبة = متوسط الخسارة الفعلية ÷ الـ ES المُعلَن، على 264 يوم خرق.</p>
+          <p class="src">النسبة = متوسط الخسارة الفعلية &#247; الـ ES المُعلَن، على 264 يوم خرق.</p>
         </div>
         <div class="panel wide">
           <h3>مخروط الاحتمالات — كل أفق زمني على حدة</h3>
@@ -92,12 +94,12 @@
             <tr><td>10 يوم</td><td><span class="pass">5.5% ✓</span></td><td><span class="pass">4.8% ✓</span></td></tr>
             <tr><td>20 يوم</td><td><span class="fail">6.3% ⚠</span></td><td><span class="pass">4.8% ✓</span></td></tr>
           </tbody></table>
-          <p class="src">للآفاق > 1 تتداخل نوافذ التقييم، فاختبار Kupiec عندها إرشادي لا قطعي — والنسبة تبقى غير متحيّزة.</p>
+          <p class="src">للآفاق &gt; 1 تتداخل نوافذ التقييم، فاختبار Kupiec عندها إرشادي لا قطعي — والنسبة تبقى غير متحيّزة.</p>
         </div>
         <div class="panel">
           <h3>صمود الدعوم/المقاومات المُختبَرة</h3>
-          <p class="side"><span class="side-label">الدعوم</span> <span class="pill warn">51.1% صمود</span> <span class="src">(1351 من 2644 اختبار)</span></p>
-          <p class="side"><span class="side-label">المقاومات</span> <span class="pill warn">56.6% صمود</span> <span class="src">(1611 من 2844 اختبار)</span></p>
+          <p class="side"><span class="side-label">الدعوم</span> <span class="pill warn">51.2% صمود</span> <span class="src">(1356 من 2649 اختبار)</span></p>
+          <p class="side"><span class="side-label">المقاومات</span> <span class="pill warn">56.5% صمود</span> <span class="src">(1611 من 2849 اختبار)</span></p>
         </div>
       </div>
     </section>
@@ -111,29 +113,29 @@
           <p><span class="pill ok">معايرة سليمة — النطاق يصف المخاطر بأمانة</span></p>
           <p class="line ok">✓ اختبار Kupiec الرسمي: لا نرفض صحّة المعايرة عند ثقة 95% (p=0.08)</p>
           <p class="line ok">✓ توزّع زمني (Christoffersen): الخروقات متفرّقة — لا تكتُّل</p>
-          <p class="src">عيّنة: 3919 نتيجة (حيّة 12 · محاكاة تاريخية 3907) · خرق فعلي 220.</p>
+          <p class="src">عيّنة: 3921 نتيجة (حيّة 14 &#183; محاكاة تاريخية 3907) &#183; خرق فعلي 220.</p>
         </div>
         <div class="panel">
           <h3>عمق الخسارة في أيام الخرق (ES 95%)</h3>
-          <p class="big">1.14<span class="unit">×</span> <span class="target">الهدف 1.0×</span></p>
+          <p class="big">1.14<span class="unit">×</span> <span class="target">الهدف 1.0&#215;</span></p>
           <p><span class="pill ok">الخسائر الفعلية تطابق الـ ES المُعلَن (النسبة ~1)</span></p>
-          <p class="src">النسبة = متوسط الخسارة الفعلية ÷ الـ ES المُعلَن، على 220 يوم خرق.</p>
+          <p class="src">النسبة = متوسط الخسارة الفعلية &#247; الـ ES المُعلَن، على 220 يوم خرق.</p>
         </div>
         <div class="panel wide">
           <h3>مخروط الاحتمالات — كل أفق زمني على حدة</h3>
           <p class="src">كل حدّ بوابة 95% أحادية: المعيار الصحّي أن يُكسر ~5% لكل جانب، عند كل أفق.</p>
           <table class="horizons"><thead><tr><th>الأفق</th><th>الحد السفلي</th><th>الحد العلوي</th></tr></thead><tbody>
             <tr><td>1 يوم</td><td><span class="pass">5.6% ✓</span></td><td><span class="pass">5.1% ✓</span></td></tr>
-            <tr><td>5 يوم</td><td><span class="pass">5.5% ✓</span></td><td><span class="fail">5.9% ⚠</span></td></tr>
+            <tr><td>5 يوم</td><td><span class="pass">5.5% ✓</span></td><td><span class="fail">6% ⚠</span></td></tr>
             <tr><td>10 يوم</td><td><span class="pass">5.3% ✓</span></td><td><span class="fail">6.7% ⚠</span></td></tr>
-            <tr><td>20 يوم</td><td><span class="pass">4.7% ✓</span></td><td><span class="fail">8.1% ⚠</span></td></tr>
+            <tr><td>20 يوم</td><td><span class="pass">4.7% ✓</span></td><td><span class="fail">8.2% ⚠</span></td></tr>
           </tbody></table>
-          <p class="src">للآفاق > 1 تتداخل نوافذ التقييم، فاختبار Kupiec عندها إرشادي لا قطعي — والنسبة تبقى غير متحيّزة.</p>
+          <p class="src">للآفاق &gt; 1 تتداخل نوافذ التقييم، فاختبار Kupiec عندها إرشادي لا قطعي — والنسبة تبقى غير متحيّزة.</p>
         </div>
         <div class="panel">
           <h3>صمود الدعوم/المقاومات المُختبَرة</h3>
-          <p class="side"><span class="side-label">الدعوم</span> <span class="pill warn">51.9% صمود</span> <span class="src">(925 من 1782 اختبار)</span></p>
-          <p class="side"><span class="side-label">المقاومات</span> <span class="pill muted">40.8% صمود</span> <span class="src">(741 من 1816 اختبار)</span></p>
+          <p class="side"><span class="side-label">الدعوم</span> <span class="pill warn">51.9% صمود</span> <span class="src">(926 من 1783 اختبار)</span></p>
+          <p class="side"><span class="side-label">المقاومات</span> <span class="pill muted">40.8% صمود</span> <span class="src">(743 من 1821 اختبار)</span></p>
         </div>
       </div>
     </section>
@@ -142,7 +144,7 @@
       <div class="panels">
         <div class="panel">
           <h3>خرق حدّ المخاطرة (VaR 95%)</h3>
-          <p class="muted big-muted">عيّنة غير كافية</p><p class="src">11 نتيجة — الحد الأدنى 20.</p>
+          <p class="muted big-muted">عيّنة غير كافية</p><p class="src">13 نتيجة — الحد الأدنى 20.</p>
         </div>
         <div class="panel">
           <h3>عمق الخسارة في أيام الخرق (ES 95%)</h3>
@@ -152,12 +154,12 @@
           <h3>مخروط الاحتمالات — كل أفق زمني على حدة</h3>
           <p class="src">كل حدّ بوابة 95% أحادية: المعيار الصحّي أن يُكسر ~5% لكل جانب، عند كل أفق.</p>
           <table class="horizons"><thead><tr><th>الأفق</th><th>الحد السفلي</th><th>الحد العلوي</th></tr></thead><tbody>
-            <tr><td>1 يوم</td><td><span class="pass">5.2% ✓</span></td><td><span class="pass">5.1% ✓</span></td></tr>
+            <tr><td>1 يوم</td><td><span class="pass">5.1% ✓</span></td><td><span class="pass">5.1% ✓</span></td></tr>
             <tr><td>5 يوم</td><td><span class="fail">5.7% ⚠</span></td><td><span class="fail">6.2% ⚠</span></td></tr>
             <tr><td>10 يوم</td><td><span class="fail">6.1% ⚠</span></td><td><span class="fail">7.7% ⚠</span></td></tr>
             <tr><td>20 يوم</td><td><span class="pass">4.8% ✓</span></td><td><span class="fail">7.7% ⚠</span></td></tr>
           </tbody></table>
-          <p class="src">للآفاق > 1 تتداخل نوافذ التقييم، فاختبار Kupiec عندها إرشادي لا قطعي — والنسبة تبقى غير متحيّزة.</p>
+          <p class="src">للآفاق &gt; 1 تتداخل نوافذ التقييم، فاختبار Kupiec عندها إرشادي لا قطعي — والنسبة تبقى غير متحيّزة.</p>
         </div>
         <div class="panel">
           <h3>صمود الدعوم/المقاومات المُختبَرة</h3>

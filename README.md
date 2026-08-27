@@ -1,13 +1,15 @@
 # Metric Risk — public pages
 
 Three pages plus a dated report archive, published as static HTML by the engine
-that produces them. Nothing here is written by hand.
+that produces them, in **English and Arabic**. Nothing here is written by hand.
 
-| Page | What it is |
-|---|---|
-| [`index.html`](index.html) | Report archive, newest first |
-| [`calibration.html`](calibration.html) | **The scored track record** — how often the engine's declared risk boundary was actually breached |
-| [`disclaimer.html`](disclaimer.html) | Educational content only. No trade instructions are issued anywhere in the output |
+| Page | English | العربية |
+|---|---|---|
+| **The scored track record** — how often the engine's declared risk boundary was actually breached | [`calibration-en.html`](calibration-en.html) | [`calibration.html`](calibration.html) |
+| Report archive, newest first | [`index-en.html`](index-en.html) | [`index.html`](index.html) |
+| Educational content only. No trade instructions are issued anywhere in the output | [`disclaimer-en.html`](disclaimer-en.html) | [`disclaimer.html`](disclaimer.html) |
+
+Both languages are rendered from one set of numbers in a single run, so they cannot come to disagree about the record.
 
 ## Why the calibration page is the one that matters
 
