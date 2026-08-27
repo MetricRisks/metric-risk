@@ -1,7 +1,7 @@
 # Metric Risk — public pages
 
-Three pages, published as static HTML by the engine that produces them.
-Nothing here is written by hand.
+Three pages plus a dated report archive, published as static HTML by the engine
+that produces them. Nothing here is written by hand.
 
 | Page | What it is |
 |---|---|
@@ -19,7 +19,7 @@ Pattern detection is table stakes in this sector; every provider ships it. Publi
 
 ## What this repository is not
 
-It is the published output, not the engine. The engine is a .NET 10 codebase — 479 files, 1,128 passing tests — and is not open source.
+It is the published output, not the engine. The engine is a .NET 10 codebase — 481 files, 1,149 passing tests — and is not open source.
 
 ---
 
