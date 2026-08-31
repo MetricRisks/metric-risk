@@ -1,5 +1,68 @@
 [
   {
+    "File": "reports/xauusd-20260829-1309.html",
+    "Symbol": "XAUUSD",
+    "Timeframe": "1D",
+    "GeneratedAt": "2026-08-29T13:09:42.2405991",
+    "Regime": "TRENDING_UP"
+  },
+  {
+    "File": "reports/xagusd-20260829-1309.html",
+    "Symbol": "XAGUSD",
+    "Timeframe": "1D",
+    "GeneratedAt": "2026-08-29T13:09:39.778392",
+    "Regime": "RANGING"
+  },
+  {
+    "File": "reports/eurusd-20260829-1309.html",
+    "Symbol": "EURUSD",
+    "Timeframe": "1D",
+    "GeneratedAt": "2026-08-29T13:09:36.4030304",
+    "Regime": "RANGING"
+  },
+  {
+    "File": "reports/xagusd-20260829-1252.html",
+    "Symbol": "XAGUSD",
+    "Timeframe": "1D",
+    "GeneratedAt": "2026-08-29T12:52:06.2471502",
+    "Regime": "RANGING"
+  },
+  {
+    "File": "reports/xauusd-20260829-1250.html",
+    "Symbol": "XAUUSD",
+    "Timeframe": "1D",
+    "GeneratedAt": "2026-08-29T12:50:44.5871155",
+    "Regime": "TRENDING_UP"
+  },
+  {
+    "File": "reports/xagusd-20260829-1250.html",
+    "Symbol": "XAGUSD",
+    "Timeframe": "1D",
+    "GeneratedAt": "2026-08-29T12:50:41.8222231",
+    "Regime": "RANGING"
+  },
+  {
+    "File": "reports/eurusd-20260829-1250.html",
+    "Symbol": "EURUSD",
+    "Timeframe": "1D",
+    "GeneratedAt": "2026-08-29T12:50:37.957045",
+    "Regime": "RANGING"
+  },
+  {
+    "File": "reports/eurusd-20260829-1108.html",
+    "Symbol": "EURUSD",
+    "Timeframe": "1D",
+    "GeneratedAt": "2026-08-29T11:08:59.8184985",
+    "Regime": "RANGING"
+  },
+  {
+    "File": "reports/eurusd-20260829-1050.html",
+    "Symbol": "EURUSD",
+    "Timeframe": "1D",
+    "GeneratedAt": "2026-08-29T10:50:34.0152161",
+    "Regime": "RANGING"
+  },
+  {
     "File": "reports/eurusd-20260704-1255.html",
     "Symbol": "EURUSD",
     "Timeframe": "1D",

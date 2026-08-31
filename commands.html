@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>أوامر Metric Risk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Kufi+Arabic:wght@500;600&display=swap">
+
+<style>
+  :root {
+    --ground:#EAEEF0; --surface:#FFFFFF; --surface-2:#F4F7F8;
+    --line:#D2DCDF; --line-soft:#E3EAEC;
+    --ink:#12202A; --ink-2:#38505D; --muted:#61757F;
+    --accent:#0F6F5C; --accent-soft:#E2F0EC;
+    --warn:#8C5A0C; --warn-soft:#F7EEDD;
+    --alert:#98303C; --alert-soft:#F8E7E8;
+    --info:#1F5F86; --info-soft:#E3EEF5;
+    --code-bg:#EDF2F3; --term-bg:#10202A; --term-ink:#C9DBE1;
+    --shadow:0 1px 2px rgba(18,32,42,.05), 0 8px 24px -18px rgba(18,32,42,.30);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#0C151B; --surface:#131F27; --surface-2:#182630;
+      --line:#2A3B46; --line-soft:#1F2E38;
+      --ink:#DCE6EA; --ink-2:#AEC1C9; --muted:#8399A3;
+      --accent:#4DBFA5; --accent-soft:#12302B;
+      --warn:#D9A65A; --warn-soft:#322612;
+      --alert:#E08A94; --alert-soft:#351A1E;
+      --info:#7FB6D8; --info-soft:#122733;
+      --code-bg:#1B2A34; --term-bg:#08121A; --term-ink:#B6CCD4;
+      --shadow:0 1px 2px rgba(0,0,0,.30), 0 8px 24px -18px rgba(0,0,0,.70);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#0C151B; --surface:#131F27; --surface-2:#182630;
+    --line:#2A3B46; --line-soft:#1F2E38;
+    --ink:#DCE6EA; --ink-2:#AEC1C9; --muted:#8399A3;
+    --accent:#4DBFA5; --accent-soft:#12302B;
+    --warn:#D9A65A; --warn-soft:#322612;
+    --alert:#E08A94; --alert-soft:#351A1E;
+    --info:#7FB6D8; --info-soft:#122733;
+    --code-bg:#1B2A34; --term-bg:#08121A; --term-ink:#B6CCD4;
+    --shadow:0 1px 2px rgba(0,0,0,.30), 0 8px 24px -18px rgba(0,0,0,.70);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground); color: var(--ink);
+    font-family: "IBM Plex Sans Arabic", ui-sans-serif, system-ui, Segoe UI, Tahoma, sans-serif;
+    font-size: 16px; line-height: 1.88; -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px 96px; }
+
+  code, .cmd, pre.term, .eyebrow, .amt { font-family: "IBM Plex Mono", ui-monospace, monospace;
+    direction: ltr; unicode-bidi: isolate; font-variant-ligatures: none; }
+
+  .masthead { padding: 56px 0 34px; border-bottom: 1px solid var(--line);
+              display: flex; flex-direction: column; gap: 18px; }
+  .eyebrow { font-size: 11.5px; font-weight: 500; letter-spacing: .16em;
+             text-transform: uppercase; color: var(--accent); align-self: flex-start; }
+  h1 { font-family: "Noto Kufi Arabic", "IBM Plex Sans Arabic", sans-serif; font-weight: 600;
+       font-size: clamp(1.7rem, 1.2rem + 2.1vw, 2.7rem); line-height: 1.42;
+       text-wrap: balance; margin: 0; }
+  .standfirst { font-size: 1.05rem; color: var(--ink-2); max-width: 62ch; margin: 0; }
+  .standfirst strong { color: var(--ink); font-weight: 600; }
+
+  pre.term { background: var(--term-bg); color: var(--term-ink); border-radius: 6px;
+             padding: 16px 18px; margin: 14px 0; font-size: 13px; line-height: 1.75;
+             overflow-x: auto; text-align: left; }
+  pre.term .c { color: #6E8F9B; }
+
+  .columns { display: grid; grid-template-columns: 200px minmax(0,1fr);
+             gap: 56px; align-items: start; padding-top: 40px; }
+  @media (max-width: 900px) { .columns { grid-template-columns: minmax(0,1fr); gap: 28px; } }
+
+  .rail { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 3px; }
+  @media (max-width: 900px) {
+    .rail { position: static; flex-direction: row; overflow-x: auto; gap: 8px;
+            padding-bottom: 10px; border-bottom: 1px solid var(--line); } }
+  .rail-label { font-size: 11.5px; color: var(--muted); padding: 0 10px 8px; }
+  @media (max-width: 900px) { .rail-label { display: none; } }
+  .rail a { display: block; white-space: nowrap; padding: 6px 10px; border-radius: 4px;
+            border-inline-start: 2px solid transparent; color: var(--ink-2);
+            text-decoration: none; font-size: 14px;
+            transition: background .14s, color .14s, border-color .14s; }
+  .rail a:hover, .rail a:focus-visible { background: var(--surface); color: var(--ink);
+            border-inline-start-color: var(--accent); }
+  @media (max-width: 900px) {
+    .rail a { border-inline-start: none; border-bottom: 2px solid transparent; }
+    .rail a:hover, .rail a:focus-visible { border-inline-start: none; border-bottom-color: var(--accent); } }
+
+  main { display: flex; flex-direction: column; gap: 52px; min-width: 0; }
+  section { scroll-margin-top: 20px; }
+
+  h2 { font-family: "Noto Kufi Arabic", "IBM Plex Sans Arabic", sans-serif; font-weight: 600;
+       font-size: 1.4rem; line-height: 1.5; margin: 0 0 6px; text-wrap: balance; }
+  h3 { font-family: "IBM Plex Sans Arabic", sans-serif; font-weight: 600;
+       font-size: 1.02rem; line-height: 1.7; margin: 22px 0 8px; }
+
+  p { margin: 0 0 12px; color: var(--ink-2); max-width: 68ch; }
+  p:last-child { margin-bottom: 0; }
+  strong { color: var(--ink); font-weight: 600; }
+  code { font-size: .875em; background: var(--code-bg); border-radius: 3px;
+         padding: 1px 5px; overflow-wrap: anywhere; }
+
+  .sec-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+  .tier-dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+  .t-daily  { background: var(--accent); }
+  .t-period { background: var(--warn); }
+  .t-setup  { background: var(--info); }
+  .t-service{ background: var(--muted); }
+  .lede { font-size: 15px; color: var(--ink-2); max-width: 66ch; margin: 0 0 18px; }
+
+  /* command card */
+  .cmds { display: flex; flex-direction: column; gap: 12px; }
+  .cmd-card { background: var(--surface); border: 1px solid var(--line);
+              border-radius: 8px; box-shadow: var(--shadow); overflow: hidden; }
+  .cmd-top { display: flex; align-items: center; flex-wrap: wrap; gap: 10px;
+             padding: 14px 18px 12px; }
+  .cmd { font-size: 14px; font-weight: 600; color: var(--ink);
+         background: var(--code-bg); border-radius: 4px; padding: 3px 9px; }
+  .cmd-body { padding: 0 18px 16px; display: flex; flex-direction: column; gap: 10px; }
+  .cmd-body p { font-size: 14.5px; margin: 0; }
+  .field { display: grid; grid-template-columns: 84px minmax(0,1fr); gap: 14px; align-items: start; }
+  @media (max-width: 560px) { .field { grid-template-columns: minmax(0,1fr); gap: 3px; } }
+  .field .fl { font-size: 12.5px; color: var(--muted); padding-top: 2px; }
+  .field .fv { font-size: 14.5px; color: var(--ink-2); }
+  .field .fv strong { color: var(--ink); }
+
+  .chip { font-size: 11.5px; font-weight: 500; padding: 3px 9px; border-radius: 3px;
+          white-space: nowrap; line-height: 1.6; border: 1px solid transparent; }
+  .chip-calls { background: var(--warn-soft); color: var(--warn); border-color: var(--warn); }
+  .chip-free  { background: var(--accent-soft); color: var(--accent); }
+  .chip-danger{ background: var(--alert-soft); color: var(--alert); border-color: var(--alert); }
+  .chip-file  { background: var(--surface-2); color: var(--ink-2); }
+
+  .plate { background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+           box-shadow: var(--shadow); overflow: hidden; }
+  .row { display: grid; grid-template-columns: 150px minmax(0,1fr); gap: 18px;
+         padding: 14px 20px; border-top: 1px solid var(--line-soft); align-items: start; }
+  .row:first-child { border-top: none; }
+  @media (max-width: 620px) { .row { grid-template-columns: minmax(0,1fr); gap: 5px; } }
+  .row .lb { font-family: "IBM Plex Mono", monospace; direction: ltr; unicode-bidi: isolate;
+             font-size: 13px; font-weight: 500; color: var(--ink); }
+  .row .lb.ar { font-family: "IBM Plex Sans Arabic", sans-serif; direction: rtl; font-size: 14px; }
+  .row p { font-size: 14px; margin: 0; }
+
+  .callout { background: var(--surface); border: 1px solid var(--line);
+             border-inline-start: 3px solid var(--accent); border-radius: 6px;
+             padding: 18px 20px; margin: 16px 0; }
+  .callout.warn  { border-inline-start-color: var(--warn); }
+  .callout.alert { border-inline-start-color: var(--alert); }
+  .callout h3 { margin: 0 0 6px; font-size: 1rem;
+                font-family: "Noto Kufi Arabic", "IBM Plex Sans Arabic", sans-serif;
+                font-weight: 500; line-height: 1.65; }
+  .callout p { font-size: 14.5px; }
+  .callout ul { margin: 8px 0 0; padding-inline-start: 20px;
+                display: flex; flex-direction: column; gap: 6px; }
+  .callout li { font-size: 14.5px; color: var(--ink-2); max-width: 66ch; }
+
+  footer { margin-top: 64px; padding-top: 22px; border-top: 1px solid var(--line);
+           display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between;
+           font-size: 12.5px; color: var(--muted); }
+  a { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+<style>
+  header.site {
+    max-width: 1180px; margin: 0 auto; padding: 18px 24px 0;
+    display: flex; gap: 1.25rem; align-items: baseline;
+    font-size: .875rem; flex-wrap: wrap;
+  }
+  header.site a { color: var(--ink-2); text-decoration: none; }
+  header.site a:hover, header.site a:focus-visible { color: var(--accent); text-decoration: underline; }
+  header.site a[aria-current="page"] { color: var(--accent); font-weight: 600; }
+  header.site .lang { margin-inline-start: auto; font-weight: 600; }
+  header.site + .wrap .masthead { padding-top: 30px; }
+</style>
+</head>
+<body>
+  <header class="site">
+    <a href="index.html">الرئيسية</a>
+    <a href="calibration.html">سجل المعايرة</a>
+    <a href="disclaimer.html">إخلاء المسؤولية</a>
+    <a href="docs.html">التوثيق</a>
+    <a class="lang" href="commands-en.html" hreflang="en">English</a>
+  </header>
+
+
+<div class="wrap" dir="rtl" lang="ar">
+
+  <header class="masthead">
+    <span class="eyebrow">Metric Risk · QuantMarketEngine</span>
+    <h1>أوامر المحرّك</h1>
+    <p class="standfirst">
+      مرجع الأوامر اللي بتولّد التقارير أو بتدقّقها. <strong>كلها بتنفَّذ بعد ما تفوت على مجلد
+      مشروع البوت مرة وحدة:</strong>
+    </p>
+<pre class="term">cd QuantMarketEngine/src/QuantMarketEngine.TelegramBot</pre>
+    <p class="standfirst">
+      ومجلدا <code>reports/</code> و<code>drafts/</code> بينعملوا جوّا هاد المجلد.
+    </p>
+  </header>
+
+  <div class="columns">
+
+    <nav class="rail" aria-label="أقسام الصفحة">
+      <span class="rail-label">المحتويات</span>
+      <a href="#daily">الأوامر اليومية</a>
+      <a href="#periodic">أوامر دورية</a>
+      <a href="#setup">أوامر الإعداد</a>
+      <a href="#service">التشغيل كخدمة</a>
+      <a href="#markets">الأسواق المدعومة</a>
+      <a href="#quota">حصة المزوّد</a>
+      <a href="#audit">بطاقات التدقيق</a>
+      <a href="#notes">ملاحظات مهمة</a>
+    </nav>
+
+    <main>
+
+      <section id="daily">
+        <div class="sec-head"><span class="tier-dot t-daily"></span><h2>الأوامر اليومية</h2></div>
+        <p class="lede">هدول اللي بتستخدمهم كل يوم. والأول فيهم بيغنّي عن الباقي عادةً.</p>
+
+        <div class="cmds">
+          <div class="cmd-card">
+            <div class="cmd-top">
+              <span class="cmd">dotnet run -- todayreport</span>
+              <span class="chip chip-calls">بيستهلك نداءات</span>
+            </div>
+            <div class="cmd-body">
+              <p><strong>روتين الصباح كامل بأمر واحد</strong> — بيشغّل <code>report</code> وبعدها
+              <code>drafts</code> وبعدها <code>audit</code>، لكل الأزواج.</p>
+              <div class="field"><span class="fl">إمتى</span><span class="fv">كل صباح. <strong>وهو الأمر الوحيد اللي بتحتاجه عادةً.</strong></span></div>
+              <div class="field"><span class="fl">النتيجة</span><span class="fv">ملفات <code>reports/</code> + ملفات <code>drafts/</code> + بطاقات التدقيق على الشاشة.</span></div>
+            </div>
+          </div>
+
+          <div class="cmd-card">
+            <div class="cmd-top">
+              <span class="cmd">dotnet run -- report</span>
+              <span class="chip chip-calls">بيستهلك نداءات</span>
+              <span class="chip chip-file">5 ملفات لكل زوج</span>
+            </div>
+            <div class="cmd-body">
+              <p>التقرير المؤسسي — السردي والأرقام الكمّية — لكل الأزواج المفعّلة.</p>
+              <div class="field"><span class="fl">إمتى</span><span class="fv">لما بدك التقارير بس، بلا مسودّات ولا تدقيق.</span></div>
+              <div class="field"><span class="fl">النتيجة</span><span class="fv">
+                في <code>reports/</code> لكل زوج:
+                <code>{الزوج}-{التاريخ}.json</code> ·
+                <code>-ar.txt</code> · <code>-en.txt</code> ·
+                <code>-cone.svg</code> (رسمة مخروط الاحتمالات، جاهزة للدمج بالـ Word أو PDF) ·
+                <code>-validation.json</code> (نتيجة فحوص ما قبل النشر)
+              </span></div>
+              <div class="field"><span class="fl">وكمان</span><span class="fv"><strong>بيؤرشف القراءة كغير منشورة</strong> — بتصير مرجع «ما تغيّر» للمرّة الجاي، وبتفوت حلقة تقييم النتائج.</span></div>
+            </div>
+          </div>
+
+          <div class="cmd-card">
+            <div class="cmd-top">
+              <span class="cmd">dotnet run -- report XAUUSD 1D</span>
+              <span class="chip chip-calls">بيستهلك نداءات</span>
+            </div>
+            <div class="cmd-body">
+              <p>نفس التقرير بالضبط بس <strong>لزوج واحد محدّد</strong> — نفس الـ 5 ملفات.</p>
+              <div class="field"><span class="fl">إمتى</span><span class="fv">لتحديث الذهب أو اليورو لحاله.</span></div>
+            </div>
+          </div>
+
+          <div class="cmd-card">
+            <div class="cmd-top">
+              <span class="cmd">dotnet run -- drafts</span>
+              <span class="chip chip-calls">بيستهلك نداءات</span>
+            </div>
+            <div class="cmd-body">
+              <p>مسودّات Substack إنجليزية لكل زوج.</p>
+              <div class="field"><span class="fl">النتيجة</span><span class="fv"><code>drafts/{الزوج}.txt</code></span></div>
+            </div>
+          </div>
+
+          <div class="cmd-card">
+            <div class="cmd-top">
+              <span class="cmd">dotnet run -- audit</span>
+              <span class="chip chip-free">صفر نداءات</span>
+              <span class="chip chip-file">بلا ملف</span>
+            </div>
+            <div class="cmd-body">
+              <p><strong>تدقيق جودة الأرقام — معايرة ذاتية، مش تقرير.</strong> وهو الأمر الوحيد
+              اللي <strong>بيدقّق</strong> بدل ما ينتج.</p>
+              <div class="field"><span class="fl">إمتى</span><span class="fv">للتأكد من مصداقية الأرقام مقابل الواقع.</span></div>
+              <div class="field"><span class="fl">النتيجة</span><span class="fv">على الطرفية بس — <strong>أربع بطاقات</strong> (التفصيل تحت).</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="periodic">
+        <div class="sec-head"><span class="tier-dot t-period"></span><h2>أوامر دورية</h2></div>
+        <p class="lede">مش كل يوم. وكلهم بيقرأوا المخزّن — <strong>صفر نداءات للمزوّد</strong>.</p>
+
+        <div class="cmds">
+          <div class="cmd-card">
+            <div class="cmd-top"><span class="cmd">dotnet run -- weekly</span><span class="chip chip-free">صفر نداءات</span></div>
+            <div class="cmd-body">
+              <p>ملخّص أسبوعي مبني من التقارير المؤرشفة.</p>
+              <div class="field"><span class="fl">إمتى</span><span class="fv">آخر الأسبوع.</span></div>
+              <div class="field"><span class="fl">النتيجة</span><span class="fv"><code>drafts/weekly-ar.txt</code> و<code>weekly-en.txt</code></span></div>
+            </div>
+          </div>
+
+          <div class="cmd-card">
+            <div class="cmd-top"><span class="cmd">dotnet run -- publishsite</span><span class="chip chip-free">صفر نداءات</span></div>
+            <div class="cmd-body">
+              <p>بيحوّل التقارير المنشورة لصفحات موقع.</p>
+              <div class="field"><span class="fl">النتيجة</span><span class="fv">صفحات HTML في مجلد <code>WebPublisher:OutputDirectory</code>.</span></div>
+            </div>
+          </div>
+
+          <div class="cmd-card">
+            <div class="cmd-top"><span class="cmd">dotnet run -- publishcalibration</span><span class="chip chip-free">صفر نداءات</span></div>
+            <div class="cmd-body">
+              <p><strong>صفحة سجل المعايرة العامة</strong> — خرق الحدود مقابل هدف الـ 5% لكل زوج.
+              وهاي أداة ثقة وبيع، مش تقرير.</p>
+              <div class="field"><span class="fl">إمتى</span><span class="fv">بعد <code>audit</code> أو <code>backfill</code>، لما تحدّث الموقع.</span></div>
+              <div class="field"><span class="fl">النتيجة</span><span class="fv"><code>calibration.html</code></span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="setup">
+        <div class="sec-head"><span class="tier-dot t-setup"></span><h2>أوامر الإعداد</h2></div>
+        <p class="lede">مرة وحدة، أو نادراً.</p>
+
+        <div class="cmds">
+          <div class="cmd-card">
+            <div class="cmd-top"><span class="cmd">dotnet run -- seedhistory</span><span class="chip chip-calls">بيستهلك نداءات</span></div>
+            <div class="cmd-body">
+              <p>بيجيب كامل التاريخ اليومي وبيخزّنه — بيعمّق التاريخ المتاح للتحليل.</p>
+              <div class="field"><span class="fl">إمتى</span><span class="fv"><strong>مرة عند الإعداد.</strong></span></div>
+            </div>
+          </div>
+
+          <div class="cmd-card">
+            <div class="cmd-top"><span class="cmd">dotnet run -- backfill</span><span class="chip chip-calls">نداء لكل رمز</span></div>
+            <div class="cmd-body">
+              <p>بيبني سجلّ VaR و ES من الماضي بمسح <em>walk-forward</em>.</p>
+              <div class="field"><span class="fl">إمتى</span><span class="fv"><strong>مرة بعد <code>seedhistory</code></strong> — بيفعّل بطاقات المعايرة، وخاصةً ES.</span></div>
+              <div class="field"><span class="fl">النتيجة</span><span class="fv">بيخزّن النتائج اللي بتغذّي بطاقات <code>audit</code>.</span></div>
+            </div>
+          </div>
+
+          <div class="cmd-card">
+            <div class="cmd-top"><span class="cmd">dotnet run -- backup</span><span class="chip chip-free">صفر نداءات</span></div>
+            <div class="cmd-body">
+              <p><strong>نسخة احتياطية موثَّقة</strong> من قاعدة البيانات، بعد التحقّق من سلامتها.</p>
+              <div class="field"><span class="fl">إمتى</span><span class="fv"><strong>قبل أي أمر مدمّر</strong> — والبوت الحيّ بياخدها يومياً لحاله.</span></div>
+              <div class="field"><span class="fl">النتيجة</span><span class="fv"><code>backups/quant-YYYYMMDD-HHmmss-fff.db</code></span></div>
+            </div>
+          </div>
+
+          <div class="cmd-card">
+            <div class="cmd-top"><span class="cmd">dotnet run -- purgeweekend</span><span class="chip chip-free">معاينة · ما بيحذف</span></div>
+            <div class="cmd-body">
+              <p><strong>معاينة</strong> شموع عطلة نهاية الأسبوع المخزّنة. <strong>ما بيحذف ولا إشي.</strong></p>
+              <div class="field"><span class="fl">النتيجة</span><span class="fv">جدول بالسلاسل وعدد الشموع المرشّحة للحذف.</span></div>
+            </div>
+          </div>
+
+          <div class="cmd-card">
+            <div class="cmd-top"><span class="cmd">dotnet run -- purgeweekend apply</span><span class="chip chip-danger">مدمّر</span></div>
+            <div class="cmd-body">
+              <p>بيحذف تلك الشموع فعلياً.</p>
+              <div class="field"><span class="fl">إمتى</span><span class="fv"><strong>بعد <code>backup</code> وبعد ما تراجع المعاينة.</strong></span></div>
+              <div class="field"><span class="fl">نطاقه</span><span class="fv">السبت والأحد من السلاسل <strong>اليومية فقط</strong> — سلاسل الماكرو الشهرية ما بتتمسّ.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout warn">
+          <h3>ليش في أمر بيحذف شموع أصلاً</h3>
+          <p>تغذية <code>GOLD_SILVER_HISTORY</code> كانت بترجّع صفاً لكل <strong>يوم تقويمي</strong> —
+          و26% منها سبت وأحد، وهاي مش جلسات تداول. الاستقبال صار يحذفها، والتاريخ المتراكم بينظَّف
+          بهاد الأمر.</p>
+          <p><strong>والأثر مقيس:</strong> VaR95 للذهب على النافذة الحيّة انتقل من
+          <strong>96.33 إلى 113.44</strong> — بزيادة 17.8%. والفضة +17.9%. أما اليورو والجنيه والين
+          وسندات العشر سنين فبلا تغيير، لأنها ما بتحمل شموع عطلة أصلاً.</p>
+        </div>
+      </section>
+
+      <section id="service">
+        <div class="sec-head"><span class="tier-dot t-service"></span><h2>التشغيل كخدمة</h2></div>
+        <div class="cmd-card">
+          <div class="cmd-top"><span class="cmd">dotnet run</span><span class="chip chip-file">بلا أمر</span></div>
+          <div class="cmd-body">
+            <p>بيشغّل البوت <strong>حيّاً</strong>: استقبال تيليجرام، جدولة تلقائية، وتقييم مستمر.</p>
+            <div class="field"><span class="fl">إمتى</span><span class="fv">للتشغيل المتواصل أو الإنتاج.</span></div>
+            <div class="field"><span class="fl">النتيجة</span><span class="fv">بيضل شغّال لحد ما توقّفه.</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="markets">
+        <h2>الأسواق المدعومة</h2>
+        <p class="lede">تلات رموز نشطة. والفرق بيناتهم <strong>شكل البيانات</strong>، مش المحرّك.</p>
+
+        <div class="plate">
+          <div class="row">
+            <span class="lb">EURUSD</span>
+            <p>اليورو/دولار — فوركس · نقطة <code>FX_DAILY</code> · <strong>OHLC كامل</strong>
+            (افتتاح، أعلى، أدنى، إغلاق) · الجودة <strong>كاملة</strong></p>
+          </div>
+          <div class="row">
+            <span class="lb">XAUUSD</span>
+            <p>الذهب/دولار · نقطة <code>GOLD_SILVER_HISTORY</code> · <strong>سعر واحد لليوم</strong>،
+            بلا حركة داخل اليوم · الجودة <strong>FAIR</strong></p>
+          </div>
+          <div class="row">
+            <span class="lb">XAGUSD</span>
+            <p>الفضة/دولار · نفس التغذية وشكل البيانات · الجودة <strong>FAIR</strong> —
+            <strong>ومعايرتها لسّه «العيّنة صغيرة»</strong>، لأن النتائج اللي بتقدر تقيّمها أقل</p>
+          </div>
+        </div>
+
+        <div class="callout alert">
+          <h3>حدود المعادن — وهو حدّ بيانات مش حدّ محرّك</h3>
+          <p>الباقة المجانية بترجّع سعراً واحداً لكل يوم (حوالي 5,300 شمعة رجوعاً لـ 2011)، بلا
+          افتتاح وأعلى وأدنى منفصلين. والنتيجة:</p>
+          <ul>
+            <li><strong>بيشتغل منيح:</strong> الاتجاه، الزخم، المخاطرة (VaR)، الحالة،
+            الدعم والمقاومة، خريطة السيولة، السياق التاريخي.</li>
+            <li><strong>ضعيف أو فارغ:</strong> أنماط الشموع، جمع السيولة اللحظي، فجوات القيمة
+            العادلة — لأنها كلها بتحتاج حركة داخل اليوم.</li>
+            <li>جودة السوق بتستقر عند <strong>FAIR</strong> وممكن تطلّع «لا قرار» أكتر من اليورو.</li>
+          </ul>
+          <p style="margin-top:10px"><strong>و<code>seedhistory</code> ما رح يرفعها</strong> — هاي
+          شكل البيانات نفسها. رفع الجودة بيحتاج مزوّداً مدفوعاً بيعطي حركة داخل اليوم.</p>
+          <p><strong>باختصار:</strong> <code>dotnet run -- report XAUUSD 1D</code> بيشتغل تماماً —
+          بس توقّعاتك من المعادن تكون FAIR مش كاملة.</p>
+        </div>
+      </section>
+
+      <section id="quota">
+        <h2>حصة مزوّد البيانات</h2>
+        <p class="lede">الحصة المجانية <strong>25 طلب باليوم</strong>، مع حدّ لحظي حوالي طلب
+        بالثانية — بيتدار تلقائياً بمُباعدة النداءات.</p>
+
+        <div class="plate">
+          <div class="row">
+            <span class="lb ar">بتستهلك نداءات</span>
+            <p><code>report</code> · <code>drafts</code> · <code>seedhistory</code> ·
+            <code>backfill</code> (نداء واحد لكل رمز — بيجيب التاريخ الكامل وبعدين بيمسحه)</p>
+          </div>
+          <div class="row">
+            <span class="lb ar">صفر نداءات</span>
+            <p><code>audit</code> · <code>weekly</code> · <code>publishsite</code> ·
+            <code>publishcalibration</code> · <code>backup</code> · <code>purgeweekend</code>
+            — كلها بتقرأ المخزّن بس</p>
+          </div>
+        </div>
+
+        <div class="callout warn">
+          <h3>قدّيش بيكلّف التقرير؟ لا تخطّط على رقم محفوظ</h3>
+          <p><code>report XAUUSD 1D</code> انقاس بـ <strong>5 نداءات</strong> — الزوج نفسه، ورفقاء
+          الارتباط المتقاطع، وسلاسل الماكرو.</p>
+          <p><strong>والرقم مش ثابت.</strong> بيتغيّر مع مُباعِد الجلب (الشموع اللي انجلبت قبل شوي
+          ما بتنجلب تاني)، ومع الرفقاء المُعدّين، ومع كون التقويم الاقتصادي والتحليل الأساسي
+          معطّلين حالياً.</p>
+          <p>أوامر <code>report</code> و<code>drafts</code> و<code>seedhistory</code> و
+          <code>todayreport</code> بتطبع بآخرها عدد نداءات هاي العملية. والعدّاد لكل عملية — كل
+          تشغيلة بتبدأ من صفر، ما في تراكم يومي. <strong>وهو المرجع، مش هاي الصفحة.</strong></p>
+        </div>
+      </section>
+
+      <section id="audit">
+        <h2>بطاقات التدقيق الأربع</h2>
+        <p class="lede">هاي اللي بيطبعها <code>audit</code> على الطرفية.</p>
+
+        <div class="plate">
+          <div class="row">
+            <span class="lb ar">معايرة VaR</span>
+            <p>هل النطاق المتوقّع عند 95% بينخرق ~5% من الأيام زي ما لازم؟ وبيشمل
+            <strong>اختبار تكتّل الخروقات</strong> — Christoffersen.</p>
+          </div>
+          <div class="row">
+            <span class="lb ar">معايرة ES</span>
+            <p>في أيام الخرق، هل متوسط الخسارة الفعلية طابق الـ Expected Shortfall المُعلَن (النسبة
+            حوالي 1)؟ بيظهر بعد ما يتراكم عدد كافٍ من أيام الخرق — بعد <code>backfill</code> أو
+            بتراكم حيّ.</p>
+          </div>
+          <div class="row">
+            <span class="lb ar">صمود المستويات</span>
+            <p>لما النظام يرصد مستوى مُختبَراً، كم مرة صمد فعلاً؟ مسح تاريخي <strong>بلا نظر
+            مستقبلي</strong>.</p>
+          </div>
+          <div class="row">
+            <span class="lb ar">ثبات الارتباطات</span>
+            <p>هل رقم ارتباط الـ 30 يوماً المنشور موثوق ولا متذبذب؟</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="notes">
+        <h2>ملاحظات مهمة</h2>
+
+        <div class="callout warn">
+          <h3>استخدم <code>1D</code> مش <code>4H</code></h3>
+          <p>المزوّد المجاني يومي فقط، وطلب <code>4H</code> بيعطي <strong>تقريراً فارغاً</strong>.</p>
+        </div>
+
+        <div class="callout">
+          <h3>الطريق العملي للتقرير المؤسسي هو أمر <code>report</code></h3>
+          <p>نقطة الـ HTTP <code>api/reports/institutional/...</code> محميّة بصلاحية مشغّل، مش
+          مفتوحة.</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer>
+    <span>Metric Risk · QuantMarketEngine · مرجع الأوامر</span>
+    <span>آخر مراجعة 2026-08-31</span>
+  </footer>
+
+</div>
+
+</body>
+</html>

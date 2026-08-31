@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Metric Risk Documentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap">
+<style>
+  :root {
+    --ground:      #EAEEF0;
+    --surface:     #FFFFFF;
+    --surface-2:   #F4F7F8;
+    --line:        #D2DCDF;
+    --line-soft:   #E3EAEC;
+    --ink:         #12202A;
+    --ink-2:       #38505D;
+    --muted:       #61757F;
+    --accent:      #0F6F5C;
+    --accent-soft: #E2F0EC;
+    --warn:        #8C5A0C;
+    --warn-soft:   #F7EEDD;
+    --alert:       #98303C;
+    --alert-soft:  #F8E7E8;
+    --code-bg:     #EDF2F3;
+    --term-bg:     #10202A;
+    --term-ink:    #C9DBE1;
+    --shadow:      0 1px 2px rgba(18,32,42,.05), 0 8px 24px -18px rgba(18,32,42,.30);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #0C151B;
+      --surface:     #131F27;
+      --surface-2:   #182630;
+      --line:        #2A3B46;
+      --line-soft:   #1F2E38;
+      --ink:         #DCE6EA;
+      --ink-2:       #AEC1C9;
+      --muted:       #8399A3;
+      --accent:      #4DBFA5;
+      --accent-soft: #12302B;
+      --warn:        #D9A65A;
+      --warn-soft:   #322612;
+      --alert:       #E08A94;
+      --alert-soft:  #351A1E;
+      --code-bg:     #1B2A34;
+      --term-bg:     #08121A;
+      --term-ink:    #B6CCD4;
+      --shadow:      0 1px 2px rgba(0,0,0,.30), 0 8px 24px -18px rgba(0,0,0,.70);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #0C151B;
+    --surface:     #131F27;
+    --surface-2:   #182630;
+    --line:        #2A3B46;
+    --line-soft:   #1F2E38;
+    --ink:         #DCE6EA;
+    --ink-2:       #AEC1C9;
+    --muted:       #8399A3;
+    --accent:      #4DBFA5;
+    --accent-soft: #12302B;
+    --warn:        #D9A65A;
+    --warn-soft:   #322612;
+    --alert:       #E08A94;
+    --alert-soft:  #351A1E;
+    --code-bg:     #1B2A34;
+    --term-bg:     #08121A;
+    --term-ink:    #B6CCD4;
+    --shadow:      0 1px 2px rgba(0,0,0,.30), 0 8px 24px -18px rgba(0,0,0,.70);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px 96px; }
+
+  /* masthead */
+  .masthead {
+    padding: 56px 0 34px;
+    border-bottom: 1px solid var(--line);
+    display: flex; flex-direction: column; gap: 18px;
+  }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11.5px; font-weight: 500; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--accent); align-self: flex-start;
+  }
+
+  h1 {
+    font-family: "IBM Plex Serif", Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(2rem, 1.4rem + 2.4vw, 3.1rem);
+    line-height: 1.1; letter-spacing: -.02em; text-wrap: balance; margin: 0;
+  }
+
+  .standfirst { font-size: 1.075rem; color: var(--ink-2); max-width: 64ch; margin: 0; }
+  .standfirst strong { color: var(--ink); font-weight: 600; }
+
+  .headline-stat {
+    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+    margin-top: 8px; padding: 16px 20px;
+    background: var(--accent-soft);
+    border-radius: 6px;
+    align-self: flex-start;
+  }
+  .headline-stat .fig {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 1.7rem; font-weight: 600; color: var(--accent);
+    font-variant-numeric: tabular-nums; line-height: 1;
+  }
+  .headline-stat .cap { font-size: 14px; color: var(--ink-2); max-width: 40ch; }
+
+  /* layout */
+  .columns {
+    display: grid; grid-template-columns: 200px minmax(0, 1fr);
+    gap: 56px; align-items: start; padding-top: 40px;
+  }
+  @media (max-width: 900px) { .columns { grid-template-columns: minmax(0,1fr); gap: 28px; } }
+
+  .rail { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 3px; }
+  @media (max-width: 900px) {
+    .rail { position: static; flex-direction: row; overflow-x: auto; gap: 8px;
+            padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+  }
+  .rail-label {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 10.5px; letter-spacing: .13em; text-transform: uppercase;
+    color: var(--muted); padding: 0 0 8px 10px;
+  }
+  @media (max-width: 900px) { .rail-label { display: none; } }
+  .rail a {
+    display: block; white-space: nowrap; padding: 6px 10px; border-radius: 4px;
+    border-left: 2px solid transparent; color: var(--ink-2);
+    text-decoration: none; font-size: 13.5px;
+    transition: background .14s, color .14s, border-color .14s;
+  }
+  .rail a:hover, .rail a:focus-visible {
+    background: var(--surface); color: var(--ink); border-left-color: var(--accent);
+  }
+  @media (max-width: 900px) {
+    .rail a { border-left: none; border-bottom: 2px solid transparent; }
+    .rail a:hover, .rail a:focus-visible { border-left: none; border-bottom-color: var(--accent); }
+  }
+
+  main { display: flex; flex-direction: column; gap: 54px; min-width: 0; }
+  section { scroll-margin-top: 20px; }
+
+  h2 {
+    font-family: "IBM Plex Serif", Georgia, serif; font-weight: 600;
+    font-size: 1.62rem; letter-spacing: -.012em; line-height: 1.24;
+    margin: 0 0 10px; text-wrap: balance;
+  }
+
+  h3 {
+    font-family: "IBM Plex Sans", sans-serif; font-weight: 600;
+    font-size: 1.06rem; margin: 26px 0 8px;
+  }
+
+  p { margin: 0 0 12px; color: var(--ink-2); max-width: 70ch; }
+  p:last-child { margin-bottom: 0; }
+  strong { color: var(--ink); font-weight: 600; }
+
+  code {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .875em; background: var(--code-bg);
+    border-radius: 3px; padding: 1px 5px; overflow-wrap: anywhere;
+  }
+
+  /* terminal */
+  pre.term {
+    background: var(--term-bg); color: var(--term-ink);
+    border-radius: 6px; padding: 16px 18px; margin: 14px 0;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 13px; line-height: 1.75; overflow-x: auto;
+  }
+  pre.term .c { color: #6E8F9B; }
+  pre.term .k { color: #63C9AC; }
+
+  /* host cards */
+  .hosts { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+  .host-card {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 8px; padding: 16px 18px; box-shadow: var(--shadow);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .host-card .nm {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 14px; font-weight: 600; color: var(--ink);
+  }
+  .host-card .port {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--accent); background: var(--accent-soft);
+    padding: 2px 7px; border-radius: 3px; align-self: flex-start;
+  }
+  .host-card .port.none { color: var(--muted); background: var(--surface-2); }
+  .host-card p { font-size: 14px; margin: 0; }
+
+  /* cost table */
+  .costs {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 8px; box-shadow: var(--shadow); overflow: hidden;
+  }
+  .cost-row {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+    padding: 12px 20px; border-top: 1px solid var(--line-soft); font-size: 14.5px;
+  }
+  .cost-row:first-child { border-top: none; }
+  .cost-row .amt {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums; font-weight: 500;
+    color: var(--ink); white-space: nowrap;
+  }
+  .cost-row.total {
+    background: var(--surface-2); font-weight: 600;
+    border-top: 1px solid var(--line);
+  }
+  .cost-row.total .amt { color: var(--accent); font-size: 1.05rem; }
+  .cost-row .lbl { color: var(--ink-2); }
+  .cost-row.total .lbl { color: var(--ink); }
+
+  /* plate + rows (reused for spec lists) */
+  .plate {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 8px; box-shadow: var(--shadow); overflow: hidden;
+  }
+  .row {
+    display: grid; grid-template-columns: 172px minmax(0,1fr); gap: 18px;
+    padding: 14px 20px; border-top: 1px solid var(--line-soft); align-items: start;
+  }
+  .row:first-child { border-top: none; }
+  @media (max-width: 620px) { .row { grid-template-columns: minmax(0,1fr); gap: 6px; } }
+  .row .lb {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 13px; font-weight: 500; color: var(--ink); overflow-wrap: anywhere;
+  }
+  .row p { font-size: 14px; margin: 0; }
+
+  /* steps */
+  .steps { display: flex; flex-direction: column; gap: 2px; counter-reset: s; }
+  .step {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 8px; padding: 18px 20px 18px 58px; position: relative;
+    box-shadow: var(--shadow);
+  }
+  .step::before {
+    counter-increment: s; content: counter(s);
+    position: absolute; left: 20px; top: 18px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12px; font-weight: 600; color: var(--accent);
+    background: var(--accent-soft);
+    width: 24px; height: 24px; border-radius: 50%;
+    display: grid; place-items: center;
+  }
+  .step h3 { margin: 0 0 6px; font-size: 1rem; }
+  .step p { font-size: 14.5px; }
+
+  /* callouts */
+  .callout {
+    background: var(--surface); border: 1px solid var(--line);
+    border-left: 3px solid var(--accent); border-radius: 6px;
+    padding: 18px 20px; margin: 16px 0;
+  }
+  .callout.warn  { border-left-color: var(--warn); }
+  .callout.alert { border-left-color: var(--alert); }
+  .callout h3 { margin: 0 0 6px; font-size: 1rem; }
+  .callout p { font-size: 14.5px; }
+  .callout ul { margin: 8px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+  .callout li { font-size: 14.5px; color: var(--ink-2); max-width: 68ch; }
+
+  .lede { font-size: 1rem; color: var(--ink-2); max-width: 68ch; margin: 0 0 18px; }
+
+  .stack { display: flex; flex-direction: column; gap: 14px; }
+
+  footer {
+    margin-top: 64px; padding-top: 22px; border-top: 1px solid var(--line);
+    display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12px; color: var(--muted);
+  }
+
+  a { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+<style>
+  .row .lb.plain { font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif; direction: inherit; unicode-bidi: normal; font-size: 1.02rem; font-weight: 600; }
+  .row .lb.plain a { color: var(--accent); text-decoration: none; }
+  .row .lb.plain a:hover, .row .lb.plain a:focus-visible { text-decoration: underline; }
+  .row { grid-template-columns: 230px minmax(0,1fr); align-items: baseline; }
+  @media (max-width: 620px) { .row { grid-template-columns: minmax(0,1fr); } }
+</style>
+<style>
+  header.site {
+    max-width: 1180px; margin: 0 auto; padding: 18px 24px 0;
+    display: flex; gap: 1.25rem; align-items: baseline;
+    font-size: .875rem; flex-wrap: wrap;
+  }
+  header.site a { color: var(--ink-2); text-decoration: none; }
+  header.site a:hover, header.site a:focus-visible { color: var(--accent); text-decoration: underline; }
+  header.site a[aria-current="page"] { color: var(--accent); font-weight: 600; }
+  header.site .lang { margin-inline-start: auto; font-weight: 600; }
+  header.site + .wrap .masthead { padding-top: 30px; }
+</style>
+</head>
+<body>
+  <header class="site">
+    <a href="index-en.html">Home</a>
+    <a href="calibration-en.html">Calibration record</a>
+    <a href="disclaimer-en.html">Disclaimer</a>
+    <a href="docs-en.html" aria-current="page">Documentation</a>
+    <a class="lang" href="docs.html" hreflang="ar">العربية</a>
+  </header>
+
+  <div class="wrap">
+    <header class="masthead">
+      <span class="eyebrow">Metric Risk · QuantMarketEngine</span>
+      <h1>Documentation</h1>
+      <p class="standfirst">
+        How the platform is run, what every command does, and every setting the code reads.
+        <strong>Written against the repository rather than from memory</strong> — each page says
+        how to check it.
+      </p>
+    </header>
+    <div class="columns" style="grid-template-columns: minmax(0,1fr);">
+      <main>
+        <section>
+          <div class="plate">
+            <div class="row">
+              <span class="lb plain"><a href="running-en.html">Running the platform</a></span>
+              <p>The four hosts, what you have to sign up for, the monthly bill, adding instruments,
+              swapping the data provider, and deploying.</p>
+            </div>
+            <div class="row">
+              <span class="lb plain"><a href="commands-en.html">Engine commands</a></span>
+              <p>Every command that generates a report or audits one — and which ones spend provider
+              quota rather than reading stored data.</p>
+            </div>
+            <div class="row">
+              <span class="lb plain"><a href="configuration-en.html">Configuration reference</a></span>
+              <p>Every configuration section the code reads, its default, and what ships enabled or
+              disabled.</p>
+            </div>
+          </div>
+        </section>
+
+        <section style="margin-top:44px">
+          <h2>For someone evaluating the platform itself</h2>
+          <p class="lede">The pages above are about operating Metric Risk. This one is about
+          <strong>acquiring it</strong> — written for a technical buyer, and not the page to read if
+          you are here as a reader of the analyses.</p>
+          <div class="plate">
+            <div class="row">
+              <span class="lb plain"><a href="handover-en.html">What you are inheriting</a></span>
+              <p>What transfers, the settings with no safe default, the behaviours that read as bugs
+              if nobody tells you, the known limits stated plainly — and the commands to verify every
+              claim on the page.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+</body>
+</html>

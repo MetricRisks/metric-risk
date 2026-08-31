@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تشغيل منصة Metric Risk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Kufi+Arabic:wght@500;600&display=swap">
+
+<style>
+  :root {
+    --ground:#EAEEF0; --surface:#FFFFFF; --surface-2:#F4F7F8;
+    --line:#D2DCDF; --line-soft:#E3EAEC;
+    --ink:#12202A; --ink-2:#38505D; --muted:#61757F;
+    --accent:#0F6F5C; --accent-soft:#E2F0EC;
+    --warn:#8C5A0C; --warn-soft:#F7EEDD;
+    --alert:#98303C; --alert-soft:#F8E7E8;
+    --code-bg:#EDF2F3; --term-bg:#10202A; --term-ink:#C9DBE1;
+    --shadow:0 1px 2px rgba(18,32,42,.05), 0 8px 24px -18px rgba(18,32,42,.30);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#0C151B; --surface:#131F27; --surface-2:#182630;
+      --line:#2A3B46; --line-soft:#1F2E38;
+      --ink:#DCE6EA; --ink-2:#AEC1C9; --muted:#8399A3;
+      --accent:#4DBFA5; --accent-soft:#12302B;
+      --warn:#D9A65A; --warn-soft:#322612;
+      --alert:#E08A94; --alert-soft:#351A1E;
+      --code-bg:#1B2A34; --term-bg:#08121A; --term-ink:#B6CCD4;
+      --shadow:0 1px 2px rgba(0,0,0,.30), 0 8px 24px -18px rgba(0,0,0,.70);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:#0C151B; --surface:#131F27; --surface-2:#182630;
+    --line:#2A3B46; --line-soft:#1F2E38;
+    --ink:#DCE6EA; --ink-2:#AEC1C9; --muted:#8399A3;
+    --accent:#4DBFA5; --accent-soft:#12302B;
+    --warn:#D9A65A; --warn-soft:#322612;
+    --alert:#E08A94; --alert-soft:#351A1E;
+    --code-bg:#1B2A34; --term-bg:#08121A; --term-ink:#B6CCD4;
+    --shadow:0 1px 2px rgba(0,0,0,.30), 0 8px 24px -18px rgba(0,0,0,.70);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground); color: var(--ink);
+    font-family: "IBM Plex Sans Arabic", ui-sans-serif, system-ui, Segoe UI, Tahoma, sans-serif;
+    font-size: 16px; line-height: 1.88; -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px 96px; }
+
+  code, .lb, .def, .nm, .port, .amt, pre.term, .eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    direction: ltr; unicode-bidi: isolate; font-variant-ligatures: none;
+  }
+
+  /* masthead */
+  .masthead { padding: 56px 0 34px; border-bottom: 1px solid var(--line);
+              display: flex; flex-direction: column; gap: 18px; }
+  .eyebrow { font-size: 11.5px; font-weight: 500; letter-spacing: .16em;
+             text-transform: uppercase; color: var(--accent); align-self: flex-start; }
+  h1 { font-family: "Noto Kufi Arabic", "IBM Plex Sans Arabic", sans-serif; font-weight: 600;
+       font-size: clamp(1.7rem, 1.2rem + 2.1vw, 2.7rem); line-height: 1.42;
+       text-wrap: balance; margin: 0; }
+  .standfirst { font-size: 1.05rem; color: var(--ink-2); max-width: 62ch; margin: 0; }
+  .standfirst strong { color: var(--ink); font-weight: 600; }
+
+  .headline-stat { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+                   margin-top: 8px; padding: 16px 20px; background: var(--accent-soft);
+                   border-radius: 6px; align-self: flex-start; }
+  .headline-stat .fig { font-family: "IBM Plex Mono", monospace; direction: ltr;
+                        font-size: 1.7rem; font-weight: 600; color: var(--accent);
+                        font-variant-numeric: tabular-nums; line-height: 1; }
+  .headline-stat .cap { font-size: 14px; color: var(--ink-2); max-width: 42ch; }
+
+  /* layout */
+  .columns { display: grid; grid-template-columns: 210px minmax(0,1fr);
+             gap: 56px; align-items: start; padding-top: 40px; }
+  @media (max-width: 900px) { .columns { grid-template-columns: minmax(0,1fr); gap: 28px; } }
+
+  .rail { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 3px; }
+  @media (max-width: 900px) {
+    .rail { position: static; flex-direction: row; overflow-x: auto; gap: 8px;
+            padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+  }
+  .rail-label { font-size: 11.5px; color: var(--muted); padding: 0 10px 8px; }
+  @media (max-width: 900px) { .rail-label { display: none; } }
+  .rail a { display: block; white-space: nowrap; padding: 6px 10px; border-radius: 4px;
+            border-inline-start: 2px solid transparent; color: var(--ink-2);
+            text-decoration: none; font-size: 14px;
+            transition: background .14s, color .14s, border-color .14s; }
+  .rail a:hover, .rail a:focus-visible { background: var(--surface); color: var(--ink);
+            border-inline-start-color: var(--accent); }
+  @media (max-width: 900px) {
+    .rail a { border-inline-start: none; border-bottom: 2px solid transparent; }
+    .rail a:hover, .rail a:focus-visible { border-inline-start: none; border-bottom-color: var(--accent); }
+  }
+
+  main { display: flex; flex-direction: column; gap: 54px; min-width: 0; }
+  section { scroll-margin-top: 20px; }
+
+  h2 { font-family: "Noto Kufi Arabic", "IBM Plex Sans Arabic", sans-serif; font-weight: 600;
+       font-size: 1.42rem; line-height: 1.5; margin: 0 0 10px; text-wrap: balance; }
+  h3 { font-family: "IBM Plex Sans Arabic", sans-serif; font-weight: 600;
+       font-size: 1.04rem; line-height: 1.7; margin: 26px 0 8px; }
+
+  p { margin: 0 0 12px; color: var(--ink-2); max-width: 68ch; }
+  p:last-child { margin-bottom: 0; }
+  strong { color: var(--ink); font-weight: 600; }
+
+  code { font-size: .875em; background: var(--code-bg); border-radius: 3px;
+         padding: 1px 5px; overflow-wrap: anywhere; }
+
+  pre.term { background: var(--term-bg); color: var(--term-ink); border-radius: 6px;
+             padding: 16px 18px; margin: 14px 0; font-size: 13px; line-height: 1.75;
+             overflow-x: auto; text-align: left; }
+  pre.term .c { color: #6E8F9B; }
+  pre.term .k { color: #63C9AC; }
+
+  /* host cards */
+  .hosts { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px,1fr)); gap: 14px; }
+  .host-card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+               padding: 16px 18px; box-shadow: var(--shadow);
+               display: flex; flex-direction: column; gap: 8px; }
+  .host-card .nm { font-size: 14px; font-weight: 600; color: var(--ink); align-self: flex-start; }
+  .host-card .port { font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+                     color: var(--accent); background: var(--accent-soft);
+                     padding: 2px 7px; border-radius: 3px; align-self: flex-start; }
+  .host-card .port.none { color: var(--muted); background: var(--surface-2); }
+  .host-card p { font-size: 14px; margin: 0; }
+
+  /* costs */
+  .costs { background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+           box-shadow: var(--shadow); overflow: hidden; }
+  .cost-row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+              padding: 12px 20px; border-top: 1px solid var(--line-soft); font-size: 14.5px; }
+  .cost-row:first-child { border-top: none; }
+  .cost-row .amt { font-variant-numeric: tabular-nums; font-weight: 500;
+                   color: var(--ink); white-space: nowrap; }
+  .cost-row.total { background: var(--surface-2); font-weight: 600; border-top: 1px solid var(--line); }
+  .cost-row.total .amt { color: var(--accent); font-size: 1.05rem; }
+  .cost-row .lbl { color: var(--ink-2); }
+  .cost-row.total .lbl { color: var(--ink); }
+
+  /* plate rows */
+  .plate { background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+           box-shadow: var(--shadow); overflow: hidden; }
+  .row { display: grid; grid-template-columns: 178px minmax(0,1fr); gap: 18px;
+         padding: 14px 20px; border-top: 1px solid var(--line-soft); align-items: start; }
+  .row:first-child { border-top: none; }
+  @media (max-width: 620px) { .row { grid-template-columns: minmax(0,1fr); gap: 6px; } }
+  .row .lb { font-size: 13px; font-weight: 500; color: var(--ink); overflow-wrap: anywhere; }
+  .row .lb.ar { font-family: "IBM Plex Sans Arabic", sans-serif; direction: rtl; font-size: 14px; }
+  .row p { font-size: 14px; margin: 0; }
+
+  /* steps */
+  .steps { display: flex; flex-direction: column; gap: 2px; counter-reset: s; }
+  .step { background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+          padding: 18px 58px 18px 20px; position: relative; box-shadow: var(--shadow); }
+  .step::before { counter-increment: s; content: counter(s);
+                  position: absolute; inset-inline-start: 20px; top: 18px;
+                  font-family: "IBM Plex Mono", monospace; font-size: 12px; font-weight: 600;
+                  color: var(--accent); background: var(--accent-soft);
+                  width: 24px; height: 24px; border-radius: 50%;
+                  display: grid; place-items: center; }
+  .step h3 { margin: 0 0 6px; font-size: 1rem; }
+  .step p { font-size: 14.5px; }
+
+  /* callouts */
+  .callout { background: var(--surface); border: 1px solid var(--line);
+             border-inline-start: 3px solid var(--accent); border-radius: 6px;
+             padding: 18px 20px; margin: 16px 0; }
+  .callout.warn  { border-inline-start-color: var(--warn); }
+  .callout.alert { border-inline-start-color: var(--alert); }
+  .callout h3 { margin: 0 0 6px; font-size: 1rem;
+                font-family: "Noto Kufi Arabic", "IBM Plex Sans Arabic", sans-serif;
+                font-weight: 500; line-height: 1.65; }
+  .callout p { font-size: 14.5px; }
+  .callout ul { margin: 8px 0 0; padding-inline-start: 20px;
+                display: flex; flex-direction: column; gap: 6px; }
+  .callout li { font-size: 14.5px; color: var(--ink-2); max-width: 66ch; }
+
+  .lede { font-size: 1rem; color: var(--ink-2); max-width: 66ch; margin: 0 0 18px; }
+
+  footer { margin-top: 64px; padding-top: 22px; border-top: 1px solid var(--line);
+           display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between;
+           font-size: 12.5px; color: var(--muted); }
+
+  a { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+<style>
+  header.site {
+    max-width: 1180px; margin: 0 auto; padding: 18px 24px 0;
+    display: flex; gap: 1.25rem; align-items: baseline;
+    font-size: .875rem; flex-wrap: wrap;
+  }
+  header.site a { color: var(--ink-2); text-decoration: none; }
+  header.site a:hover, header.site a:focus-visible { color: var(--accent); text-decoration: underline; }
+  header.site a[aria-current="page"] { color: var(--accent); font-weight: 600; }
+  header.site .lang { margin-inline-start: auto; font-weight: 600; }
+  header.site + .wrap .masthead { padding-top: 30px; }
+</style>
+</head>
+<body>
+  <header class="site">
+    <a href="index.html">الرئيسية</a>
+    <a href="calibration.html">سجل المعايرة</a>
+    <a href="disclaimer.html">إخلاء المسؤولية</a>
+    <a href="docs.html">التوثيق</a>
+    <a class="lang" href="running-en.html" hreflang="en">English</a>
+  </header>
+
+
+<div class="wrap" dir="rtl" lang="ar">
+
+  <header class="masthead">
+    <span class="eyebrow">Metric Risk · QuantMarketEngine</span>
+    <h1>تشغيل المنصة</h1>
+    <p class="standfirst">
+      ملف الـ README بيغطّي المحرّك وتقاريره. وهاي الصفحة بتغطّي الباقي — لوحة المشتركين، الـ API
+      العام، قاعدة البيانات اللي بيتشاركوها، وشو بدّه الأمر عشان تحطّ التلاتة على خادم.
+    </p>
+    <p class="standfirst">
+      <strong>كل إشي تحت انشتغل واتفحّص على هاد المستودع</strong>، مش مكتوب من الذاكرة.
+    </p>
+    <div class="headline-stat">
+      <span class="fig">$6–8</span>
+      <span class="cap">بالشهر لتشغيل المنصة كلها، وأغلبها خادم افتراضي صغير</span>
+    </div>
+  </header>
+
+  <div class="columns">
+
+    <nav class="rail" aria-label="أقسام الصفحة">
+      <span class="rail-label">المحتويات</span>
+      <a href="#hosts">المستضيفات الأربعة</a>
+      <a href="#prereq">المتطلّبات</a>
+      <a href="#cost">الحسابات والتكلفة</a>
+      <a href="#instruments">اختيار الأدوات</a>
+      <a href="#provider">تبديل مزوّد البيانات</a>
+      <a href="#database">قاعدة البيانات المشتركة</a>
+      <a href="#local">التشغيل محلياً</a>
+      <a href="#migrations">الترحيلات والزرع</a>
+      <a href="#deploy">النشر</a>
+      <a href="#incomplete">الناقص بصراحة</a>
+      <a href="#next">اقرأ بعدها</a>
+    </nav>
+
+    <main>
+
+      <section id="hosts">
+        <h2>المستضيفات الأربعة</h2>
+        <p class="lede">البوت بيشتغل لحاله. واللوحة والـ API هم اللي بيلمسهم العميل.</p>
+
+        <div class="hosts">
+          <div class="host-card">
+            <span class="nm">TelegramBot</span>
+            <span class="port none">console</span>
+            <p>المحرّك. بيولّد التقارير، بيقيّم القراءات السابقة، بينشر على تيليجرام وعلى الموقع
+            الثابت. وهو كمان مُشغّل الأوامر المفردة.</p>
+          </div>
+          <div class="host-card">
+            <span class="nm">Dashboard</span>
+            <span class="port">port 5199</span>
+            <p>تطبيق Blazor: صفحة الهبوط، الأسعار، التوثيق، التسجيل، ومنطقة المشترك — التقارير،
+            مفاتيح الـ API، التنبيهات، الفوترة.</p>
+          </div>
+          <div class="host-card">
+            <span class="nm">API</span>
+            <span class="port">port 5006</span>
+            <p>واجهة REST العامة اللي بيناديها المشتركون بـ <code>X-Api-Key</code>.</p>
+          </div>
+          <div class="host-card">
+            <span class="nm">Migrator</span>
+            <span class="port none">console</span>
+            <p>بيطبّق الترحيلات وبيزرع كتالوج الخطط، وبعدين بيخرج. للنشرات اللي بتشغّل أكتر من عقدة.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="prereq">
+        <h2>المتطلّبات</h2>
+        <p><strong>‏.NET 10 SDK. وبس</strong> — قاعدة البيانات SQLite، بتنعمل عند أول تشغيل.</p>
+        <p>واتنين بيانات اعتماد إنت اللي بتوفّرهم، وكلاهما فاضي في <code>appsettings.json</code>
+        عن قصد:</p>
+
+        <div class="plate">
+          <div class="row">
+            <span class="lb">AlphaVantage:ApiKey</span>
+            <p>مزوّد بيانات السوق. <strong>وبدون مفتاح، المحرّك بيرجع لمزوّد الـ CSV المرفق</strong>،
+            فبيشتغل وبينقاس بلا إنترنت.</p>
+          </div>
+          <div class="row">
+            <span class="lb">Telegram:BotToken</span>
+            <p>بس إذا بدّك قناة تيليجرام. وكل إشي تاني بيشتغل بدونه.</p>
+          </div>
+        </div>
+
+        <p style="margin-top:14px">خلّيهم برّا المستودع. في التطوير:</p>
+<pre class="term"><span class="c"># from QuantMarketEngine/src/QuantMarketEngine.TelegramBot</span>
+dotnet user-secrets set <span class="k">"AlphaVantage:ApiKey"</span> "YOUR_KEY"
+dotnet user-secrets set <span class="k">"Telegram:BotToken"</span>   "YOUR_TOKEN"</pre>
+        <p>وفي الإنتاج، متغيّرات بيئة: <code>AlphaVantage__ApiKey</code> و
+        <code>Telegram__BotToken</code>.</p>
+      </section>
+
+      <section id="cost">
+        <h2>شو لازم تسجّل فيه، وقدّيش بيكلّف</h2>
+        <p class="lede">حسابين خارجيين. <strong>وكلاهما إله باقة مجانية بيسع فيها هاد المحرّك</strong>،
+        وبتقدر تقيّم المنصة كلها بدون ولا واحد فيهم.</p>
+
+        <h3>بيانات السوق — مطلوبة للأسعار الحيّة</h3>
+        <div class="plate">
+          <div class="row"><span class="lb ar">المزوّد</span><p>AlphaVantage افتراضياً. تسجيل مجاني، بلا بطاقة.</p></div>
+          <div class="row"><span class="lb ar">التكلفة الفعلية</span><p><strong>4 نداءات لكل رمز لكل تقرير.</strong> مقيسة مش مقدَّرة — البوت بيطبع عدّاد نداءاته آخر كل تشغيلة.</p></div>
+          <div class="row"><span class="lb ar">الحصة المجانية</span><p><strong>25 نداء باليوم</strong>، وهي اللي بيقيس عليها عدّاد المحرّك.</p></div>
+          <div class="row"><span class="lb ar">شو بيسع</span><p>تلات رموز باليوم ≈ 12 نداء — مرتاحة جوّاها. والمستودع بيتشحن مضبوطاً على تلاتة: يورو/دولار، ذهب، فضة.</p></div>
+          <div class="row"><span class="lb ar">إمتى بتدفع</span><p>رموز أكتر، أو أطر زمنية داخل اليوم. وباقاتهم المدفوعة بتبلّش حوالي 50 دولار بالشهر.</p></div>
+        </div>
+
+        <div class="callout warn">
+          <h3>تأكّد من شروطهم الحالية قبل ما تعتمد على هاد</h3>
+          <p>رقم الـ 25 باليوم هو اللي بيقيس عليه المحرّك، وكان صحيحاً وقت الكتابة.
+          <strong>وتسعير مزوّد خارجي قراره إلهم مش إلنا.</strong> وإنت مش مربوط فيهم أصلاً — تبديل
+          المزوّد شغلة صغيرة، موصوفة تحت.</p>
+        </div>
+
+        <h3>تيليجرام — اختياري</h3>
+        <p>بس إذا بدّك قناة النشر. التوكن مجاني من <code>@BotFather</code> جوّا تيليجرام نفسه، بدقيقة
+        تقريباً. <strong>وبدونه المحرّك بيشتغل طبيعي تماماً</strong> — بيكتب تقاريره على القرص وعلى
+        الموقع الثابت، وبس ما بينشر على تيليجرام.</p>
+
+        <h3>التشغيل بلا أي حساب إطلاقاً</h3>
+        <p><code>CsvFileProvider</code> بيجي مع المستودع ومعه الشموع التاريخية، يعني
+        <strong>المحرّك بيشتغل وبيطلّع تقارير وبينقاس من الطرف للطرف بلا تسجيل بأي مكان.</strong>
+        وهيك بالضبط انعملت كل دراسات المعايرة بهاد المشروع — وكل وحدة فيهم بتقول «صفر نداءات
+        للمزوّد». استخدمه عشان تقيّم المحرّك قبل ما تسجّل بأي إشي.</p>
+
+        <h3>الفاتورة الشهرية كاملة</h3>
+        <div class="costs">
+          <div class="cost-row"><span class="lbl">بيانات السوق — الباقة المجانية بتلات رموز</span><span class="amt">$0</span></div>
+          <div class="cost-row"><span class="lbl">تيليجرام</span><span class="amt">$0</span></div>
+          <div class="cost-row"><span class="lbl">خادم افتراضي صغير</span><span class="amt">$5–7</span></div>
+          <div class="cost-row"><span class="lbl">نطاق — حوالي 12–15 دولار بالسنة</span><span class="amt">~$1</span></div>
+          <div class="cost-row"><span class="lbl">شهادة TLS — من Let's Encrypt</span><span class="amt">$0</span></div>
+          <div class="cost-row"><span class="lbl">قاعدة البيانات — SQLite على نفس الخادم</span><span class="amt">$0</span></div>
+          <div class="cost-row total"><span class="lbl">المجموع</span><span class="amt">$6–8 / شهر</span></div>
+        </div>
+        <p style="margin-top:14px">و Stripe ما إله رسم شهري — بياخد نسبة على كل معاملة. والبريد
+        الصادر إله باقات مجانية بمئات الرسائل يومياً، وهاد أكتر بكتير من حاجة استعادة كلمات المرور.</p>
+      </section>
+
+      <section id="instruments">
+        <h2>اختيار الأدوات اللي بتغطّيها</h2>
+        <p class="lede"><strong>اليورو/دولار والذهب والفضة إعداد، مش تصميم.</strong> ما في إشي
+        بالتحليل مكتوب لأداة معيّنة — الطبقات بتستقبل شموع ورمزاً، وما بتسأل أبداً شو معنى الرمز.</p>
+
+        <h3>وين بتعيش القائمة</h3>
+        <p><strong>في قاعدة البيانات، بتنُدار من واجهة الويب</strong> — <code>/admin/symbols</code>
+        باللوحة. ضيف أداة، وقّف وحدة، رجّع وحدة؛ والتغيير بيسري بالتشغيلة المجدولة الجاي، بلا إعادة
+        تشغيل وبلا ملف تعدّله.</p>
+        <p>ومين بيقدر يوصل هديك الصفحة محدَّد بـ <code>Admin:Emails</code> في إعدادات اللوحة.
+        <strong>خلّيه فاضي وما حدا بيوصل، وإنت منهم.</strong> وهاد مقصود: القائمة الفاضية لو
+        انقرأت «بلا قيود» كانت رح تفتح الصفحة لكل مشترك على نشرة نسيت الإعداد ببساطة.</p>
+        <p>و<code>Telegram:ActiveSymbols</code> صار <strong>بذرة وبس</strong>. عند أول تشغيلة على
+        قاعدة فاضية بيصير محتواه هو الصفوف الأولى؛ وبعدها الجدول هو المرجع والإعداد ما بينسأل عنه
+        تاني — يعني إطفاء أداة من المتصفّح ما بيرجّعه تشغيل الخادم الجاي.</p>
+        <p>والتشغيلة المفردة بتقدر تستهدف أداة وحدة بغضّ النظر عن القائمة:</p>
+<pre class="term">dotnet run -- report GBPUSD 1D</pre>
+        <p><strong>وتذكّر التكلفة:</strong> 4 نداءات لكل رمز لكل تقرير. على حصة 25 باليوم، تلات
+        رموز مريحة وستّة هي السقف.</p>
+
+        <h3>إضافة أداة بالطريقة الصح</h3>
+        <div class="steps">
+          <div class="step">
+            <h3>تأكّد إن مزوّدك بيحملها، وبأي رمز</h3>
+            <p>رمز المزوّد ممكن ما يكون <code>GBPUSD</code>. ترجم جوّا المزوّد؛ والمحرّك بيحتفظ
+            بتسمياته هو.</p>
+          </div>
+          <div class="step">
+            <h3>ضيفها من <code>/admin/symbols</code></h3>
+            <p>الرمز، واسم العرض اختيارياً. <strong>وإعادة إضافة أداة موقوفة بترجّعها</strong> —
+            بشموعها وتقاريرها وسجل معايرتها.</p>
+          </div>
+          <div class="step">
+            <h3>ازرع تاريخها، مرة وحدة</h3>
+            <p>اضغط <strong>Fetch history</strong> على صفّها — البوت بياخد الطلب خلال ثواني والنتيجة
+            بتظهر تحت <em>Recent work</em>، ومعها عدد النداءات اللي صرفها.</p>
+            <p>وما يقابلها من الطرفية، لكل الأدوات النشطة دفعة وحدة:</p>
+<pre class="term">dotnet run -- seedhistory   <span class="c"># full daily history, every active symbol</span>
+dotnet run -- backfill      <span class="c"># walk-forward scoring — fills the calibration cards</span></pre>
+            <p>و<code>backfill</code> لسّه من سطر الأوامر بس: هو كنس طويل على التاريخ كله، مش طلب
+            الصفحة لازم تنتظره. وبدون الاتنين، الأداة بتضل تطلّع تقارير — بس بلا سجل أداء،
+            <strong>وبتقول ذلك</strong>.</p>
+          </div>
+          <div class="step">
+            <h3>أعطيها عُرف تسعير إذا بتحتاج</h3>
+            <p><code>PriceFormatter</code> بيقرّر عدد الخانات العشرية من الرمز: أي إشي فيه
+            <code>JPY</code> ← 3، و<code>XAU</code>/<code>GOLD</code> ← 2، و
+            <code>XAG</code>/<code>SILVER</code> ← 3، <strong>وكل إشي غيرهم ← 5</strong>. وهاد
+            الافتراضي صح لعملات الفوركس الرئيسية وغلط لمؤشر أو زوج عملة رقمية. وهو صنف صغير بدالة
+            وحدة، وإضافة قاعدة تغيير بسطرين.</p>
+          </div>
+        </div>
+
+        <div class="callout">
+          <h3>زر «Report now» ما بينشر</h3>
+          <p>بيولّد قراءة وبيحطّها بقائمة المراجعة، بنفس المكان اللي بتروح عليه القراءة المجدولة.
+          وما بيوصل إشي لتيليجرام ولا للموقع لحد ما يوافق إنسان.</p>
+        </div>
+
+        <div class="callout warn">
+          <h3>وهاي الثغرة مسجّلة</h3>
+          <p>الذهب طُبع مرة بخمس خانات عشرية — <code>4021.26444</code> — لأن المنسّق كان بيعرف
+          الـ JPY وبس. <strong>والسعر اللي المكتب ما بيقدر يقراه بيكلّف مصداقية أكتر مما بيبيّن.</strong></p>
+        </div>
+
+        <h3>شو اللي ما بيكون عند أداة جديدة في يومها الأول</h3>
+        <p><strong>سجلّ معايرة.</strong> والمحرّك ما بيدّعي سجلاً ما اكتسبه — صفحة المعايرة بتطبع
+        «العيّنة صغيرة» لحد ما يصير في <strong>20 نتيجة مقيَّمة</strong> لهاد الرمز، ورقم الثقة
+        بيرجع لقراءة مطلقة بدل رتبة داخل تاريخ لسّه ما عنده إياه. و<code>backfill</code> بيقصّر
+        هاي المدة بتقييم الماضي بتمريرة وحدة؛ وبعدها السجل بينراكم يومياً.</p>
+
+        <div class="callout alert">
+          <h3>حدّ واحد حقيقي — وهو عن البيانات، مش عن المحرّك</h3>
+          <p><strong>الذهب والفضة شغّالين على تغذية بتعطي سعراً واحداً باليوم بلا مدى داخل
+          اليوم.</strong> والنتيجة بنيوية وبتستاهل تفهمها قبل ما تضيف أدوات مشابهة:</p>
+          <ul>
+            <li>جودة السوق بتستقر على <strong>FAIR</strong> وبتضل هناك.</li>
+            <li>عدة قراءات <strong>بتنحجب عن قصد</strong> بدل ما تنقدَّر من مدى مش موجود.</li>
+            <li>معايرة الفضة لسّه بتقرأ «العيّنة صغيرة»، لأن النتائج اللي بتقدر تقيّمها أقل.</li>
+          </ul>
+          <p style="margin-top:10px"><strong>وتاريخ أكتر ما بيصلّح هاد</strong> —
+          <code>seedhistory</code> ما رح يحرّكه. هاي شكل البيانات نفسها. وحلّها بدّه مزوّداً بيعطي
+          حركة داخل اليوم، وهاي باقة مدفوعة.</p>
+          <p>فلما تضيف أداة، اسأل شو بتعطيك تغذيتها فعلاً. الشمعة اليومية الكاملة بتعطيك كل اللي
+          عند اليورو/دولار. والسعر الإغلاقي الوحيد بيعطيك تقريراً شغّالاً بس أهدأ —
+          <strong>والمحرّك رح يقول للقارئ أي وحدة منهم بدل ما يغطّي عليها</strong>.</p>
+        </div>
+      </section>
+
+      <section id="provider">
+        <h2>استخدام مزوّد بيانات مختلف</h2>
+        <p class="lede"><strong>ما في إشي بيربط هاد المحرّك بـ AlphaVantage.</strong> طبقات التحليل
+        ما بتشوف مزوّداً أبداً — بتطلب شموعاً عبر واجهة، والمزوّد بيقعد وراها. وفي تطبيقين موجودين
+        أصلاً، فالنمط مش نظرياً: <code>AlphaVantageProvider</code> عبر HTTP و
+        <code>CsvFileProvider</code> من ملفات على القرص.</p>
+
+        <h3>شو لازم يوفّره المزوّد</h3>
+        <p>واجهتين، في <code>Domain/Interfaces</code>، صغيرتين عن قصد:</p>
+<pre class="term">public interface <span class="k">IMarketDataProvider</span>
+{
+    Task&lt;IReadOnlyList&lt;MarketSnapshot&gt;&gt; FetchAsync(
+        string symbol, string timeframe, CancellationToken ct = default);
+}
+
+public interface <span class="k">IHistoricalMarketDataProvider</span>
+{
+    Task&lt;IReadOnlyList&lt;MarketSnapshot&gt;&gt; FetchHistoryAsync(
+        string symbol, string timeframe, CancellationToken ct = default);
+}</pre>
+        <p>وهم منفصلين عن قصد: الأولى بتجيب بس النافذة الحديثة اللي بيحتاجها التحليل الحيّ، والتانية
+        بترجّع أكبر تاريخ بيعطيه المصدر للاختبار الرجعي. <strong>وممكن صنف واحد يطبّق
+        الاتنين</strong>، وهاد اللي بيعمله المزوّدان الموجودان.</p>
+
+        <p>و<code>MarketSnapshot</code> هو اللي بتتوقّعه — ما فيه إشي بشكل مزوّد معيّن:</p>
+        <div class="plate">
+          <div class="row"><span class="lb">Symbol · Timeframe · Timestamp</span><p>أي شمعة هاي.</p></div>
+          <div class="row"><span class="lb">Open · High · Low · Close</span><p>الفتح والأعلى والأدنى والإغلاق.</p></div>
+          <div class="row"><span class="lb">Volume</span><p>بيقبل الفراغ — تغذيات الفوركس غالباً بلا حجم، والمحرّك ما بيشترطه.</p></div>
+          <div class="row"><span class="lb">DataQualityScore</span><p>تقييمك إنت للشمعة من 0 لـ 100.</p></div>
+        </div>
+
+        <h3>التلات خطوات</h3>
+        <div class="steps">
+          <div class="step">
+            <h3>اكتب الصنف</h3>
+            <p>حطّه في <code>Infrastructure/DataProviders</code> جنب التنين التانيين، ورجّع اللقطات
+            مرتّبة من الأقدم للأحدث.</p>
+          </div>
+          <div class="step">
+            <h3>سجّله</h3>
+            <p>في <code>ServiceCollectionExtensions.cs</code>، بنفس المكان اللي انسجّل فيه المزوّدان
+            الموجودان، أشّر الواجهتين على صنفك:</p>
+<pre class="term">services.AddScoped&lt;IMarketDataProvider, <span class="k">MyVendorProvider</span>&gt;();
+services.AddScoped&lt;IHistoricalMarketDataProvider, <span class="k">MyVendorProvider</span>&gt;();</pre>
+          </div>
+          <div class="step">
+            <h3>اربط الرموز</h3>
+            <p>رمز مزوّدك لليورو/دولار ممكن ما يكون <code>EURUSD</code>. ترجم جوّا مزوّدك — وباقي
+            المحرّك بيضل يستخدم تسمياته هو.</p>
+          </div>
+        </div>
+        <p style="margin-top:16px"><strong>وهاد كل التغيير.</strong> ولا طبقة تحليل، ولا مُصيِّر،
+        ولا تقرير، ولا اختبار بيلمس اسم مزوّد.</p>
+
+        <div class="callout">
+          <h3>فحص السعر ما قبل النشر مش مزوّدك عن قصد</h3>
+          <p>قبل ما ينُشر أي تقرير، البوابة بتقارن إغلاق الجلسة بـ <strong>السعر المرجعي للبنك
+          المركزي الأوروبي</strong> — مجاني، بلا مفتاح، ومسجَّل خارج فرع المزوّد عن قصد،
+          <strong>عشان التغذية ما تقدر تشهد لحالها</strong>. خلّيه زي ما هو: لو بدّلت مزوّدك
+          الرئيسي، هاد الرأي التاني بيضل شغّال وبيضل مستقلاً.</p>
+        </div>
+
+        <div class="callout warn">
+          <h3>في معالج تحديد معدّل مربوط بـ AlphaVantage تحديداً</h3>
+          <p>إذا مزوّدك إله حدّ مختلف، اكتب ما يقابله — أو احذفه إذا ما عندهم حدّ. والمحرّك بيعدّ
+          نداءاته بكل الأحوال، وبيطبع المجموع آخر كل تشغيلة.</p>
+        </div>
+
+        <h3>إذا عندك بياناتك أنت</h3>
+        <p><code>CsvFileProvider</code> بيقرأ OHLC من ملفات على القرص أصلاً. فإذا عندك تاريخ بصيغة
+        CSV — من تصدير وسيط، أو من منصة، أو من مزوّد بتدفعله أصلاً — <strong>يمكن ما بتحتاج صنفاً
+        جديداً أبداً</strong>: أشّر مجلد بيانات الـ CSV على ملفاتك والمحرّك بيشتغل عليها. وهيك
+        بالضبط انعملت كل دراسة معايرة بهاد المشروع.</p>
+      </section>
+
+      <section id="database">
+        <h2>الإشي الوحيد اللي بيوقّع الناس</h2>
+        <div class="callout alert">
+          <h3>المستضيفات التلاتة لازم تأشّر على نفس ملف SQLite</h3>
+          <p><strong>وهم ما بيعملوا هيك افتراضياً.</strong> كل واحد فيهم رح يعمل
+          <code>quant.db</code> خاص فيه جنبه، وبتطلع معك لوحة التسجيل فيها بيشتغل، وما بتظهر ولا
+          تقرير أبداً، <strong>وما في إشي بالسجلات بيبيّن غلط</strong>.</p>
+        </div>
+
+        <p>وهاد المستودع رابطهم أصلاً بمسار نسبي:</p>
+        <div class="plate">
+          <div class="row"><span class="lb">TelegramBot</span><p><code>Data Source=quant.db</code></p></div>
+          <div class="row"><span class="lb">API</span><p><code>Data Source=../QuantMarketEngine.TelegramBot/quant.db</code></p></div>
+          <div class="row"><span class="lb">Dashboard</span><p><code>Data Source=../QuantMarketEngine.TelegramBot/quant.db</code></p></div>
+        </div>
+
+        <p style="margin-top:14px">وهاد بيمشي لما التلاتة يشتغلوا من مجلداتهم على جهاز واحد، وهاد
+        هو ترتيب التطوير. <strong>وعلى الخادم، حطّ التلاتة على مسار مطلق واحد</strong> — وحدة تخزين
+        بتتشاركها الحاويات، أو مسار على الجهاز:</p>
+<pre class="term">ConnectionStrings__Quant=Data Source=/data/quant.db</pre>
+        <p>وإذا انتقلت لـ PostgreSQL، مزوّد Npgsql مرجَّع أصلاً.</p>
+      </section>
+
+      <section id="local">
+        <h2>التشغيل محلياً</h2>
+        <p class="lede">تلات طرفيات، أو شغّل اللي بتحتاجه بس.</p>
+
+        <p><strong>المحرّك</strong> — بيولّد تقرير اليوم لكل رمز نشط:</p>
+<pre class="term"><span class="c"># from QuantMarketEngine/src/QuantMarketEngine.TelegramBot</span>
+dotnet run -- report</pre>
+
+        <p><strong>اللوحة</strong> — الموقع اللي بيسجّل فيه المشترك:</p>
+<pre class="term">dotnet run --project QuantMarketEngine/src/QuantMarketEngine.Dashboard --urls http://localhost:5199</pre>
+
+        <p><strong>الـ API</strong> — اللي بيناديه <code>X-Api-Key</code>:</p>
+<pre class="term">dotnet run --project QuantMarketEngine/src/QuantMarketEngine.API --urls http://localhost:5006</pre>
+
+        <p>افتح <code>http://localhost:5199</code>، اعمل حساباً، وبتنزل على خطة Observer المجانية.</p>
+      </section>
+
+      <section id="migrations">
+        <h2>الترحيلات والزرع</h2>
+        <p><strong>على عقدة وحدة ما بتعمل إشي.</strong> <code>Database:MigrateOnStartup</code>
+        افتراضيه <code>true</code>، فاللوحة والـ API بيرحّلوا وبيزرعوا عند الإقلاع.</p>
+        <p><strong>وعلى أكتر من عقدة، طفّيه</strong> — وإلا كل نسخة بتتسابق على <code>Migrate()</code>
+        على نفس القاعدة وقت البدء. حطّ <code>Database__MigrateOnStartup=false</code> على العقد
+        وشغّل الـ migrator مرة كخطوة نشر:</p>
+<pre class="term">dotnet run --project QuantMarketEngine/src/QuantMarketEngine.Migrator</pre>
+        <p>وهو متكرّر بأمان وبتقدر تعيده.</p>
+        <p>والزرع بيعمل التلات خطط اللي بتُعرض منها صفحة الأسعار — <strong>Observer بـ $0،
+        وAnalyst بـ $49 شهرياً، وDesk بـ $79 شهرياً</strong> — مع استحقاقاتها. غيّر سعراً في
+        <code>SaasPlanSeeder</code> وبيتوفّق عند الإقلاع الجاي؛ <strong>وصفحة الأسعار وفحوص
+        الاستحقاق بيقرأوا نفس الكتالوج، فما بيقدروا يختلفوا.</strong></p>
+      </section>
+
+      <section id="deploy">
+        <h2>النشر</h2>
+        <p class="lede">أربع ملفات Dockerfile موجودة بالمستودع.</p>
+        <div class="plate">
+          <div class="row"><span class="lb">Dockerfile.bot</span><p>المحرّك. بلا فحص صحة.</p></div>
+          <div class="row"><span class="lb">Dockerfile.dashboard</span><p>تطبيق الويب. فحص الصحة <code>:8081/health/live</code></p></div>
+          <div class="row"><span class="lb">Dockerfile.api</span><p>الـ API العام. فحص الصحة <code>:8080/health/live</code></p></div>
+          <div class="row"><span class="lb">Dockerfile.migrator</span><p>الترحيلات والزرع. بلا فحص صحة.</p></div>
+        </div>
+        <p style="margin-top:14px">ومستضيفا الويب بيعرضوا <code>/health/live</code> (هل العملية
+        شغّالة) و<code>/health/ready</code> (هل بتوصل لقاعدة البيانات) — أشّر فحوص المنسّق عليهم
+        بالترتيب.</p>
+        <p>وأبسط نشر هو: شغّل الـ migrator مرة، بعدين اللوحة والـ API والبوت، التلاتة و
+        <code>ConnectionStrings__Quant</code> مؤشّر على وحدة تخزين مشتركة وحدة.</p>
+        <div class="callout warn">
+          <h3>حطّ TLS قدّامه</h3>
+          <p>ولا واحد من مستضيفَي الويب بينهي الـ TLS بنفسه. استخدم وكيلاً عكسياً.</p>
+        </div>
+      </section>
+
+      <section id="incomplete">
+        <h2>الناقص — بصراحة</h2>
+
+        <div class="callout">
+          <h3>ما في إشي ناقص من مسار الفوترة — بس ما مرّ عليه بطاقة حقيقية</h3>
+          <p>Checkout المستضاف عند Stripe، وبوابة الفوترة المستضافة، وwebhook بتحقق توقيع بيغطّي
+          التفعيل وتغيّر الحالة والإلغاء — كلهم مبنيين، خلف واجهة مزوّد بتسمح باستبدال بوابة دفع
+          تانية. <strong>وبيانات البطاقة ما بتمرّ على المنصة إطلاقاً.</strong></p>
+          <p>وبيشتغل لحظة ما تنحط <code>Stripe__SecretKey</code> و<code>Stripe__WebhookSecret</code>
+          ومعرّفات الأسعار. ولحد ذلك، اللوحة بتكتشف ذلك وبتحوّل الترقيات لتفعيل يدوي، وبتقول ذلك
+          للمستخدم بدل ما تفشل عند خطوة الدفع. <strong>واللي بترثه تكامل مبني بلا تاريخ معاملات،
+          مش تكامل غير مبني.</strong></p>
+          <p>والخطط وفرضها منفصلين عن هاد ومُختبَرين بالكامل: حساب Observer فعلاً بينخدم تقريراً
+          مؤجَّلاً، ونقطة التقرير المؤسسي فعلاً بترد
+          <code>403 Missing entitlement: reports.institutional</code>.</p>
+        </div>
+
+        <div class="callout warn">
+          <h3>البريد الصادر</h3>
+          <p><code>IEmailSender</code> إله تطبيق فارغ للتطوير وتطبيق SMTP بيتفعّل لما ينحط
+          <code>Email:SmtpHost</code>. <strong>ولحد ما تحطّه، رسائل استعادة كلمة المرور بتصير أسطر
+          في السجل</strong> — يعني مسار الاستعادة ما بيعمل إشي بصمت.</p>
+        </div>
+      </section>
+
+      <section id="next">
+        <h2>اقرأ بعدها</h2>
+        <div class="plate">
+          <div class="row"><span class="lb">COMMANDS.md</span><p>كل أوامر المحرّك.</p></div>
+          <div class="row"><span class="lb">configuration.md</span><p>كل مفتاح إعدادات بيقراه الكود.</p></div>
+          <div class="row"><span class="lb">web-publishing-setup.md</span><p>ناشر الموقع الثابت.</p></div>
+          <div class="row"><span class="lb">system-explained/numbers/</span><p>ليش كل ثابت في المحرّك إله القيمة اللي إله.</p></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer>
+    <span>Metric Risk · QuantMarketEngine · تشغيل المنصة</span>
+    <span>متحقَّق منه على المستودع · 2026-08-31</span>
+  </footer>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What You Are Inheriting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap">
+
+<style>
+  :root {
+    --ground:#EAEEF0; --surface:#FFFFFF; --surface-2:#F4F7F8;
+    --line:#D2DCDF; --line-soft:#E3EAEC;
+    --ink:#12202A; --ink-2:#38505D; --muted:#61757F;
+    --accent:#0F6F5C; --accent-soft:#E2F0EC;
+    --warn:#8C5A0C; --warn-soft:#F7EEDD;
+    --alert:#98303C; --alert-soft:#F8E7E8;
+    --code-bg:#EDF2F3; --term-bg:#10202A; --term-ink:#C9DBE1;
+    --shadow:0 1px 2px rgba(18,32,42,.05), 0 8px 24px -18px rgba(18,32,42,.30);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#0C151B; --surface:#131F27; --surface-2:#182630;
+      --line:#2A3B46; --line-soft:#1F2E38;
+      --ink:#DCE6EA; --ink-2:#AEC1C9; --muted:#8399A3;
+      --accent:#4DBFA5; --accent-soft:#12302B;
+      --warn:#D9A65A; --warn-soft:#322612;
+      --alert:#E08A94; --alert-soft:#351A1E;
+      --code-bg:#1B2A34; --term-bg:#08121A; --term-ink:#B6CCD4;
+      --shadow:0 1px 2px rgba(0,0,0,.30), 0 8px 24px -18px rgba(0,0,0,.70);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#0C151B; --surface:#131F27; --surface-2:#182630;
+    --line:#2A3B46; --line-soft:#1F2E38;
+    --ink:#DCE6EA; --ink-2:#AEC1C9; --muted:#8399A3;
+    --accent:#4DBFA5; --accent-soft:#12302B;
+    --warn:#D9A65A; --warn-soft:#322612;
+    --alert:#E08A94; --alert-soft:#351A1E;
+    --code-bg:#1B2A34; --term-bg:#08121A; --term-ink:#B6CCD4;
+    --shadow:0 1px 2px rgba(0,0,0,.30), 0 8px 24px -18px rgba(0,0,0,.70);
+  }
+
+  * { box-sizing: border-box; }
+  body { background: var(--ground); color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+    font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px 96px; }
+
+  .masthead { padding: 56px 0 34px; border-bottom: 1px solid var(--line);
+              display: flex; flex-direction: column; gap: 18px; }
+  .eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 11.5px; font-weight: 500;
+             letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+             align-self: flex-start; }
+  h1 { font-family: "IBM Plex Serif", Georgia, serif; font-weight: 600;
+       font-size: clamp(2rem, 1.4rem + 2.4vw, 3.1rem); line-height: 1.1;
+       letter-spacing: -.02em; text-wrap: balance; margin: 0; }
+  .standfirst { font-size: 1.075rem; color: var(--ink-2); max-width: 66ch; margin: 0; }
+  .standfirst strong { color: var(--ink); font-weight: 600; }
+
+  .columns { display: grid; grid-template-columns: 196px minmax(0,1fr);
+             gap: 56px; align-items: start; padding-top: 40px; }
+  @media (max-width: 900px) { .columns { grid-template-columns: minmax(0,1fr); gap: 28px; } }
+
+  .rail { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 3px; }
+  @media (max-width: 900px) {
+    .rail { position: static; flex-direction: row; overflow-x: auto; gap: 8px;
+            padding-bottom: 10px; border-bottom: 1px solid var(--line); } }
+  .rail-label { font-family: "IBM Plex Mono", monospace; font-size: 10.5px;
+                letter-spacing: .13em; text-transform: uppercase;
+                color: var(--muted); padding: 0 0 8px 10px; }
+  @media (max-width: 900px) { .rail-label { display: none; } }
+  .rail a { display: block; white-space: nowrap; padding: 6px 10px; border-radius: 4px;
+            border-left: 2px solid transparent; color: var(--ink-2);
+            text-decoration: none; font-size: 13.5px;
+            transition: background .14s, color .14s, border-color .14s; }
+  .rail a:hover, .rail a:focus-visible { background: var(--surface); color: var(--ink);
+            border-left-color: var(--accent); }
+  @media (max-width: 900px) {
+    .rail a { border-left: none; border-bottom: 2px solid transparent; }
+    .rail a:hover, .rail a:focus-visible { border-left: none; border-bottom-color: var(--accent); } }
+
+  main { display: flex; flex-direction: column; gap: 52px; min-width: 0; }
+  section { scroll-margin-top: 20px; }
+
+  h2 { font-family: "IBM Plex Serif", Georgia, serif; font-weight: 600;
+       font-size: 1.6rem; letter-spacing: -.012em; line-height: 1.26;
+       margin: 0 0 10px; text-wrap: balance; }
+  h3 { font-family: "IBM Plex Sans", sans-serif; font-weight: 600;
+       font-size: 1.04rem; margin: 24px 0 8px; }
+
+  p { margin: 0 0 12px; color: var(--ink-2); max-width: 70ch; }
+  p:last-child { margin-bottom: 0; }
+  strong { color: var(--ink); font-weight: 600; }
+  code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: .875em;
+         background: var(--code-bg); border-radius: 3px; padding: 1px 5px; overflow-wrap: anywhere; }
+
+  pre.term { background: var(--term-bg); color: var(--term-ink); border-radius: 6px;
+             padding: 16px 18px; margin: 12px 0; font-family: "IBM Plex Mono", monospace;
+             font-size: 12.5px; line-height: 1.75; overflow-x: auto; }
+  pre.term .c { color: #6E8F9B; }
+
+  .lede { font-size: 15px; color: var(--ink-2); max-width: 68ch; margin: 0 0 18px; }
+
+  .plate { background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+           box-shadow: var(--shadow); overflow: hidden; }
+  .row { display: grid; grid-template-columns: 190px minmax(0,1fr); gap: 18px;
+         padding: 14px 20px; border-top: 1px solid var(--line-soft); align-items: start; }
+  .row:first-child { border-top: none; }
+  @media (max-width: 620px) { .row { grid-template-columns: minmax(0,1fr); gap: 5px; } }
+  .row .lb { font-family: "IBM Plex Mono", monospace; font-size: 12.5px;
+             font-weight: 500; color: var(--ink); overflow-wrap: anywhere; }
+  .row .lb.plain { font-family: "IBM Plex Sans", sans-serif; font-size: 14px; }
+  .row p { font-size: 14px; margin: 0; }
+
+  .callout { background: var(--surface); border: 1px solid var(--line);
+             border-left: 3px solid var(--accent); border-radius: 6px;
+             padding: 18px 20px; margin: 16px 0; }
+  .callout.warn  { border-left-color: var(--warn); }
+  .callout.alert { border-left-color: var(--alert); }
+  .callout h3 { margin: 0 0 6px; font-size: 1rem; }
+  .callout p { font-size: 14.5px; }
+
+  ul.limits { margin: 0; padding: 0; list-style: none;
+              display: flex; flex-direction: column; gap: 2px; }
+  ul.limits li { background: var(--surface); border: 1px solid var(--line);
+                 border-radius: 8px; padding: 15px 18px; font-size: 14.5px;
+                 color: var(--ink-2); box-shadow: var(--shadow); }
+
+  .verify { display: flex; flex-direction: column; gap: 20px; }
+  .verify h3 { margin: 0 0 4px; }
+  .verify p { font-size: 14.5px; margin: 0; }
+
+  footer { margin-top: 64px; padding-top: 22px; border-top: 1px solid var(--line);
+           display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between;
+           font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--muted); }
+  a { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+<style>
+  header.site {
+    max-width: 1180px; margin: 0 auto; padding: 18px 24px 0;
+    display: flex; gap: 1.25rem; align-items: baseline;
+    font-size: .875rem; flex-wrap: wrap;
+  }
+  header.site a { color: var(--ink-2); text-decoration: none; }
+  header.site a:hover, header.site a:focus-visible { color: var(--accent); text-decoration: underline; }
+  header.site a[aria-current="page"] { color: var(--accent); font-weight: 600; }
+  header.site .lang { margin-inline-start: auto; font-weight: 600; }
+  header.site + .wrap .masthead { padding-top: 30px; }
+</style>
+</head>
+<body>
+  <header class="site">
+    <a href="index-en.html">Home</a>
+    <a href="calibration-en.html">Calibration record</a>
+    <a href="disclaimer-en.html">Disclaimer</a>
+    <a href="docs-en.html">Documentation</a>
+    <a class="lang" href="handover.html" hreflang="ar">العربية</a>
+  </header>
+
+
+<div class="wrap">
+
+  <header class="masthead">
+    <span class="eyebrow">Metric Risk · QuantMarketEngine</span>
+    <h1>What you are inheriting</h1>
+    <p class="standfirst">
+      The document that answers <strong>"what will I find in the first hour, and what will surprise
+      me?"</strong>
+    </p>
+    <p class="standfirst">
+      Nothing here is a defect being confessed. It is the set of facts that read as bugs to someone
+      who was not told, plus the settings that have no safe default on anyone else's machine.
+      <strong>Every claim on this page can be checked against the repository</strong> — the last
+      section says how.
+    </p>
+  </header>
+
+  <div class="columns">
+
+    <nav class="rail" aria-label="Sections">
+      <span class="rail-label">Contents</span>
+      <a href="#transfers">What transfers</a>
+      <a href="#database">The track record</a>
+      <a href="#settings">Settings you must set</a>
+      <a href="#trap">The one trap</a>
+      <a href="#behaviours">Reads like a bug</a>
+      <a href="#limits">Known limits</a>
+      <a href="#verify">Check it yourself</a>
+    </nav>
+
+    <main>
+
+      <section id="transfers">
+        <h2>What transfers</h2>
+        <div class="plate">
+          <div class="row"><span class="lb plain">The repository</span><p>Full source and its complete commit history — single author, no third-party contributors.</p></div>
+          <div class="row"><span class="lb plain">The documentation</span><p>106 markdown files, including a written justification for each of 166 engine constants.</p></div>
+          <div class="row"><span class="lb plain">The brand</span><p>Logo and icon set.</p></div>
+          <div class="row"><span class="lb plain">The Telegram channel</span><p>The live publishing channel, transferred with the sale.</p></div>
+          <div class="row"><span class="lb plain">Support</span><p>30 days of transition support.</p></div>
+        </div>
+
+        <div class="callout">
+          <h3>What does not transfer: the credentials</h3>
+          <p>A market-data API key and a Telegram bot token live in .NET user secrets, outside the
+          repository. <strong>Nothing is unbuilt behind them</strong> — they are personal accounts,
+          and you supply your own. Both are free to obtain.</p>
+        </div>
+      </section>
+
+      <section id="database">
+        <h2>The database, and what it means for the track record</h2>
+        <p class="lede"><strong>The calibration record is the product's strongest claim</strong> —
+        264 boundary breaches in 4,975 scored EUR/USD readings, 5.3% against a declared 5%, plus 220
+        in 3,922 for gold. That record lives in the database, not in the code.</p>
+
+        <p>Which means there is a choice to make, and it should be made explicitly rather than
+        assumed:</p>
+
+        <div class="plate">
+          <div class="row">
+            <span class="lb plain">Ship the database</span>
+            <p>You inherit the evidence the sale was made on — <strong>8,913 scored outcomes</strong>,
+            ready to keep accruing from day one.</p>
+          </div>
+          <div class="row">
+            <span class="lb plain">Ship it empty</span>
+            <p>The engine is identical, but the public track record starts at zero and takes months
+            to earn back. <code>backfill</code> shortens that by scoring the past in one sweep —
+            <strong>the live portion cannot be recreated</strong>.</p>
+          </div>
+        </div>
+
+        <p style="margin-top:14px">There is no wrong answer. There is only an answer that has to be
+        agreed. <strong><code>ApiKeys</code> is empty at handover</strong> — any key you mint
+        afterwards is a live machine credential of yours.</p>
+      </section>
+
+      <section id="settings">
+        <h2>Settings with no safe default on your infrastructure</h2>
+        <p class="lede">The full reference lists every configuration section the code reads. These
+        are the ones that will stop you.</p>
+
+        <div class="plate">
+          <div class="row">
+            <span class="lb">ConnectionStrings__Quant</span>
+            <p><strong>Every host must name the same file.</strong> See the next section — this is
+            the one that costs an afternoon.</p>
+          </div>
+          <div class="row">
+            <span class="lb">Admin:Emails</span>
+            <p><strong>The only way anyone becomes an operator.</strong> It ships empty, which is the
+            safe state: <code>AdminAccess</code> fails closed, and the admin page tells you it is
+            unconfigured rather than pretending your account lacks permission. Add your own address
+            and sign in.</p>
+          </div>
+          <div class="row">
+            <span class="lb">DataProtection:KeysDirectory</span>
+            <p><strong>The dashboard refuses to start in production without it</strong>, by design.
+            Unset, cookie keys are regenerated per process and every restart signs out every
+            subscriber with nothing in the logs to explain it. Point it at a persistent volume.</p>
+          </div>
+          <div class="row">
+            <span class="lb">AlphaVantage__ApiKey</span>
+            <p>Live market data. Unset, it falls back to a bundled CSV provider — fine for
+            evaluation, development-only in production terms.</p>
+          </div>
+          <div class="row">
+            <span class="lb">Saas__AdminApiKey</span>
+            <p>Until set, every ops endpoint answers 503.</p>
+          </div>
+          <div class="row">
+            <span class="lb">Stripe__SecretKey · __WebhookSecret · __PriceIds__*</span>
+            <p>Billing is built end to end and activates when all three are set. Until then the
+            dashboard detects that, routes upgrades to manual activation, <strong>and says so to the
+            user</strong>.</p>
+          </div>
+          <div class="row">
+            <span class="lb">Email__SmtpHost and the rest of Email__*</span>
+            <p>Unset, password-reset emails become log lines — the reset flow silently does nothing.</p>
+          </div>
+          <div class="row">
+            <span class="lb">Telegram__BotToken</span>
+            <p>Only if you want the Telegram channel. Everything else runs without it.</p>
+          </div>
+        </div>
+
+        <div class="callout warn">
+          <h3>Two rules about where values live</h3>
+          <p><strong>Secrets belong in environment variables or user secrets, never in
+          <code>appsettings.json</code>.</strong> Nothing sensitive is committed in this repository,
+          and it is worth keeping it that way.</p>
+          <p>And .NET loads user secrets in the <strong>Development environment only</strong> for the
+          API and dashboard hosts; the bot host reads them in any environment. On a server, set
+          everything through environment variables rather than relying on the secret store.</p>
+        </div>
+      </section>
+
+      <section id="trap">
+        <h2>The one thing that catches people</h2>
+        <div class="callout alert">
+          <h3>All three hosts must point at the same SQLite file</h3>
+          <p>They ship wired together by relative path, which works when they run from their project
+          folders on one machine. On a server, set all three to one absolute path.</p>
+          <p><strong>Getting this wrong does not error.</strong> Each host quietly attaches to its
+          own <code>quant.db</code>, sign-up works, no reports ever appear, and nothing in the logs
+          looks wrong.</p>
+        </div>
+<pre class="term">ConnectionStrings__Quant=Data Source=/data/quant.db</pre>
+      </section>
+
+      <section id="behaviours">
+        <h2>Behaviours that read as bugs if nobody tells you</h2>
+
+        <h3>"Generate report" needs two processes, not one</h3>
+        <p>The dashboard serves the page and <strong>queues</strong> the work. The process that
+        <strong>performs</strong> it is a hosted service inside the bot host. Run the dashboard alone
+        and every request is accepted, stored, and never executed.</p>
+<pre class="term"><span class="c"># both, not one</span>
+dotnet run --project QuantMarketEngine/src/QuantMarketEngine.Dashboard --urls http://localhost:5199
+dotnet run --project QuantMarketEngine/src/QuantMarketEngine.TelegramBot</pre>
+        <p><strong>And the report does not appear the instant you press the button.</strong> The page
+        returns immediately and says the instrument is being analysed. The worker picks the job up
+        and takes <strong>five to ten seconds</strong>. Then you refresh — there is no live update
+        and the page does not poll.</p>
+        <p>Someone who presses the button and stares at an unchanged table will conclude it did
+        nothing. That is the single most likely first impression to get wrong.</p>
+
+        <div class="plate">
+          <div class="row"><span class="lb plain">"Being analysed" never changes</span><p>The bot host is not running.</p></div>
+          <div class="row"><span class="lb plain">"That session is already on record"</span><p>Today's reading exists; nothing is re-run.</p></div>
+          <div class="row"><span class="lb plain">Nothing appears, no message</span><p>The pre-publication checks raised a critical issue — the reading is held, not published.</p></div>
+          <div class="row"><span class="lb plain">Older sessions but not today's</span><p>That account's plan delays same-session access. It affects the scheduled feed, not a session the account requested itself.</p></div>
+        </div>
+
+        <h3>The human approval gate — the precise claim</h3>
+        <p><strong>Every report the engine publishes on its own schedule waits for a person</strong>,
+        and a reading its own checks call unfit is never published by any route.</p>
+        <p><strong>One route is deliberately exempt:</strong> a report a <em>subscriber</em> requests
+        from the reports page is generated and published without waiting for an operator. That is an
+        owner decision rather than an oversight — a subscriber who has to wait for someone to notice
+        cannot use the button. Its pre-publication checks still apply, so a stale bar never goes out
+        as today's market.</p>
+        <p>The scheduled run, the event-driven watcher and the operator's own "Report now" all stop
+        at the gate.</p>
+
+        <h3>PDF export needs a browser on the host</h3>
+        <p>It prints through headless Chrome or Edge. <strong>The Docker images do not include
+        one</strong>, so PDF export is off in a default container until a browser is installed and
+        <code>PdfExport:BrowserPath</code> is set. The link hides itself, the endpoint answers 503,
+        and the text and JSON exports are unaffected.</p>
+        <p>In a container you may also need <code>PdfExport:NoSandbox=true</code> — Chrome's sandbox
+        needs kernel namespaces a container running as root usually does not have. It is off by
+        default because the flag makes the feature work everywhere and weakens it everywhere, which
+        is the operator's decision rather than a default to inherit.</p>
+        <p><strong>The PDF is English only.</strong> Arabic in a PDF needs bidirectional layout, and
+        the rasteriser reverses digits inside a mixed Arabic/Latin run. The Arabic report is
+        delivered as text instead.</p>
+
+        <h3>The dashboard screens are English; the content is not</h3>
+        <p>Report downloads on the platform are English by design. <strong>Arabic is still produced
+        everywhere else</strong> — on disk, on Telegram, on the public site, and from the API's
+        <code>?lang=ar</code>. Bilingual rendering from one engine is one of the product's buyer
+        profiles, not something that was removed.</p>
+
+        <h3>The security policy forbids all JavaScript</h3>
+        <p><code>script-src 'none'</code> is correct today because the dashboard is static
+        server-rendered Blazor with no JavaScript at all. <strong>Adding
+        <code>@rendermode InteractiveServer</code> to any component will break the policy</strong>
+        until it is widened. This is stated in the middleware and covered by a test, so you find out
+        at build time rather than in production.</p>
+      </section>
+
+      <section id="limits">
+        <h2>Known limits, stated plainly</h2>
+        <ul class="limits">
+          <li><strong>No customers and no revenue.</strong> This is an asset sale.</li>
+          <li><strong>The billing integration has never processed a real transaction.</strong> Stripe
+          hosted Checkout, the hosted Billing Portal and a signature-verified webhook are all
+          implemented behind a provider interface, and card data never touches the platform.
+          The gap is a live card, not the code.</li>
+          <li><strong>Silver runs on the engine but is not scored yet.</strong> Its feed carries no
+          intraday range, so several readings are deliberately withheld rather than estimated, and
+          its calibration still reads "sample too small". Gold shares the feed shape and settles at
+          FAIR market quality. <strong>This is a data limit, not an engine limit</strong> — more
+          history does not move it; a provider with intraday movement does.</li>
+          <li><strong>The probability cone is the weakest surface, and the report says so itself.</strong>
+          EUR/USD's 20-day lower edge runs 6.3% against 5%; gold's upper edges run worse. The daily
+          VaR — the headline figure — passes on both.</li>
+          <li><strong>Three sections ship disabled</strong>: fundamental analysis, the event-driven
+          trigger, and parts of the economic calendar. All three are configuration values rather than
+          missing code. The calendar currently carries 14 central-bank and US releases
+          <strong>through 17 December 2026</strong>, after which it goes quiet until the list is
+          extended.</li>
+          <li><strong>38 of 166 engine constants have no written justification.</strong> They are
+          catalogued as such, the count is published rather than hidden, and none of them reaches the
+          client-facing page. The other 128 carry their derivation or their measurement.</li>
+        </ul>
+      </section>
+
+      <section id="verify">
+        <h2>Your first hour — how to check all of this yourself</h2>
+        <p class="lede">Nothing above asks to be taken on trust. These commands run against the
+        repository you receive.</p>
+
+        <div class="verify">
+          <div>
+            <h3>The track record, read straight from the database</h3>
+<pre class="term">cd QuantMarketEngine/src/QuantMarketEngine.TelegramBot &amp;&amp; python -c "
+import sqlite3
+c=sqlite3.connect('quant.db')
+for s, in c.execute('select distinct Symbol from AnalysisOutcomes order by Symbol'):
+    t=c.execute('select count(*) from AnalysisOutcomes where Symbol=?',(s,)).fetchone()[0]
+    b=c.execute('select count(*) from AnalysisOutcomes where Symbol=? and VaRBreached=1',(s,)).fetchone()[0]
+    if t&gt;=200: print(f'{s}: {b}/{t} = {b/t*100:.1f}%')
+"</pre>
+          </div>
+
+          <div>
+            <h3>The test suite</h3>
+<pre class="term">cd QuantMarketEngine &amp;&amp; dotnet test --nologo -v q</pre>
+          </div>
+
+          <div>
+            <h3>The size of what you are buying</h3>
+            <p>Sum the totals rather than taking the last line — a batched <code>wc</code> will
+            otherwise report one batch as the whole repository.</p>
+<pre class="term">git rev-list --count HEAD &amp;&amp; git ls-files '*.cs' '*.razor' | xargs wc -l | grep -w total | awk '{s+=$1} END {print s}'</pre>
+          </div>
+
+          <div>
+            <h3>Dependency vulnerabilities</h3>
+<pre class="term">cd QuantMarketEngine &amp;&amp; dotnet list package --vulnerable --include-transitive</pre>
+          </div>
+
+          <div>
+            <h3>The engine, with no account anywhere</h3>
+            <p>The bundled CSV provider and the historical bars ship with the repository, so the
+            engine generates real reports offline <strong>before you register with any data
+            vendor</strong>.</p>
+<pre class="term">cd QuantMarketEngine/src/QuantMarketEngine.TelegramBot
+dotnet run -- report        <span class="c"># writes 5 files per symbol into reports/</span>
+dotnet run -- audit         <span class="c"># the calibration cards — the engine grading itself</span></pre>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer>
+    <span>Metric Risk · QuantMarketEngine · handover notes</span>
+    <span>revised 2026-08-31</span>
+  </footer>
+
+</div>
+
+</body>
+</html>

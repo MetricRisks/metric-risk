@@ -59,6 +59,7 @@
     <a href="index-en.html">Home</a>
     <a href="calibration-en.html">Calibration record</a>
     <a href="disclaimer-en.html">Disclaimer</a>
+    <a href="docs-en.html">Documentation</a>
     <a class="lang" href="calibration.html" hreflang="ar">العربية</a>
   </header>
   <div class="banner">⚠️ Educational content only — not a trade recommendation. Financial risk is real; manage your capital wisely.</div>
@@ -66,7 +67,7 @@
     <h1>Calibration record</h1>
     <p class="lede">There is no win rate here and no trading results — we do not have them at all. We publish one thing: are the risk boundaries printed in every report breached at the rate they claim? An honest model at 95% confidence is breached on ~5% of days only — no more (which would understate the risk) and no less (which would overstate the caution).</p>
     <p class="note">Every figure below is computed by a point-in-time historical sweep, with no forward look. Where the sample is too small for a reliable judgement (minimum 20), we say so rather than guess.</p>
-    <p class="meta">Updated 2026-08-27 07:06 UTC</p>
+    <p class="meta">Updated 2026-08-31 09:26 UTC</p>
     <section class="symbol">
       <h2>EURUSD <span class="tf">1D</span></h2>
       <div class="panels">
@@ -75,9 +76,9 @@
           <p class="big">5.3<span class="unit">%</span> <span class="target">target 5%</span></p>
           <div class="bar"><span class="fill ok" style="width:53%"></span><span class="mark" style="inset-inline-start:50%"></span></div>
           <p><span class="pill ok">Sound calibration — the band describes the risk honestly</span></p>
-          <p class="line ok">✓ Formal Kupiec test: calibration not rejected at 95% confidence (p=0.32)</p>
+          <p class="line ok">✓ Formal Kupiec test: calibration not rejected at 95% confidence (p=0.33)</p>
           <p class="line ok">✓ Timing (Christoffersen): breaches are dispersed — no clustering</p>
-          <p class="src">Sample: 4974 scored readings (25 live &#183; 4949 historical sweep) &#183; 264 actual breaches.</p>
+          <p class="src">Sample: 4975 scored readings (26 live &#183; 4949 historical sweep) &#183; 264 actual breaches.</p>
         </div>
         <div class="panel">
           <h3>Loss depth on breach days (ES 95%)</h3>
@@ -98,44 +99,8 @@
         </div>
         <div class="panel">
           <h3>Holding rate of tested support/resistance</h3>
-          <p class="side"><span class="side-label">Supports</span> <span class="pill warn">51.2% held</span> <span class="src">(1356 of 2649 tests)</span></p>
-          <p class="side"><span class="side-label">Resistances</span> <span class="pill warn">56.5% held</span> <span class="src">(1611 of 2849 tests)</span></p>
-        </div>
-      </div>
-    </section>
-    <section class="symbol">
-      <h2>XAUUSD <span class="tf">1D</span></h2>
-      <div class="panels">
-        <div class="panel">
-          <h3>Risk-boundary breaches (VaR 95%)</h3>
-          <p class="big">5.6<span class="unit">%</span> <span class="target">target 5%</span></p>
-          <div class="bar"><span class="fill ok" style="width:56%"></span><span class="mark" style="inset-inline-start:50%"></span></div>
-          <p><span class="pill ok">Sound calibration — the band describes the risk honestly</span></p>
-          <p class="line ok">✓ Formal Kupiec test: calibration not rejected at 95% confidence (p=0.08)</p>
-          <p class="line ok">✓ Timing (Christoffersen): breaches are dispersed — no clustering</p>
-          <p class="src">Sample: 3921 scored readings (14 live &#183; 3907 historical sweep) &#183; 220 actual breaches.</p>
-        </div>
-        <div class="panel">
-          <h3>Loss depth on breach days (ES 95%)</h3>
-          <p class="big">1.14<span class="unit">×</span> <span class="target">target 1.0&#215;</span></p>
-          <p><span class="pill ok">Realised losses match the declared ES (ratio ~1)</span></p>
-          <p class="src">Ratio = mean realised loss &#247; declared ES, over 220 breach days.</p>
-        </div>
-        <div class="panel wide">
-          <h3>Probability cone — each horizon on its own</h3>
-          <p class="src">Each edge is a one-sided 95% bound: the healthy standard is ~5% broken per side, at every horizon.</p>
-          <table class="horizons"><thead><tr><th>Horizon</th><th>Lower edge</th><th>Upper edge</th></tr></thead><tbody>
-            <tr><td>1 day</td><td><span class="pass">5.6% ✓</span></td><td><span class="pass">5.1% ✓</span></td></tr>
-            <tr><td>5 day</td><td><span class="pass">5.5% ✓</span></td><td><span class="fail">6% ⚠</span></td></tr>
-            <tr><td>10 day</td><td><span class="pass">5.3% ✓</span></td><td><span class="fail">6.7% ⚠</span></td></tr>
-            <tr><td>20 day</td><td><span class="pass">4.7% ✓</span></td><td><span class="fail">8.2% ⚠</span></td></tr>
-          </tbody></table>
-          <p class="src">For horizons &gt; 1 the evaluation windows overlap, so Kupiec is indicative there rather than conclusive — the rate itself stays unbiased.</p>
-        </div>
-        <div class="panel">
-          <h3>Holding rate of tested support/resistance</h3>
-          <p class="side"><span class="side-label">Supports</span> <span class="pill warn">51.9% held</span> <span class="src">(926 of 1783 tests)</span></p>
-          <p class="side"><span class="side-label">Resistances</span> <span class="pill muted">40.8% held</span> <span class="src">(743 of 1821 tests)</span></p>
+          <p class="side"><span class="side-label">Supports</span> <span class="pill warn">51.2% held</span> <span class="src">(1357 of 2650 tests)</span></p>
+          <p class="side"><span class="side-label">Resistances</span> <span class="pill warn">56.5% held</span> <span class="src">(1611 of 2851 tests)</span></p>
         </div>
       </div>
     </section>
@@ -144,7 +109,7 @@
       <div class="panels">
         <div class="panel">
           <h3>Risk-boundary breaches (VaR 95%)</h3>
-          <p class="muted big-muted">Sample too small</p><p class="src">13 scored readings — minimum 20.</p>
+          <p class="muted big-muted">Sample too small</p><p class="src">14 scored readings — minimum 20.</p>
         </div>
         <div class="panel">
           <h3>Loss depth on breach days (ES 95%)</h3>
@@ -165,6 +130,42 @@
           <h3>Holding rate of tested support/resistance</h3>
           <p class="side"><span class="side-label">Supports</span> <span class="pill warn">49% held</span> <span class="src">(1005 of 2053 tests)</span></p>
           <p class="side"><span class="side-label">Resistances</span> <span class="pill warn">47.8% held</span> <span class="src">(974 of 2037 tests)</span></p>
+        </div>
+      </div>
+    </section>
+    <section class="symbol">
+      <h2>XAUUSD <span class="tf">1D</span></h2>
+      <div class="panels">
+        <div class="panel">
+          <h3>Risk-boundary breaches (VaR 95%)</h3>
+          <p class="big">5.6<span class="unit">%</span> <span class="target">target 5%</span></p>
+          <div class="bar"><span class="fill ok" style="width:56%"></span><span class="mark" style="inset-inline-start:50%"></span></div>
+          <p><span class="pill ok">Sound calibration — the band describes the risk honestly</span></p>
+          <p class="line ok">✓ Formal Kupiec test: calibration not rejected at 95% confidence (p=0.09)</p>
+          <p class="line ok">✓ Timing (Christoffersen): breaches are dispersed — no clustering</p>
+          <p class="src">Sample: 3922 scored readings (15 live &#183; 3907 historical sweep) &#183; 220 actual breaches.</p>
+        </div>
+        <div class="panel">
+          <h3>Loss depth on breach days (ES 95%)</h3>
+          <p class="big">1.14<span class="unit">×</span> <span class="target">target 1.0&#215;</span></p>
+          <p><span class="pill ok">Realised losses match the declared ES (ratio ~1)</span></p>
+          <p class="src">Ratio = mean realised loss &#247; declared ES, over 220 breach days.</p>
+        </div>
+        <div class="panel wide">
+          <h3>Probability cone — each horizon on its own</h3>
+          <p class="src">Each edge is a one-sided 95% bound: the healthy standard is ~5% broken per side, at every horizon.</p>
+          <table class="horizons"><thead><tr><th>Horizon</th><th>Lower edge</th><th>Upper edge</th></tr></thead><tbody>
+            <tr><td>1 day</td><td><span class="pass">5.6% ✓</span></td><td><span class="pass">5.1% ✓</span></td></tr>
+            <tr><td>5 day</td><td><span class="pass">5.5% ✓</span></td><td><span class="fail">6% ⚠</span></td></tr>
+            <tr><td>10 day</td><td><span class="pass">5.3% ✓</span></td><td><span class="fail">6.7% ⚠</span></td></tr>
+            <tr><td>20 day</td><td><span class="pass">4.7% ✓</span></td><td><span class="fail">8.3% ⚠</span></td></tr>
+          </tbody></table>
+          <p class="src">For horizons &gt; 1 the evaluation windows overlap, so Kupiec is indicative there rather than conclusive — the rate itself stays unbiased.</p>
+        </div>
+        <div class="panel">
+          <h3>Holding rate of tested support/resistance</h3>
+          <p class="side"><span class="side-label">Supports</span> <span class="pill warn">52% held</span> <span class="src">(927 of 1784 tests)</span></p>
+          <p class="side"><span class="side-label">Resistances</span> <span class="pill muted">40.8% held</span> <span class="src">(743 of 1823 tests)</span></p>
         </div>
       </div>
     </section>

@@ -1,0 +1,1266 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Metric Risk Configuration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap">
+
+<style>
+  :root {
+    --ground:      #EAEEF0;
+    --surface:     #FFFFFF;
+    --surface-2:   #F4F7F8;
+    --line:        #D2DCDF;
+    --line-soft:   #E3EAEC;
+    --ink:         #12202A;
+    --ink-2:       #38505D;
+    --muted:       #61757F;
+    --accent:      #0F6F5C;
+    --accent-soft: #E2F0EC;
+    --warn:        #8C5A0C;
+    --warn-soft:   #F7EEDD;
+    --alert:       #98303C;
+    --alert-soft:  #F8E7E8;
+    --code-bg:     #EDF2F3;
+    --shadow:      0 1px 2px rgba(18,32,42,.05), 0 8px 24px -18px rgba(18,32,42,.30);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #0C151B;
+      --surface:     #131F27;
+      --surface-2:   #182630;
+      --line:        #2A3B46;
+      --line-soft:   #1F2E38;
+      --ink:         #DCE6EA;
+      --ink-2:       #AEC1C9;
+      --muted:       #8399A3;
+      --accent:      #4DBFA5;
+      --accent-soft: #12302B;
+      --warn:        #D9A65A;
+      --warn-soft:   #322612;
+      --alert:       #E08A94;
+      --alert-soft:  #351A1E;
+      --code-bg:     #1B2A34;
+      --shadow:      0 1px 2px rgba(0,0,0,.30), 0 8px 24px -18px rgba(0,0,0,.70);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #0C151B;
+    --surface:     #131F27;
+    --surface-2:   #182630;
+    --line:        #2A3B46;
+    --line-soft:   #1F2E38;
+    --ink:         #DCE6EA;
+    --ink-2:       #AEC1C9;
+    --muted:       #8399A3;
+    --accent:      #4DBFA5;
+    --accent-soft: #12302B;
+    --warn:        #D9A65A;
+    --warn-soft:   #322612;
+    --alert:       #E08A94;
+    --alert-soft:  #351A1E;
+    --code-bg:     #1B2A34;
+    --shadow:      0 1px 2px rgba(0,0,0,.30), 0 8px 24px -18px rgba(0,0,0,.70);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+    font-size: 16px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px 96px;
+  }
+
+  /* ---------- masthead ---------- */
+
+  .masthead {
+    padding: 56px 0 32px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  h1 {
+    font-family: "IBM Plex Serif", Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(2rem, 1.4rem + 2.4vw, 3.1rem);
+    line-height: 1.1;
+    letter-spacing: -.02em;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .standfirst {
+    font-size: 1.075rem;
+    color: var(--ink-2);
+    max-width: 62ch;
+    margin: 0;
+  }
+
+  .meta-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 28px;
+    padding-top: 6px;
+  }
+
+  .meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .meta dt {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 10.5px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .meta dd {
+    margin: 0;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 13.5px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+
+  /* ---------- layout ---------- */
+
+  .columns {
+    display: grid;
+    grid-template-columns: 214px minmax(0, 1fr);
+    gap: 56px;
+    align-items: start;
+    padding-top: 40px;
+  }
+
+  @media (max-width: 900px) {
+    .columns { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  }
+
+  /* ---------- index rail ---------- */
+
+  .rail {
+    position: sticky;
+    top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  @media (max-width: 900px) {
+    .rail {
+      position: static;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 8px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+  }
+
+  .rail-label {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 10.5px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 0 8px 10px;
+  }
+
+  @media (max-width: 900px) { .rail-label { display: none; } }
+
+  .rail a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+    white-space: nowrap;
+    padding: 6px 10px;
+    border-radius: 4px;
+    border-left: 2px solid transparent;
+    color: var(--ink-2);
+    text-decoration: none;
+    font-size: 13.5px;
+    transition: background .14s, color .14s, border-color .14s;
+  }
+
+  .rail a:hover,
+  .rail a:focus-visible {
+    background: var(--surface);
+    color: var(--ink);
+    border-left-color: var(--accent);
+  }
+
+  .rail a .n {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+  }
+
+  @media (max-width: 900px) {
+    .rail a { border-left: none; border-bottom: 2px solid transparent; }
+    .rail a:hover, .rail a:focus-visible { border-left: none; border-bottom-color: var(--accent); }
+  }
+
+  /* ---------- sections ---------- */
+
+  main { display: flex; flex-direction: column; gap: 52px; min-width: 0; }
+
+  section { scroll-margin-top: 20px; }
+
+  h2 {
+    font-family: "IBM Plex Serif", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.62rem;
+    letter-spacing: -.012em;
+    line-height: 1.24;
+    margin: 0 0 6px;
+    text-wrap: balance;
+  }
+
+  h3 {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-weight: 600;
+    font-size: 1.04rem;
+    letter-spacing: -.01em;
+    margin: 0 0 4px;
+  }
+
+  .sec-note {
+    color: var(--ink-2);
+    max-width: 68ch;
+    margin: 0 0 22px;
+  }
+
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+  }
+
+  .host {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ---------- setting plate ---------- */
+
+  .plate {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .setting {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 18px 20px;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .setting:first-child { border-top: none; }
+
+  .setting-head {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+  }
+
+  code, .key {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-variant-ligatures: none;
+  }
+
+  .key {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--code-bg);
+    border-radius: 4px;
+    padding: 2px 7px;
+    overflow-wrap: anywhere;
+  }
+
+  p code, li code, .setting p code {
+    font-size: .875em;
+    background: var(--code-bg);
+    border-radius: 3px;
+    padding: 1px 5px;
+    overflow-wrap: anywhere;
+  }
+
+  .def {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .def b {
+    font-weight: 500;
+    color: var(--ink-2);
+  }
+
+  .setting p {
+    margin: 0;
+    font-size: 14.5px;
+    color: var(--ink-2);
+    max-width: 74ch;
+  }
+
+  .setting p + p { margin-top: 6px; }
+
+  .setting strong { color: var(--ink); font-weight: 600; }
+
+  /* ---------- chips ---------- */
+
+  .chip {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+    white-space: nowrap;
+    border: 1px solid transparent;
+  }
+
+  .chip-req   { background: var(--alert-soft);  color: var(--alert);  border-color: var(--alert); }
+  .chip-sec   { background: var(--alert-soft);  color: var(--alert); }
+  .chip-off   { background: var(--warn-soft);   color: var(--warn); }
+  .chip-on    { background: var(--accent-soft); color: var(--accent); }
+  .chip-diff  { background: var(--warn-soft);   color: var(--warn);  border-color: var(--warn); }
+
+  /* ---------- callout ---------- */
+
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .callout.warn { border-left-color: var(--warn); }
+
+  .callout h3 {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .callout p { margin: 0; font-size: 14.5px; color: var(--ink-2); max-width: 72ch; }
+
+  .callout ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
+  .callout li { font-size: 14.5px; color: var(--ink-2); max-width: 72ch; }
+
+  .callout strong { color: var(--ink); font-weight: 600; }
+
+  /* ---------- prose blocks ---------- */
+
+  .prose { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+  .prose p { margin: 0; font-size: 14.5px; color: var(--ink-2); max-width: 72ch; }
+  .prose strong { color: var(--ink); font-weight: 600; }
+
+  .flow {
+    background: var(--surface-2);
+    border: 1px solid var(--line-soft);
+    border-radius: 6px;
+    padding: 16px 18px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 13px;
+    line-height: 1.9;
+    color: var(--ink-2);
+    overflow-x: auto;
+  }
+
+  .flow b { color: var(--accent); font-weight: 500; }
+
+  /* ---------- route list ---------- */
+
+  .routes { display: flex; flex-direction: column; gap: 0; }
+
+  .route {
+    display: grid;
+    grid-template-columns: 128px minmax(0, 1fr);
+    gap: 18px;
+    padding: 14px 20px;
+    border-top: 1px solid var(--line-soft);
+    align-items: start;
+  }
+
+  .route:first-child { border-top: none; }
+
+  @media (max-width: 620px) {
+    .route { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  }
+
+  .route .tier {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding-top: 3px;
+  }
+
+  .route .paths { margin: 0; font-size: 14px; color: var(--ink-2); }
+
+  footer {
+    margin-top: 64px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    justify-content: space-between;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  a { color: var(--accent); }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+<style>
+  header.site {
+    max-width: 1180px; margin: 0 auto; padding: 18px 24px 0;
+    display: flex; gap: 1.25rem; align-items: baseline;
+    font-size: .875rem; flex-wrap: wrap;
+  }
+  header.site a { color: var(--ink-2); text-decoration: none; }
+  header.site a:hover, header.site a:focus-visible { color: var(--accent); text-decoration: underline; }
+  header.site a[aria-current="page"] { color: var(--accent); font-weight: 600; }
+  header.site .lang { margin-inline-start: auto; font-weight: 600; }
+  header.site + .wrap .masthead { padding-top: 30px; }
+</style>
+</head>
+<body>
+  <header class="site">
+    <a href="index-en.html">Home</a>
+    <a href="calibration-en.html">Calibration record</a>
+    <a href="disclaimer-en.html">Disclaimer</a>
+    <a href="docs-en.html">Documentation</a>
+    <a class="lang" href="configuration.html" hreflang="ar">العربية</a>
+  </header>
+
+
+<div class="wrap">
+
+  <header class="masthead">
+    <span class="eyebrow">Metric Risk · QuantMarketEngine</span>
+    <h1>Configuration &amp; Secrets Reference</h1>
+    <p class="standfirst">
+      Every setting binds from <code>appsettings.json</code>, user secrets (development) or
+      environment variables (production, in <code>Section__Key</code> form).
+      <strong>Secrets never go in appsettings.</strong>
+    </p>
+    <p class="standfirst">
+      This page lists <strong>every configuration section the code reads</strong>. If a section is
+      not here, it is not read — and the reverse is checked: the names below are the
+      <code>SectionName</code> constants declared on the options classes.
+    </p>
+    <dl class="meta-strip">
+      <div class="meta"><dt>Sections</dt><dd>19</dd></div>
+      <div class="meta"><dt>Hosts</dt><dd>Bot · API · Dashboard · Migrator</dd></div>
+      <div class="meta"><dt>Source</dt><dd>docs/configuration.md</dd></div>
+      <div class="meta"><dt>Revised</dt><dd>2026-08-31</dd></div>
+    </dl>
+  </header>
+
+  <div class="columns">
+
+    <nav class="rail" aria-label="Sections">
+      <span class="rail-label">Contents</span>
+      <a href="#environment"><span>Environment</span></a>
+      <a href="#secrets"><span>Secrets</span><span class="n">8</span></a>
+      <a href="#billing"><span>Billing</span></a>
+      <a href="#scaling"><span>Scaling</span><span class="n">7</span></a>
+      <a href="#dashboard"><span>Dashboard</span><span class="n">8</span></a>
+      <a href="#layers"><span>Analysis layers</span><span class="n">4</span></a>
+      <a href="#bot"><span>Bot host</span><span class="n">6</span></a>
+      <a href="#workers"><span>Workers</span><span class="n">7</span></a>
+      <a href="#site"><span>Static site</span><span class="n">3</span></a>
+      <a href="#api"><span>API host</span><span class="n">5</span></a>
+      <a href="#security"><span>Security model</span></a>
+      <a href="#ops"><span>Operations</span></a>
+    </nav>
+
+    <main>
+
+      <!-- ENVIRONMENT -->
+      <section id="environment">
+        <h2>Which environment you are running in</h2>
+        <p class="sec-note">Read this before anything else on the page. Two behaviours depend on
+        the environment and neither one announces itself.</p>
+
+        <div class="callout warn">
+          <h3><code>dotnet run</code> falls back to Production when a project has no launch profile</h3>
+          <p>Each project's <code>Properties/launchSettings.json</code> picks the environment. With
+          no such file, .NET chooses <strong>Production</strong> — and then:</p>
+          <ul>
+            <li><strong>User secrets load in Development only</strong> for the API and Dashboard
+            hosts. Under Production they are simply absent: a setting you know you stored is
+            missing, with no error. (The bot host calls <code>AddUserSecrets</code> explicitly, so
+            it reads them in any environment.)</li>
+            <li><strong>The Dashboard refuses to start in Production</strong> without
+            <code>DataProtection:KeysDirectory</code>.</li>
+          </ul>
+          <p>The Dashboard and API ship a launch profile setting
+          <code>ASPNETCORE_ENVIRONMENT=Development</code>, so a local run behaves.
+          <strong>On a server, set every value through environment variables</strong> and do not
+          rely on the secret store.</p>
+        </div>
+      </section>
+
+      <!-- SECRETS -->
+      <section id="secrets">
+        <div class="sec-head">
+          <h2>Secrets</h2>
+          <span class="host">production: environment variables only</span>
+        </div>
+        <p class="sec-note">None of these has a safe default on someone else's infrastructure.</p>
+
+        <div class="plate">
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Saas__AdminApiKey</span>
+              <span class="chip chip-sec">Secret</span>
+              <span class="def">host <b>API</b></span>
+            </div>
+            <p>Enables the ops surface (<code>/api/v1/admin</code> and the legacy <code>api/*</code>
+            routes). Unset, every ops endpoint answers <strong>503</strong>. Compared in constant time.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">AlphaVantage__ApiKey</span>
+              <span class="chip chip-sec">Secret</span>
+              <span class="def">host <b>all</b></span>
+            </div>
+            <p>Live market data. Unset, the engine falls back to the bundled CSV provider — which is
+            for development only, but does mean the engine runs and can be measured with no account
+            anywhere.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Telegram__BotToken</span>
+              <span class="chip chip-sec">Secret</span>
+              <span class="def">host <b>bot</b></span>
+            </div>
+            <p>Telegram publishing and review.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">ConnectionStrings__Quant</span>
+              <span class="def">host <b>all</b></span>
+            </div>
+            <p>SQLite path. Docker default <code>Data Source=/data/quant.db</code> on a shared volume.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Stripe__SecretKey</span>
+              <span class="chip chip-sec">Secret</span>
+              <span class="def">host <b>API + Dashboard</b></span>
+            </div>
+            <p>Unset, billing is disabled everywhere and the dashboard falls back to manual
+            upgrades — and says so to the user rather than failing silently.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Stripe__WebhookSecret</span>
+              <span class="chip chip-sec">Secret</span>
+              <span class="def">host <b>API</b></span>
+            </div>
+            <p>Signing secret for <code>POST /api/v1/billing/webhook</code>. The endpoint answers
+            503 until it is set.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Stripe__PriceIds__analyst</span>
+              <span class="key">Stripe__PriceIds__desk</span>
+              <span class="def">host <b>API + Dashboard</b></span>
+            </div>
+            <p>Stripe price ids per plan code. <strong>Only mapped plans are purchasable.</strong></p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Email__SmtpHost / SmtpPort / SmtpUser / SmtpPassword / FromAddress</span>
+              <span class="chip chip-sec">Secret</span>
+              <span class="def">host <b>Dashboard (+API)</b></span>
+            </div>
+            <p>SMTP delivery, any provider. <strong>With the host unset, emails become log
+            lines</strong> — which means the password-reset flow silently does nothing.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- BILLING -->
+      <section id="billing">
+        <h2>Billing lifecycle</h2>
+        <p class="sec-note">Stripe-hosted throughout. Card data never touches the platform.</p>
+
+        <div class="flow">
+          Checkout <span aria-hidden="true">→</span> dashboard <b>/actions/billing/checkout</b><br>
+          <span aria-hidden="true">→</span> Stripe-hosted payment page<br>
+          <span aria-hidden="true">→</span> <b>checkout.session.completed</b> — activates the paid plan, superseding the free-tier row (one live subscription per user)<br>
+          <span aria-hidden="true">→</span> <b>customer.subscription.updated</b> — mirrors status and period end, covering <b>past_due</b><br>
+          <span aria-hidden="true">→</span> <b>customer.subscription.deleted</b> — cancels and drops the account back to the free tier
+        </div>
+
+        <div class="prose">
+          <p>Every transition is audit-logged with actor <code>billing</code>.</p>
+          <p>Webhook configuration in Stripe: endpoint
+          <code>https://&lt;api-host&gt;/api/v1/billing/webhook</code>, events: the three above.</p>
+        </div>
+      </section>
+
+      <!-- SCALING -->
+      <section id="scaling">
+        <div class="sec-head">
+          <h2>Scaling</h2>
+          <span class="host">all hosts</span>
+        </div>
+
+        <div class="plate">
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Database:Provider</span>
+              <span class="def">default <b>Sqlite</b></span>
+            </div>
+            <p><code>Sqlite</code> for a single node, or <code>Postgres</code> via Npgsql. Postgres
+            needs its own migration set.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Database:MigrateOnStartup</span>
+              <span class="def">default <b>true</b></span>
+            </div>
+            <p>Set <code>false</code> on multi-node deployments and run the Migrator once first, so
+            nodes don't race <code>Migrate()</code>.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Redis:ConnectionString</span>
+              <span class="def">default <b>unset</b></span>
+            </div>
+            <p>When set, the API quota and the login lockout use Redis — shared across nodes —
+            instead of in-process counters. <strong>Required for horizontal scaling.</strong></p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Database:Backup:Enabled</span>
+              <span class="def">default <b>true</b></span>
+            </div>
+            <p>Scheduled verified backups in the bot host. Turn off only where an external process
+            snapshots the volume.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Database:Backup:Directory</span>
+              <span class="def">default <b>backups</b></span>
+            </div>
+            <p>Relative paths resolve next to the database. <strong>Set an absolute path on a
+            separate volume in production</strong> — a same-disk copy dies with the disk.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Database:Backup:RetainCount</span>
+              <span class="def">default <b>7</b></span>
+            </div>
+            <p>Copies kept. Older ones are pruned after each run, ordered by the UTC timestamp in
+            the filename.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Database:Backup:IntervalHours</span>
+              <span class="def">default <b>24</b></span>
+            </div>
+            <p>Gap between automatic runs. One always runs at host startup.</p>
+          </div>
+        </div>
+
+        <div class="prose">
+          <p><strong>The Migrator is a one-shot console</strong> (<code>Dockerfile.migrator</code>)
+          that applies migrations and seeds plans regardless of the flag — the pre-deploy schema
+          step for a cluster.</p>
+          <p>Backups are SQLite-specific (<code>VACUUM INTO</code>) and are not registered when the
+          provider is Postgres; that deployment backs up with the server's own tooling.</p>
+        </div>
+      </section>
+
+      <!-- DASHBOARD -->
+      <section id="dashboard">
+        <div class="sec-head">
+          <h2>Dashboard host</h2>
+          <span class="host">QuantMarketEngine.Dashboard</span>
+        </div>
+
+        <div class="plate">
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Admin:Emails</span>
+              <span class="chip chip-req">Set this first</span>
+              <span class="def">default <b>[] empty</b></span>
+            </div>
+            <p><strong>The only way anyone becomes an operator.</strong> A string array of email
+            addresses; a signed-in user whose address is on it reaches the admin pages, and nobody
+            else does.</p>
+            <p>Empty means nobody. <code>AdminAccess</code> fails closed, and the admin page says it
+            is unconfigured rather than pretending the account lacks permission.</p>
+            <p>It is configuration and not a database row on purpose: <strong>an attacker who
+            reaches the database through the application still cannot grant themselves the operator
+            pages.</strong> It ships empty, and the buyer sets their own address.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">ConnectionStrings__Quant</span>
+              <span class="def">default <b>content-root quant.db</b></span>
+            </div>
+            <p>Must point at the same database as the API and the bot — <code>/data/quant.db</code>
+            under Docker. <strong>All three hosts ship pointing at the bot's file</strong>:
+            <code>../QuantMarketEngine.TelegramBot/quant.db</code> from the API and the Dashboard,
+            <code>quant.db</code> from the bot itself.</p>
+            <p><strong>Getting this wrong does not error.</strong> The host attaches to a different
+            file, and the interface looks empty while working perfectly.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">DataProtection:KeysDirectory</span>
+              <span class="chip chip-req">Required in production</span>
+              <span class="def">default <b>unset</b></span>
+            </div>
+            <p><strong>The host refuses to start without it outside Development.</strong> It
+            persists cookie-encryption keys across restarts — <code>/data/dp-keys</code> under Docker.</p>
+            <p>Unset, ASP.NET Core generates a key ring per process, so every restart signs out
+            every subscriber with nothing in the logs to say why.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Support:Email</span>
+              <span class="def">default <b>placeholder</b></span>
+            </div>
+            <p>Shown on the Billing and Support pages. Set the real address before launch.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">PdfExport:BrowserPath</span>
+              <span class="def">default <b>auto-detect</b></span>
+            </div>
+            <p>Full path to Chrome, Edge or Chromium. Leave empty to search the usual install
+            locations.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">PdfExport:Enabled</span>
+              <span class="def">default <b>true</b></span>
+            </div>
+            <p><code>false</code> switches PDF export off even where a browser is installed.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">PdfExport:NoSandbox</span>
+              <span class="chip chip-off">Off by default</span>
+              <span class="def">default <b>false</b></span>
+            </div>
+            <p>Starts the browser with its sandbox disabled. Needed where a container runs as root
+            without the kernel namespaces Chrome requires — there it will not start at all.</p>
+            <p>Off by default because <strong>the flag makes the feature work everywhere and weakens
+            it everywhere</strong>, and that is the host's call rather than ours. The log names this
+            setting when a failed print looks like a sandbox refusal.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">PdfExport:TimeoutSeconds</span>
+              <span class="def">default <b>30</b></span>
+            </div>
+            <p>Ceiling on one print before the browser is killed. A real print takes about a second.</p>
+          </div>
+        </div>
+
+        <div class="prose">
+          <p><strong>PDF report export.</strong> The Reports page offers each archived session as a
+          styled PDF — tables plus the probability-cone chart — printed by an installed
+          Chromium-family browser in headless mode. Nothing installs that browser for you: on a host
+          without one, the PDF link hides itself, the endpoint answers 503, and the Arabic, English
+          and JSON exports are unaffected. <strong>The Docker images do not include a browser</strong>,
+          so PDF export is off in a default container until one is installed.</p>
+          <p><strong>The PDF is English only.</strong> Arabic in a PDF needs bidirectional layout,
+          and the rasteriser this project uses reverses digits inside a mixed Arabic/Latin run — it
+          printed <code>1.16805</code> as <code>50861.1</code>. The Arabic report is still delivered
+          as text.</p>
+          <p><strong>Auth model.</strong> Email and password
+          (<code>UserCredential</code>, PBKDF2) exchanged for a 7-day sliding HttpOnly session
+          cookie. Self-serve registration provisions the free <code>observer</code> plan. A per-IP
+          failed-login damper allows 8 failures in 10 minutes. API keys remain the machine
+          credential; the dashboard mints and revokes them, and the raw key is rendered exactly once
+          from the POST response.</p>
+        </div>
+      </section>
+
+      <!-- ANALYSIS LAYERS -->
+      <section id="layers">
+        <div class="sec-head">
+          <h2>Analysis layers</h2>
+          <span class="host">all hosts</span>
+        </div>
+        <p class="sec-note">Four layers of the pipeline are configurable, and two of them ship
+        switched off. That is a decision rather than an omission, and each says why.
+        <strong><code>CrossAsset</code> and <code>EconomicIndicators</code> appear in no
+        <code>appsettings.json</code> at all</strong> — they run on the code defaults below, which is
+        worth knowing before you go looking for a section that is not there.</p>
+
+        <div class="plate">
+          <div class="setting">
+            <div class="setting-head">
+              <h3>CrossAsset</h3>
+              <span class="chip chip-on">On by default</span>
+            </div>
+            <p>What each analysed symbol is correlated against — the layer behind the correlation
+            bars in the report.</p>
+            <p><code>CrossAsset:Enabled</code> · default <code>true</code>. <code>false</code> skips
+            the layer entirely.</p>
+            <p><code>CrossAsset:Map</code> · default <code>[]</code>, meaning the built-in EUR/USD
+            institutional set: DXY, gold, the US 10-year yield. Entries are
+            <code>{ BaseSymbol, Symbol, Label }</code>.</p>
+            <p><strong>An instrument the data provider cannot serve is skipped at run time rather
+            than failing the report</strong>, so listing an index or a yield here is safe even on a
+            forex-only free tier.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <h3>EconomicIndicators</h3>
+              <span class="chip chip-on">On by default</span>
+            </div>
+            <p>The US macro backdrop: inflation, policy rate, labour.</p>
+            <p><code>Enabled</code> <code>true</code> · <code>Timeframe</code> <code>MONTHLY</code> ·
+            <code>FreshnessDays</code> <code>45</code> · <code>AttemptIntervalDays</code>
+            <code>1</code> · <code>Indicators</code> <code>[]</code> for the built-in dollar-macro set.</p>
+            <p><strong><code>AttemptIntervalDays</code> is the setting that governs cost</strong>, not
+            <code>FreshnessDays</code>. US macro publishes on a one-to-two-month lag, so the newest
+            print available is routinely older than any sane freshness gate and the data can never
+            make itself look current. Before this existed, four indicators were re-fetched on every
+            single run and returned the same figures each time.</p>
+            <p><strong>Cost:</strong> at most one provider call per indicator per day — a few calls a
+            month.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <h3>EconomicCalendar</h3>
+              <span class="chip chip-diff">Off in code · on as shipped</span>
+            </div>
+            <p>A hand-maintained list of upcoming high-impact releases, used to warn that a reading
+            sits inside a blackout window. The code default is off because <strong>it is a list
+            somebody has to keep writing</strong>: it has no feed behind it, and a stale calendar is
+            worse than none because it warns about the wrong days.</p>
+            <p><strong>The bot's <code>appsettings.json</code> turns it on and carries 14
+            central-bank and US releases through 17 December 2026.</strong> When that list runs out
+            the layer goes quiet rather than wrong — but it is a maintenance task with a date on it,
+            and the buyer should be told which date.</p>
+            <p><code>BlackoutWindowHours</code> <code>24</code> ·
+            <code>MinimumImpact</code> <code>High</code> · <code>Events</code> entries are
+            <code>{ Name, ScheduledAt (UTC), Impact, Currencies[] }</code>, where empty currencies
+            means global.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <h3>FundamentalAnalysis</h3>
+              <span class="chip chip-off">Off, and fenced even when on</span>
+            </div>
+            <p><code>Enabled</code> <code>false</code> · <code>DataFilePath</code> empty. Point the
+            path at a hand-filled JSON file of releases, rates and stances to feed the layer with
+            test data.</p>
+            <p><strong>Turning it on does not put hand-entered figures in front of a client.</strong>
+            The provider reports <code>IsLiveSource=false</code> and the output mapper drops the
+            values. The layer exists to be developed against, and the fence is in code so that a
+            future contributor cannot enable it into production by flipping a flag.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- BOT -->
+      <section id="bot">
+        <div class="sec-head">
+          <h2>Bot host</h2>
+          <span class="host">QuantMarketEngine.TelegramBot</span>
+        </div>
+
+        <div class="plate">
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Telegram:BotToken</span>
+              <span class="def">default <b>empty</b></span>
+            </div>
+            <p>From <code>@BotFather</code>. Empty and <strong>the bot stays idle</strong> — no
+            receiver, no scheduler. The rest of the host still runs.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Telegram:ReviewerChatId</span>
+              <span class="def">default <b>0</b></span>
+            </div>
+            <p>Private chat id of the human reviewer. This is the approval gate's inbox.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Telegram:PublicChannelId</span>
+              <span class="def">default <b>empty</b></span>
+            </div>
+            <p>Channel id or <code>@username</code> where approved reports are published.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Telegram:ActiveSymbols</span>
+              <span class="def">default <b>[]</b></span>
+            </div>
+            <p>Symbols the scheduled worker analyses each cycle. <strong>Intentionally empty in
+            code</strong>: the .NET binder <em>appends</em> to a non-empty default array, so a
+            default of <code>["EURUSD"]</code> plus the same value in appsettings binds to
+            <code>["EURUSD","EURUSD"]</code> and generates every report twice. The value comes from
+            configuration only.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Telegram:Timeframe</span>
+              <span class="def">default <b>4H</b></span>
+            </div>
+            <p>Timeframe the scheduled worker requests.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Telegram:ScheduleHours</span>
+              <span class="def">default <b>4</b></span>
+            </div>
+            <p>How often the scheduled worker runs.</p>
+          </div>
+        </div>
+
+        <div class="prose">
+          <p><code>ReviewerChatId</code> and <code>PublicChannelId</code> currently sit in the bot's
+          <code>appsettings.json</code> for convenience. They are deploy-specific: move them to
+          environment variables anywhere shared.</p>
+        </div>
+      </section>
+
+      <!-- WORKERS -->
+      <section id="workers">
+        <div class="sec-head">
+          <h2>Background workers</h2>
+          <span class="host">bot host</span>
+        </div>
+        <p class="sec-note">Both loops have safe defaults and run without any configuration.</p>
+
+        <div class="plate">
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">EventTrigger:Enabled</span>
+              <span class="chip chip-diff">true in code · false as shipped</span>
+            </div>
+            <p>The event-driven watcher. It runs more often than the scheduled cycle but only queues
+            a report when it detects a structural change or a regime flip.</p>
+            <p>The bot's <code>appsettings.json</code> switches it off. This is the
+            <em>"event-driven trigger ships disabled"</em> line in the sale material — and it is
+            <strong>a configuration value, not missing code</strong>.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">EventTrigger:IntervalMinutes</span>
+              <span class="def">default <b>60</b></span>
+            </div>
+            <p>Minutes between detection passes. Clamped to a minimum of 1.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">EventTrigger:StartupDelaySeconds</span>
+              <span class="def">default <b>45</b></span>
+            </div>
+            <p>Lets startup migrations and the data load settle first.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">OutcomeEvaluation:Enabled</span>
+              <span class="chip chip-on">On</span>
+              <span class="def">default <b>true</b></span>
+            </div>
+            <p><strong>The self-scoring loop</strong> — the background VaR backtest that produces the
+            calibration record. <strong>Turning it off stops the product's central claim from being
+            earned.</strong></p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">OutcomeEvaluation:IntervalMinutes</span>
+              <span class="def">default <b>60</b></span>
+            </div>
+            <p>Clamped to a minimum of 1.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">OutcomeEvaluation:StartupDelaySeconds</span>
+              <span class="def">default <b>30</b></span>
+            </div>
+            <p>Lets startup migrations and the data load settle first.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">OutcomeEvaluation:BatchSize</span>
+              <span class="def">default <b>200</b></span>
+            </div>
+            <p>Maximum analyses scored per pass.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SITE -->
+      <section id="site">
+        <h2>Static site</h2>
+        <p class="sec-note">Renders approved reports to flat HTML for GitHub, Cloudflare or Netlify
+        Pages.</p>
+
+        <div class="plate">
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">WebPublisher:OutputDirectory</span>
+              <span class="def">default <b>empty</b></span>
+            </div>
+            <p><strong>Empty disables web publishing.</strong> Set it and approved reports are
+            written there.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">WebPublisher:SiteTitle</span>
+              <span class="def">default <b>Quant Market Monitor</b></span>
+            </div>
+            <p>Used on the Arabic pages, where it carries the Arabic tagline.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">WebPublisher:SiteTitleEnglish</span>
+              <span class="def">default <b>Metric Risk — Market Watch</b></span>
+            </div>
+            <p>Kept separately rather than derived from the above: printing the Arabic tagline on an
+            English page was the last thing left untranslated when the site went bilingual.</p>
+          </div>
+        </div>
+
+        <div class="prose">
+          <p>The template is educational content only — it carries the neutral disclaimer and never
+          a subscription or price call-to-action.</p>
+        </div>
+      </section>
+
+      <!-- API -->
+      <section id="api">
+        <div class="sec-head">
+          <h2>API host</h2>
+          <span class="host">QuantMarketEngine.API</span>
+        </div>
+
+        <div class="plate">
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Security:RequestsPerMinutePerIp</span>
+              <span class="def">default <b>120</b></span>
+            </div>
+            <p>Fixed-window per-IP perimeter limit; 429 beyond it. Health endpoints are exempt.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Security:AllowedOrigins</span>
+              <span class="def">default <b>[]</b></span>
+            </div>
+            <p>CORS origins. Empty means no CORS at all.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">AnalysisCache:TtlSeconds</span>
+              <span class="def">default <b>300</b></span>
+            </div>
+            <p>TTL of the in-process analysis cache, per symbol and timeframe. <code>0</code>
+            disables it.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Serilog:*</span>
+              <span class="def">default <b>console, Information</b></span>
+            </div>
+            <p>Standard Serilog configuration section.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Engine:SupportedSymbols</span>
+              <span class="def">default <b>EURUSD / 4H</b></span>
+            </div>
+            <p>The symbol catalogue. Shared by every host, so a symbol added here is a symbol the
+            whole platform knows about.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECURITY -->
+      <section id="security">
+        <h2>Security model</h2>
+        <p class="sec-note">Three tiers, checked at the endpoint rather than assumed from the route.</p>
+
+        <div class="plate routes">
+          <div class="route">
+            <span class="tier">Public</span>
+            <p class="paths"><code>/api/v1/plans</code> · <code>/api/symbols</code> ·
+            <code>/health/live</code> · <code>/health/ready</code> · <code>/openapi/v1.json</code></p>
+          </div>
+          <div class="route">
+            <span class="tier">Subscriber</span>
+            <p class="paths"><code>X-Api-Key</code> scheme —
+            <code>/api/v1/intelligence/*</code> and <code>/api/v1/alerts</code> (quota-metered),
+            <code>/api/v1/account</code> (quota-free)</p>
+          </div>
+          <div class="route">
+            <span class="tier">Operator</span>
+            <p class="paths"><code>X-Admin-Key</code> scheme — <code>/api/v1/admin/*</code> and
+            <strong>all</strong> legacy routes: <code>api/analysis</code>, <code>api/history</code>,
+            <code>api/reports/*</code>, <code>api/review</code>, <code>api/calibration</code>.
+            These are internal ops tools; <strong>the customer surface is <code>/api/v1</code>
+            only</strong>, and the legacy routes are not part of the public contract.</p>
+          </div>
+        </div>
+
+        <div class="prose">
+          <p>Every privileged action writes an <code>AuditLogEntries</code> row. Every quota-bearing
+          subscriber call writes or increments an <code>ApiUsageRecords</code> row — the source of
+          truth for both billing and the dashboard.</p>
+        </div>
+      </section>
+
+      <!-- OPS -->
+      <section id="ops">
+        <h2>Observability and operations</h2>
+
+        <div class="plate">
+          <div class="setting">
+            <div class="setting-head"><span class="key">GET /health/live</span></div>
+            <p>Process liveness, with no dependencies.</p>
+          </div>
+          <div class="setting">
+            <div class="setting-head"><span class="key">GET /health/ready</span></div>
+            <p>Includes a database round-trip.</p>
+          </div>
+          <div class="setting">
+            <div class="setting-head"><span class="key">CorrelationId</span></div>
+            <p>Logs are structured via Serilog and every request carries one, honouring an inbound
+            <code>X-Correlation-Id</code>.</p>
+          </div>
+        </div>
+
+        <div class="prose">
+          <p>Migrations apply automatically at API startup, on a single-instance assumption —
+          revisit before scaling out.</p>
+          <p>SQLite backups snapshot the mounted <code>/data</code> volume, or use
+          <code>VACUUM INTO</code>, on a schedule. A managed PostgreSQL migration is the path beyond
+          one node.</p>
+          <p>CI builds, tests, and <strong>fails on any known-vulnerable NuGet package</strong>.</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer>
+    <span>Metric Risk · QuantMarketEngine · configuration reference</span>
+    <span>19 sections · revised 2026-08-31</span>
+  </footer>
+
+</div>
+
+</body>
+</html>

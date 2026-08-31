@@ -1,0 +1,768 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Running Metric Risk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap">
+
+<style>
+  :root {
+    --ground:      #EAEEF0;
+    --surface:     #FFFFFF;
+    --surface-2:   #F4F7F8;
+    --line:        #D2DCDF;
+    --line-soft:   #E3EAEC;
+    --ink:         #12202A;
+    --ink-2:       #38505D;
+    --muted:       #61757F;
+    --accent:      #0F6F5C;
+    --accent-soft: #E2F0EC;
+    --warn:        #8C5A0C;
+    --warn-soft:   #F7EEDD;
+    --alert:       #98303C;
+    --alert-soft:  #F8E7E8;
+    --code-bg:     #EDF2F3;
+    --term-bg:     #10202A;
+    --term-ink:    #C9DBE1;
+    --shadow:      0 1px 2px rgba(18,32,42,.05), 0 8px 24px -18px rgba(18,32,42,.30);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #0C151B;
+      --surface:     #131F27;
+      --surface-2:   #182630;
+      --line:        #2A3B46;
+      --line-soft:   #1F2E38;
+      --ink:         #DCE6EA;
+      --ink-2:       #AEC1C9;
+      --muted:       #8399A3;
+      --accent:      #4DBFA5;
+      --accent-soft: #12302B;
+      --warn:        #D9A65A;
+      --warn-soft:   #322612;
+      --alert:       #E08A94;
+      --alert-soft:  #351A1E;
+      --code-bg:     #1B2A34;
+      --term-bg:     #08121A;
+      --term-ink:    #B6CCD4;
+      --shadow:      0 1px 2px rgba(0,0,0,.30), 0 8px 24px -18px rgba(0,0,0,.70);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #0C151B;
+    --surface:     #131F27;
+    --surface-2:   #182630;
+    --line:        #2A3B46;
+    --line-soft:   #1F2E38;
+    --ink:         #DCE6EA;
+    --ink-2:       #AEC1C9;
+    --muted:       #8399A3;
+    --accent:      #4DBFA5;
+    --accent-soft: #12302B;
+    --warn:        #D9A65A;
+    --warn-soft:   #322612;
+    --alert:       #E08A94;
+    --alert-soft:  #351A1E;
+    --code-bg:     #1B2A34;
+    --term-bg:     #08121A;
+    --term-ink:    #B6CCD4;
+    --shadow:      0 1px 2px rgba(0,0,0,.30), 0 8px 24px -18px rgba(0,0,0,.70);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px 96px; }
+
+  /* masthead */
+  .masthead {
+    padding: 56px 0 34px;
+    border-bottom: 1px solid var(--line);
+    display: flex; flex-direction: column; gap: 18px;
+  }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11.5px; font-weight: 500; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--accent); align-self: flex-start;
+  }
+
+  h1 {
+    font-family: "IBM Plex Serif", Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(2rem, 1.4rem + 2.4vw, 3.1rem);
+    line-height: 1.1; letter-spacing: -.02em; text-wrap: balance; margin: 0;
+  }
+
+  .standfirst { font-size: 1.075rem; color: var(--ink-2); max-width: 64ch; margin: 0; }
+  .standfirst strong { color: var(--ink); font-weight: 600; }
+
+  .headline-stat {
+    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+    margin-top: 8px; padding: 16px 20px;
+    background: var(--accent-soft);
+    border-radius: 6px;
+    align-self: flex-start;
+  }
+  .headline-stat .fig {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 1.7rem; font-weight: 600; color: var(--accent);
+    font-variant-numeric: tabular-nums; line-height: 1;
+  }
+  .headline-stat .cap { font-size: 14px; color: var(--ink-2); max-width: 40ch; }
+
+  /* layout */
+  .columns {
+    display: grid; grid-template-columns: 200px minmax(0, 1fr);
+    gap: 56px; align-items: start; padding-top: 40px;
+  }
+  @media (max-width: 900px) { .columns { grid-template-columns: minmax(0,1fr); gap: 28px; } }
+
+  .rail { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 3px; }
+  @media (max-width: 900px) {
+    .rail { position: static; flex-direction: row; overflow-x: auto; gap: 8px;
+            padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+  }
+  .rail-label {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 10.5px; letter-spacing: .13em; text-transform: uppercase;
+    color: var(--muted); padding: 0 0 8px 10px;
+  }
+  @media (max-width: 900px) { .rail-label { display: none; } }
+  .rail a {
+    display: block; white-space: nowrap; padding: 6px 10px; border-radius: 4px;
+    border-left: 2px solid transparent; color: var(--ink-2);
+    text-decoration: none; font-size: 13.5px;
+    transition: background .14s, color .14s, border-color .14s;
+  }
+  .rail a:hover, .rail a:focus-visible {
+    background: var(--surface); color: var(--ink); border-left-color: var(--accent);
+  }
+  @media (max-width: 900px) {
+    .rail a { border-left: none; border-bottom: 2px solid transparent; }
+    .rail a:hover, .rail a:focus-visible { border-left: none; border-bottom-color: var(--accent); }
+  }
+
+  main { display: flex; flex-direction: column; gap: 54px; min-width: 0; }
+  section { scroll-margin-top: 20px; }
+
+  h2 {
+    font-family: "IBM Plex Serif", Georgia, serif; font-weight: 600;
+    font-size: 1.62rem; letter-spacing: -.012em; line-height: 1.24;
+    margin: 0 0 10px; text-wrap: balance;
+  }
+
+  h3 {
+    font-family: "IBM Plex Sans", sans-serif; font-weight: 600;
+    font-size: 1.06rem; margin: 26px 0 8px;
+  }
+
+  p { margin: 0 0 12px; color: var(--ink-2); max-width: 70ch; }
+  p:last-child { margin-bottom: 0; }
+  strong { color: var(--ink); font-weight: 600; }
+
+  code {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .875em; background: var(--code-bg);
+    border-radius: 3px; padding: 1px 5px; overflow-wrap: anywhere;
+  }
+
+  /* terminal */
+  pre.term {
+    background: var(--term-bg); color: var(--term-ink);
+    border-radius: 6px; padding: 16px 18px; margin: 14px 0;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 13px; line-height: 1.75; overflow-x: auto;
+  }
+  pre.term .c { color: #6E8F9B; }
+  pre.term .k { color: #63C9AC; }
+
+  /* host cards */
+  .hosts { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+  .host-card {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 8px; padding: 16px 18px; box-shadow: var(--shadow);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .host-card .nm {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 14px; font-weight: 600; color: var(--ink);
+  }
+  .host-card .port {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--accent); background: var(--accent-soft);
+    padding: 2px 7px; border-radius: 3px; align-self: flex-start;
+  }
+  .host-card .port.none { color: var(--muted); background: var(--surface-2); }
+  .host-card p { font-size: 14px; margin: 0; }
+
+  /* cost table */
+  .costs {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 8px; box-shadow: var(--shadow); overflow: hidden;
+  }
+  .cost-row {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+    padding: 12px 20px; border-top: 1px solid var(--line-soft); font-size: 14.5px;
+  }
+  .cost-row:first-child { border-top: none; }
+  .cost-row .amt {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums; font-weight: 500;
+    color: var(--ink); white-space: nowrap;
+  }
+  .cost-row.total {
+    background: var(--surface-2); font-weight: 600;
+    border-top: 1px solid var(--line);
+  }
+  .cost-row.total .amt { color: var(--accent); font-size: 1.05rem; }
+  .cost-row .lbl { color: var(--ink-2); }
+  .cost-row.total .lbl { color: var(--ink); }
+
+  /* plate + rows (reused for spec lists) */
+  .plate {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 8px; box-shadow: var(--shadow); overflow: hidden;
+  }
+  .row {
+    display: grid; grid-template-columns: 172px minmax(0,1fr); gap: 18px;
+    padding: 14px 20px; border-top: 1px solid var(--line-soft); align-items: start;
+  }
+  .row:first-child { border-top: none; }
+  @media (max-width: 620px) { .row { grid-template-columns: minmax(0,1fr); gap: 6px; } }
+  .row .lb {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 13px; font-weight: 500; color: var(--ink); overflow-wrap: anywhere;
+  }
+  .row p { font-size: 14px; margin: 0; }
+
+  /* steps */
+  .steps { display: flex; flex-direction: column; gap: 2px; counter-reset: s; }
+  .step {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 8px; padding: 18px 20px 18px 58px; position: relative;
+    box-shadow: var(--shadow);
+  }
+  .step::before {
+    counter-increment: s; content: counter(s);
+    position: absolute; left: 20px; top: 18px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12px; font-weight: 600; color: var(--accent);
+    background: var(--accent-soft);
+    width: 24px; height: 24px; border-radius: 50%;
+    display: grid; place-items: center;
+  }
+  .step h3 { margin: 0 0 6px; font-size: 1rem; }
+  .step p { font-size: 14.5px; }
+
+  /* callouts */
+  .callout {
+    background: var(--surface); border: 1px solid var(--line);
+    border-left: 3px solid var(--accent); border-radius: 6px;
+    padding: 18px 20px; margin: 16px 0;
+  }
+  .callout.warn  { border-left-color: var(--warn); }
+  .callout.alert { border-left-color: var(--alert); }
+  .callout h3 { margin: 0 0 6px; font-size: 1rem; }
+  .callout p { font-size: 14.5px; }
+  .callout ul { margin: 8px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+  .callout li { font-size: 14.5px; color: var(--ink-2); max-width: 68ch; }
+
+  .lede { font-size: 1rem; color: var(--ink-2); max-width: 68ch; margin: 0 0 18px; }
+
+  .stack { display: flex; flex-direction: column; gap: 14px; }
+
+  footer {
+    margin-top: 64px; padding-top: 22px; border-top: 1px solid var(--line);
+    display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12px; color: var(--muted);
+  }
+
+  a { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+<style>
+  header.site {
+    max-width: 1180px; margin: 0 auto; padding: 18px 24px 0;
+    display: flex; gap: 1.25rem; align-items: baseline;
+    font-size: .875rem; flex-wrap: wrap;
+  }
+  header.site a { color: var(--ink-2); text-decoration: none; }
+  header.site a:hover, header.site a:focus-visible { color: var(--accent); text-decoration: underline; }
+  header.site a[aria-current="page"] { color: var(--accent); font-weight: 600; }
+  header.site .lang { margin-inline-start: auto; font-weight: 600; }
+  header.site + .wrap .masthead { padding-top: 30px; }
+</style>
+</head>
+<body>
+  <header class="site">
+    <a href="index-en.html">Home</a>
+    <a href="calibration-en.html">Calibration record</a>
+    <a href="disclaimer-en.html">Disclaimer</a>
+    <a href="docs-en.html">Documentation</a>
+    <a class="lang" href="running.html" hreflang="ar">العربية</a>
+  </header>
+
+
+<div class="wrap">
+
+  <header class="masthead">
+    <span class="eyebrow">Metric Risk · QuantMarketEngine</span>
+    <h1>Running the platform</h1>
+    <p class="standfirst">
+      The README covers the engine and its reports. This covers the rest — the subscriber dashboard,
+      the public API, the database they share, and what it takes to put all three on a server.
+    </p>
+    <p class="standfirst">
+      <strong>Everything below was run and checked against this repository</strong>, not written
+      from memory.
+    </p>
+    <div class="headline-stat">
+      <span class="fig">$6–8</span>
+      <span class="cap">a month to run the whole platform, almost all of it a small VPS</span>
+    </div>
+  </header>
+
+  <div class="columns">
+
+    <nav class="rail" aria-label="Sections">
+      <span class="rail-label">Contents</span>
+      <a href="#hosts">The four hosts</a>
+      <a href="#prereq">Prerequisites</a>
+      <a href="#cost">Accounts &amp; cost</a>
+      <a href="#instruments">Instruments</a>
+      <a href="#provider">Data provider</a>
+      <a href="#database">Shared database</a>
+      <a href="#local">Running locally</a>
+      <a href="#migrations">Migrations</a>
+      <a href="#deploy">Deploying</a>
+      <a href="#incomplete">What's incomplete</a>
+      <a href="#next">Read next</a>
+    </nav>
+
+    <main>
+
+      <section id="hosts">
+        <h2>The four hosts</h2>
+        <p class="lede">The bot runs on its own. The dashboard and the API are what a customer touches.</p>
+
+        <div class="hosts">
+          <div class="host-card">
+            <span class="nm">TelegramBot</span>
+            <span class="port none">console</span>
+            <p>The engine. Generates reports, scores past readings, publishes to Telegram and to the
+            static site. Also the one-off command runner.</p>
+          </div>
+          <div class="host-card">
+            <span class="nm">Dashboard</span>
+            <span class="port">port 5199</span>
+            <p>The Blazor web app: landing page, pricing, docs, sign-up, and the subscriber area —
+            reports, API keys, alerts, billing.</p>
+          </div>
+          <div class="host-card">
+            <span class="nm">API</span>
+            <span class="port">port 5006</span>
+            <p>The public REST API that subscribers call with an <code>X-Api-Key</code>.</p>
+          </div>
+          <div class="host-card">
+            <span class="nm">Migrator</span>
+            <span class="port none">console</span>
+            <p>Applies migrations and seeds the plan catalogue, then exits. For deployments running
+            more than one node.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="prereq">
+        <h2>Prerequisites</h2>
+        <p><strong>.NET 10 SDK. Nothing else</strong> — the database is SQLite, created on first run.</p>
+        <p>Two credentials are yours to supply, and both are deliberately empty in
+        <code>appsettings.json</code>:</p>
+
+        <div class="plate">
+          <div class="row">
+            <span class="lb">AlphaVantage:ApiKey</span>
+            <p>The market-data provider. <strong>Without a key the engine falls back to the bundled
+            CSV provider</strong>, so it runs and can be measured offline.</p>
+          </div>
+          <div class="row">
+            <span class="lb">Telegram:BotToken</span>
+            <p>Only if you want the Telegram channel. Everything else works without it.</p>
+          </div>
+        </div>
+
+        <p style="margin-top:14px">Keep them out of the repository. In development:</p>
+<pre class="term"><span class="c"># from QuantMarketEngine/src/QuantMarketEngine.TelegramBot</span>
+dotnet user-secrets set <span class="k">"AlphaVantage:ApiKey"</span> "YOUR_KEY"
+dotnet user-secrets set <span class="k">"Telegram:BotToken"</span>   "YOUR_TOKEN"</pre>
+        <p>In production, environment variables: <code>AlphaVantage__ApiKey</code>,
+        <code>Telegram__BotToken</code>.</p>
+      </section>
+
+      <section id="cost">
+        <h2>What you have to sign up for, and what it costs</h2>
+        <p class="lede">Two external accounts. <strong>Both have a free tier this engine fits
+        inside</strong>, and you can evaluate the whole platform without either.</p>
+
+        <h3>Market data — required for live prices</h3>
+        <div class="plate">
+          <div class="row"><span class="lb">Who</span><p>AlphaVantage by default. Free registration, no card.</p></div>
+          <div class="row"><span class="lb">What it costs</span><p><strong>4 provider calls per symbol per report.</strong> Measured, not estimated — the bot prints its own call count at the end of every run.</p></div>
+          <div class="row"><span class="lb">Free allowance</span><p><strong>25 calls a day</strong>, which is what the engine's own counter reports against.</p></div>
+          <div class="row"><span class="lb">So what fits</span><p>Three symbols a day is about 12 calls — comfortably inside it. This repository ships configured for three: EUR/USD, gold and silver.</p></div>
+          <div class="row"><span class="lb">When you'd pay</span><p>More symbols, or intraday timeframes. Their paid tiers start around $50/month.</p></div>
+        </div>
+
+        <div class="callout warn">
+          <h3>Check their current terms before relying on this</h3>
+          <p>The 25/day figure is what the engine reports against and was true when it was written.
+          <strong>An external provider's pricing is theirs to change, not ours.</strong> You are not
+          tied to them either — switching providers is a small job, described below.</p>
+        </div>
+
+        <h3>Telegram — optional</h3>
+        <p>Only if you want the publishing channel. A bot token is free from <code>@BotFather</code>
+        inside Telegram itself, in about a minute. <strong>Without it the engine runs completely
+        normally</strong> — it writes its reports to disk and to the static site, and simply does not
+        publish to Telegram.</p>
+
+        <h3>Running with no account at all</h3>
+        <p><code>CsvFileProvider</code> ships with the repository along with the historical bars, so
+        <strong>the engine runs, produces reports and can be measured end to end with no registration
+        anywhere.</strong> That is how the calibration studies in this project were produced — every
+        one of them states "zero provider calls". Use it to evaluate the engine before signing up for
+        anything.</p>
+
+        <h3>The whole monthly bill</h3>
+        <div class="costs">
+          <div class="cost-row"><span class="lbl">Market data — free tier at three symbols</span><span class="amt">$0</span></div>
+          <div class="cost-row"><span class="lbl">Telegram</span><span class="amt">$0</span></div>
+          <div class="cost-row"><span class="lbl">A small VPS</span><span class="amt">$5–7</span></div>
+          <div class="cost-row"><span class="lbl">A domain — about $12–15 a year</span><span class="amt">~$1</span></div>
+          <div class="cost-row"><span class="lbl">TLS certificate — Let's Encrypt</span><span class="amt">$0</span></div>
+          <div class="cost-row"><span class="lbl">Database — SQLite on the same host</span><span class="amt">$0</span></div>
+          <div class="cost-row total"><span class="lbl">Total</span><span class="amt">$6–8 / month</span></div>
+        </div>
+        <p style="margin-top:14px">Stripe has no monthly fee — it takes a percentage per
+        transaction. Outbound email has free tiers of a few hundred messages a day, far more than
+        password resets need.</p>
+      </section>
+
+      <section id="instruments">
+        <h2>Choosing which instruments to cover</h2>
+        <p class="lede"><strong>EUR/USD, gold and silver are a configuration, not a design.</strong>
+        Nothing in the analysis is written for a particular instrument — the layers receive candles
+        and a symbol code, and never ask what the code means.</p>
+
+        <h3>Where the list lives</h3>
+        <p><strong>In the database, managed from the web interface</strong> — <code>/admin/symbols</code>
+        in the dashboard. Add an instrument, pause one, resume one; the change takes effect on the next
+        scheduled run with nothing to restart and no file to edit.</p>
+        <p>Who can reach that page is <code>Admin:Emails</code> in the dashboard's configuration.
+        <strong>Leave it empty and nobody has access, including you.</strong> That is deliberate: an
+        empty list read as "no restriction" would open the page to every subscriber on a deployment
+        that simply forgot the setting.</p>
+        <p><code>Telegram:ActiveSymbols</code> is now <strong>only a seed</strong>. On a first run
+        against an empty database its contents become the initial rows; after that the table is
+        authoritative and the setting is not consulted again — so switching an instrument off in the
+        browser is not undone by the next restart.</p>
+        <p>A one-off run can still target a single instrument regardless of the list:</p>
+<pre class="term">dotnet run -- report GBPUSD 1D</pre>
+        <p><strong>Remember the cost:</strong> 4 provider calls per symbol per report. On a 25-a-day
+        free allowance, three symbols is comfortable and six is the ceiling.</p>
+
+        <h3>Adding one properly</h3>
+        <div class="steps">
+          <div class="step">
+            <h3>Check your provider carries it, and under what ticker</h3>
+            <p>Your vendor's code may not be <code>GBPUSD</code>. Translate inside the provider; the
+            engine keeps its own naming.</p>
+          </div>
+          <div class="step">
+            <h3>Add it on <code>/admin/symbols</code></h3>
+            <p>Code and, optionally, a display name. <strong>Re-adding one that is paused resumes
+            it</strong> — its bars, reports and calibration record come back with it.</p>
+          </div>
+          <div class="step">
+            <h3>Seed its history, once</h3>
+            <p>Press <strong>Fetch history</strong> on its row — the bot picks the request up within
+            a few seconds and the result appears under <em>Recent work</em>, with the number of
+            provider calls it spent.</p>
+            <p>The equivalent from a terminal, for every active instrument at once:</p>
+<pre class="term">dotnet run -- seedhistory   <span class="c"># full daily history, every active symbol</span>
+dotnet run -- backfill      <span class="c"># walk-forward scoring — fills the calibration cards</span></pre>
+            <p><code>backfill</code> is still command-line only: it is a long sweep over the whole
+            history rather than a request the page should wait on. Without either, the instrument
+            still produces reports — it simply has no track record yet, <strong>and says so</strong>.</p>
+          </div>
+          <div class="step">
+            <h3>Give it a quoting convention if it needs one</h3>
+            <p><code>PriceFormatter</code> decides decimal places from the symbol code: anything
+            containing <code>JPY</code> → 3, <code>XAU</code>/<code>GOLD</code> → 2,
+            <code>XAG</code>/<code>SILVER</code> → 3, <strong>everything else → 5</strong>. That
+            default is right for FX majors and wrong for an index or a crypto pair. It is one small
+            class with one method, and adding a rule is a two-line change.</p>
+          </div>
+        </div>
+
+        <div class="callout">
+          <h3>"Report now" does not publish</h3>
+          <p>It generates a reading and puts it in the review queue, exactly where a scheduled one
+          goes. Nothing reaches Telegram or the site until a human approves it.</p>
+        </div>
+
+        <div class="callout warn">
+          <h3>This gap is on record</h3>
+          <p>Gold once printed at five decimals — <code>4021.26444</code> — because the formatter only
+          knew about JPY. <strong>A price a desk cannot read costs more credibility than it seems to.</strong></p>
+        </div>
+
+        <h3>What a new instrument does not have on day one</h3>
+        <p><strong>A calibration record.</strong> The engine will not claim one it has not earned —
+        the calibration page prints "sample too small" until <strong>20 scored outcomes</strong> exist
+        for that symbol, and the confidence figure falls back to an absolute reading rather than a
+        rank inside a history it does not yet have. <code>backfill</code> shortens this by scoring the
+        past in one pass; after that the record accrues daily.</p>
+
+        <div class="callout alert">
+          <h3>One real limit — and it is about data, not the engine</h3>
+          <p><strong>Gold and silver run on a feed that gives one price per day with no intraday
+          range.</strong> The consequence is structural and worth understanding before you add similar
+          instruments:</p>
+          <ul>
+            <li>Market quality settles at <strong>FAIR</strong> and stays there.</li>
+            <li>Several readings are <strong>deliberately withheld</strong> rather than estimated from
+            a range that does not exist.</li>
+            <li>Silver's VaR calibration still reads "sample too small", because the outcomes it can
+            score are fewer.</li>
+          </ul>
+          <p style="margin-top:10px"><strong>More history does not fix this</strong> —
+          <code>seedhistory</code> will not move it. It is the shape of the data. Fixing it needs a
+          provider that supplies intraday movement, which is a paid tier.</p>
+          <p>So when you add an instrument, ask what its feed actually gives you. A full OHLC daily
+          bar gets you everything EUR/USD has. A single closing price gets you a working but quieter
+          report — <strong>and the engine will tell the reader which one it is rather than paper over
+          it</strong>.</p>
+        </div>
+      </section>
+
+      <section id="provider">
+        <h2>Using a different data provider</h2>
+        <p class="lede"><strong>Nothing ties this engine to AlphaVantage.</strong> The analysis layers
+        never see a vendor — they ask for candles through an interface, and the vendor sits behind it.
+        Two implementations already exist, so the pattern is not theoretical:
+        <code>AlphaVantageProvider</code> (HTTP) and <code>CsvFileProvider</code> (files on disk).</p>
+
+        <h3>What a provider has to supply</h3>
+        <p>Two interfaces, in <code>Domain/Interfaces</code>, deliberately small:</p>
+<pre class="term">public interface <span class="k">IMarketDataProvider</span>
+{
+    Task&lt;IReadOnlyList&lt;MarketSnapshot&gt;&gt; FetchAsync(
+        string symbol, string timeframe, CancellationToken ct = default);
+}
+
+public interface <span class="k">IHistoricalMarketDataProvider</span>
+{
+    Task&lt;IReadOnlyList&lt;MarketSnapshot&gt;&gt; FetchHistoryAsync(
+        string symbol, string timeframe, CancellationToken ct = default);
+}</pre>
+        <p>They are separate on purpose: the first fetches only the recent window the live analysis
+        needs, the second returns as much history as the source will give for the walk-forward
+        backtest. <strong>One class may implement both</strong>, which is what both existing providers
+        do.</p>
+
+        <p>And a <code>MarketSnapshot</code> is what you would expect — nothing vendor-shaped in it:</p>
+        <div class="plate">
+          <div class="row"><span class="lb">Symbol · Timeframe · Timestamp</span><p>Which bar this is.</p></div>
+          <div class="row"><span class="lb">Open · High · Low · Close</span><p>The OHLC.</p></div>
+          <div class="row"><span class="lb">Volume</span><p>Nullable — FX feeds often have none, and the engine does not require it.</p></div>
+          <div class="row"><span class="lb">DataQualityScore</span><p>Your own 0–100 assessment of the bar.</p></div>
+        </div>
+
+        <h3>The three steps</h3>
+        <div class="steps">
+          <div class="step">
+            <h3>Write the class</h3>
+            <p>Put it in <code>Infrastructure/DataProviders</code> beside the other two, and return
+            snapshots sorted oldest-first.</p>
+          </div>
+          <div class="step">
+            <h3>Register it</h3>
+            <p>In <code>ServiceCollectionExtensions.cs</code>, where the two existing providers are
+            registered, point both interfaces at your class:</p>
+<pre class="term">services.AddScoped&lt;IMarketDataProvider, <span class="k">MyVendorProvider</span>&gt;();
+services.AddScoped&lt;IHistoricalMarketDataProvider, <span class="k">MyVendorProvider</span>&gt;();</pre>
+          </div>
+          <div class="step">
+            <h3>Map the symbols</h3>
+            <p>Your vendor's ticker for EUR/USD may not be <code>EURUSD</code>. Translate inside your
+            provider — the rest of the engine keeps using its own symbol names.</p>
+          </div>
+        </div>
+        <p style="margin-top:16px"><strong>That is the whole change.</strong> No analysis layer, no
+        renderer, no report and no test touches a vendor name.</p>
+
+        <div class="callout">
+          <h3>The pre-publication price check is deliberately not your vendor</h3>
+          <p>Before a report publishes, the gate cross-checks the session's close against the
+          <strong>ECB reference rate</strong> — free, key-less, and registered outside the provider
+          branch on purpose, <strong>so that the feed cannot certify itself</strong>. Leave it as it
+          is: if you swap your main provider, that second opinion keeps working and keeps being
+          independent.</p>
+        </div>
+
+        <div class="callout warn">
+          <h3>A rate-limiting handler is wired for AlphaVantage specifically</h3>
+          <p>If your vendor has a different limit, write the equivalent for it — or drop it if they
+          have none. The engine counts its own calls either way, and prints the total at the end of
+          every run.</p>
+        </div>
+
+        <h3>If you have your own data</h3>
+        <p><code>CsvFileProvider</code> already reads OHLC from files on disk. If you have history in
+        CSV — from a broker export, a terminal, or a vendor you already pay for — <strong>you may not
+        need a new class at all</strong>: point the CSV data directory at your files and the engine
+        runs on them. That is exactly how every calibration study in this project was produced.</p>
+      </section>
+
+      <section id="database">
+        <h2>The one thing that catches people</h2>
+        <div class="callout alert">
+          <h3>All three hosts must point at the same SQLite file</h3>
+          <p><strong>They do not by default.</strong> Each would otherwise create its own
+          <code>quant.db</code> beside itself, and you would get a dashboard where sign-up works, no
+          reports ever appear, and <strong>nothing in the logs looks wrong</strong>.</p>
+        </div>
+
+        <p>This repository already wires them together by relative path:</p>
+        <div class="plate">
+          <div class="row"><span class="lb">TelegramBot</span><p><code>Data Source=quant.db</code></p></div>
+          <div class="row"><span class="lb">API</span><p><code>Data Source=../QuantMarketEngine.TelegramBot/quant.db</code></p></div>
+          <div class="row"><span class="lb">Dashboard</span><p><code>Data Source=../QuantMarketEngine.TelegramBot/quant.db</code></p></div>
+        </div>
+
+        <p style="margin-top:14px">That works when the three run from their project folders on one
+        machine, which is the development layout. <strong>On a server, set all three to one absolute
+        path</strong> — a volume the containers share, or a path on the host:</p>
+<pre class="term">ConnectionStrings__Quant=Data Source=/data/quant.db</pre>
+        <p>If you move to PostgreSQL, the Npgsql provider is already referenced.</p>
+      </section>
+
+      <section id="local">
+        <h2>Running it locally</h2>
+        <p class="lede">Three terminals, or run whichever you need.</p>
+
+        <p><strong>The engine</strong> — generates today's report for every active symbol:</p>
+<pre class="term"><span class="c"># from QuantMarketEngine/src/QuantMarketEngine.TelegramBot</span>
+dotnet run -- report</pre>
+
+        <p><strong>The dashboard</strong> — the site a subscriber signs into:</p>
+<pre class="term">dotnet run --project QuantMarketEngine/src/QuantMarketEngine.Dashboard --urls http://localhost:5199</pre>
+
+        <p><strong>The API</strong> — what an <code>X-Api-Key</code> calls:</p>
+<pre class="term">dotnet run --project QuantMarketEngine/src/QuantMarketEngine.API --urls http://localhost:5006</pre>
+
+        <p>Open <code>http://localhost:5199</code>, create an account, and you land on the free
+        Observer plan.</p>
+      </section>
+
+      <section id="migrations">
+        <h2>Migrations and seeding</h2>
+        <p><strong>On a single node you do nothing.</strong> <code>Database:MigrateOnStartup</code>
+        defaults to <code>true</code>, so the dashboard and the API migrate and seed on boot.</p>
+        <p><strong>On more than one node, turn that off</strong> — otherwise every instance races
+        <code>Migrate()</code> against the same database at start-up. Set
+        <code>Database__MigrateOnStartup=false</code> on the nodes and run the migrator once as a
+        deploy step:</p>
+<pre class="term">dotnet run --project QuantMarketEngine/src/QuantMarketEngine.Migrator</pre>
+        <p>It is idempotent and safe to re-run.</p>
+        <p>Seeding creates the three plans the pricing page renders from — <strong>Observer $0,
+        Analyst $49/mo, Desk $79/mo</strong> — with their entitlements. Change a price in
+        <code>SaasPlanSeeder</code> and it reconciles on the next boot; <strong>the pricing page and
+        the entitlement checks both read the same catalogue, so they cannot disagree.</strong></p>
+      </section>
+
+      <section id="deploy">
+        <h2>Deploying</h2>
+        <p class="lede">Four Dockerfiles are in the repository.</p>
+        <div class="plate">
+          <div class="row"><span class="lb">Dockerfile.bot</span><p>The engine. No health check.</p></div>
+          <div class="row"><span class="lb">Dockerfile.dashboard</span><p>The web app. Health check <code>:8081/health/live</code></p></div>
+          <div class="row"><span class="lb">Dockerfile.api</span><p>The public API. Health check <code>:8080/health/live</code></p></div>
+          <div class="row"><span class="lb">Dockerfile.migrator</span><p>Migrations and seed. No health check.</p></div>
+        </div>
+        <p style="margin-top:14px">Both web hosts expose <code>/health/live</code> (is the process up)
+        and <code>/health/ready</code> (can it reach the database) — point your orchestrator's
+        liveness and readiness probes at those respectively.</p>
+        <p>A minimal deployment is: run the migrator once, then the dashboard, the API and the bot,
+        all three with <code>ConnectionStrings__Quant</code> pointing at one shared volume.</p>
+        <div class="callout warn">
+          <h3>Put TLS in front of it</h3>
+          <p>Neither web host terminates TLS itself. Use a reverse proxy.</p>
+        </div>
+      </section>
+
+      <section id="incomplete">
+        <h2>What is honestly incomplete</h2>
+
+        <div class="callout">
+          <h3>Nothing is missing from the billing path — but it has never met a live card</h3>
+          <p>Stripe hosted Checkout, the hosted Billing Portal and a signature-verified webhook
+          covering activation, status changes and cancellation are all implemented, behind a provider
+          interface so another PSP can be swapped in. <strong>Card data never touches the platform.</strong></p>
+          <p>It activates the moment <code>Stripe__SecretKey</code>,
+          <code>Stripe__WebhookSecret</code> and the price ids are set. Until they are, the dashboard
+          detects that, routes upgrades to manual activation, and says so to the user rather than
+          failing at the payment step. <strong>What you are inheriting is a built integration with no
+          transaction history, not an unbuilt one.</strong></p>
+          <p>The plans and their enforcement are separate from that and fully exercised: an Observer
+          account really is served the delayed report, and the institutional endpoint really does
+          return <code>403 Missing entitlement: reports.institutional</code>.</p>
+        </div>
+
+        <div class="callout warn">
+          <h3>Outbound email</h3>
+          <p><code>IEmailSender</code> has a no-op implementation for development and an SMTP one that
+          activates when <code>Email:SmtpHost</code> is set. <strong>Until you set it, password-reset
+          emails become log lines</strong> — which means the reset flow silently does nothing.</p>
+        </div>
+      </section>
+
+      <section id="next">
+        <h2>Where to read next</h2>
+        <div class="plate">
+          <div class="row"><span class="lb">COMMANDS.md</span><p>Every engine command.</p></div>
+          <div class="row"><span class="lb">configuration.md</span><p>Every configuration key the code reads.</p></div>
+          <div class="row"><span class="lb">web-publishing-setup.md</span><p>The static site publisher.</p></div>
+          <div class="row"><span class="lb">system-explained/numbers/</span><p>Why each engine constant has the value it has.</p></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer>
+    <span>Metric Risk · QuantMarketEngine · running the platform</span>
+    <span>checked against the repository · 2026-08-31</span>
+  </footer>
+
+</div>
+
+</body>
+</html>

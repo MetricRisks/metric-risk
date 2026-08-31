@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>توثيق Metric Risk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Kufi+Arabic:wght@500;600&display=swap">
+<style>
+  :root {
+    --ground:#EAEEF0; --surface:#FFFFFF; --surface-2:#F4F7F8;
+    --line:#D2DCDF; --line-soft:#E3EAEC;
+    --ink:#12202A; --ink-2:#38505D; --muted:#61757F;
+    --accent:#0F6F5C; --accent-soft:#E2F0EC;
+    --warn:#8C5A0C; --warn-soft:#F7EEDD;
+    --alert:#98303C; --alert-soft:#F8E7E8;
+    --code-bg:#EDF2F3; --term-bg:#10202A; --term-ink:#C9DBE1;
+    --shadow:0 1px 2px rgba(18,32,42,.05), 0 8px 24px -18px rgba(18,32,42,.30);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#0C151B; --surface:#131F27; --surface-2:#182630;
+      --line:#2A3B46; --line-soft:#1F2E38;
+      --ink:#DCE6EA; --ink-2:#AEC1C9; --muted:#8399A3;
+      --accent:#4DBFA5; --accent-soft:#12302B;
+      --warn:#D9A65A; --warn-soft:#322612;
+      --alert:#E08A94; --alert-soft:#351A1E;
+      --code-bg:#1B2A34; --term-bg:#08121A; --term-ink:#B6CCD4;
+      --shadow:0 1px 2px rgba(0,0,0,.30), 0 8px 24px -18px rgba(0,0,0,.70);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:#0C151B; --surface:#131F27; --surface-2:#182630;
+    --line:#2A3B46; --line-soft:#1F2E38;
+    --ink:#DCE6EA; --ink-2:#AEC1C9; --muted:#8399A3;
+    --accent:#4DBFA5; --accent-soft:#12302B;
+    --warn:#D9A65A; --warn-soft:#322612;
+    --alert:#E08A94; --alert-soft:#351A1E;
+    --code-bg:#1B2A34; --term-bg:#08121A; --term-ink:#B6CCD4;
+    --shadow:0 1px 2px rgba(0,0,0,.30), 0 8px 24px -18px rgba(0,0,0,.70);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground); color: var(--ink);
+    font-family: "IBM Plex Sans Arabic", ui-sans-serif, system-ui, Segoe UI, Tahoma, sans-serif;
+    font-size: 16px; line-height: 1.88; -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px 96px; }
+
+  code, .lb, .def, .nm, .port, .amt, pre.term, .eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    direction: ltr; unicode-bidi: isolate; font-variant-ligatures: none;
+  }
+
+  /* masthead */
+  .masthead { padding: 56px 0 34px; border-bottom: 1px solid var(--line);
+              display: flex; flex-direction: column; gap: 18px; }
+  .eyebrow { font-size: 11.5px; font-weight: 500; letter-spacing: .16em;
+             text-transform: uppercase; color: var(--accent); align-self: flex-start; }
+  h1 { font-family: "Noto Kufi Arabic", "IBM Plex Sans Arabic", sans-serif; font-weight: 600;
+       font-size: clamp(1.7rem, 1.2rem + 2.1vw, 2.7rem); line-height: 1.42;
+       text-wrap: balance; margin: 0; }
+  .standfirst { font-size: 1.05rem; color: var(--ink-2); max-width: 62ch; margin: 0; }
+  .standfirst strong { color: var(--ink); font-weight: 600; }
+
+  .headline-stat { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+                   margin-top: 8px; padding: 16px 20px; background: var(--accent-soft);
+                   border-radius: 6px; align-self: flex-start; }
+  .headline-stat .fig { font-family: "IBM Plex Mono", monospace; direction: ltr;
+                        font-size: 1.7rem; font-weight: 600; color: var(--accent);
+                        font-variant-numeric: tabular-nums; line-height: 1; }
+  .headline-stat .cap { font-size: 14px; color: var(--ink-2); max-width: 42ch; }
+
+  /* layout */
+  .columns { display: grid; grid-template-columns: 210px minmax(0,1fr);
+             gap: 56px; align-items: start; padding-top: 40px; }
+  @media (max-width: 900px) { .columns { grid-template-columns: minmax(0,1fr); gap: 28px; } }
+
+  .rail { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 3px; }
+  @media (max-width: 900px) {
+    .rail { position: static; flex-direction: row; overflow-x: auto; gap: 8px;
+            padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+  }
+  .rail-label { font-size: 11.5px; color: var(--muted); padding: 0 10px 8px; }
+  @media (max-width: 900px) { .rail-label { display: none; } }
+  .rail a { display: block; white-space: nowrap; padding: 6px 10px; border-radius: 4px;
+            border-inline-start: 2px solid transparent; color: var(--ink-2);
+            text-decoration: none; font-size: 14px;
+            transition: background .14s, color .14s, border-color .14s; }
+  .rail a:hover, .rail a:focus-visible { background: var(--surface); color: var(--ink);
+            border-inline-start-color: var(--accent); }
+  @media (max-width: 900px) {
+    .rail a { border-inline-start: none; border-bottom: 2px solid transparent; }
+    .rail a:hover, .rail a:focus-visible { border-inline-start: none; border-bottom-color: var(--accent); }
+  }
+
+  main { display: flex; flex-direction: column; gap: 54px; min-width: 0; }
+  section { scroll-margin-top: 20px; }
+
+  h2 { font-family: "Noto Kufi Arabic", "IBM Plex Sans Arabic", sans-serif; font-weight: 600;
+       font-size: 1.42rem; line-height: 1.5; margin: 0 0 10px; text-wrap: balance; }
+  h3 { font-family: "IBM Plex Sans Arabic", sans-serif; font-weight: 600;
+       font-size: 1.04rem; line-height: 1.7; margin: 26px 0 8px; }
+
+  p { margin: 0 0 12px; color: var(--ink-2); max-width: 68ch; }
+  p:last-child { margin-bottom: 0; }
+  strong { color: var(--ink); font-weight: 600; }
+
+  code { font-size: .875em; background: var(--code-bg); border-radius: 3px;
+         padding: 1px 5px; overflow-wrap: anywhere; }
+
+  pre.term { background: var(--term-bg); color: var(--term-ink); border-radius: 6px;
+             padding: 16px 18px; margin: 14px 0; font-size: 13px; line-height: 1.75;
+             overflow-x: auto; text-align: left; }
+  pre.term .c { color: #6E8F9B; }
+  pre.term .k { color: #63C9AC; }
+
+  /* host cards */
+  .hosts { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px,1fr)); gap: 14px; }
+  .host-card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+               padding: 16px 18px; box-shadow: var(--shadow);
+               display: flex; flex-direction: column; gap: 8px; }
+  .host-card .nm { font-size: 14px; font-weight: 600; color: var(--ink); align-self: flex-start; }
+  .host-card .port { font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+                     color: var(--accent); background: var(--accent-soft);
+                     padding: 2px 7px; border-radius: 3px; align-self: flex-start; }
+  .host-card .port.none { color: var(--muted); background: var(--surface-2); }
+  .host-card p { font-size: 14px; margin: 0; }
+
+  /* costs */
+  .costs { background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+           box-shadow: var(--shadow); overflow: hidden; }
+  .cost-row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+              padding: 12px 20px; border-top: 1px solid var(--line-soft); font-size: 14.5px; }
+  .cost-row:first-child { border-top: none; }
+  .cost-row .amt { font-variant-numeric: tabular-nums; font-weight: 500;
+                   color: var(--ink); white-space: nowrap; }
+  .cost-row.total { background: var(--surface-2); font-weight: 600; border-top: 1px solid var(--line); }
+  .cost-row.total .amt { color: var(--accent); font-size: 1.05rem; }
+  .cost-row .lbl { color: var(--ink-2); }
+  .cost-row.total .lbl { color: var(--ink); }
+
+  /* plate rows */
+  .plate { background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+           box-shadow: var(--shadow); overflow: hidden; }
+  .row { display: grid; grid-template-columns: 178px minmax(0,1fr); gap: 18px;
+         padding: 14px 20px; border-top: 1px solid var(--line-soft); align-items: start; }
+  .row:first-child { border-top: none; }
+  @media (max-width: 620px) { .row { grid-template-columns: minmax(0,1fr); gap: 6px; } }
+  .row .lb { font-size: 13px; font-weight: 500; color: var(--ink); overflow-wrap: anywhere; }
+  .row .lb.ar { font-family: "IBM Plex Sans Arabic", sans-serif; direction: rtl; font-size: 14px; }
+  .row p { font-size: 14px; margin: 0; }
+
+  /* steps */
+  .steps { display: flex; flex-direction: column; gap: 2px; counter-reset: s; }
+  .step { background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+          padding: 18px 58px 18px 20px; position: relative; box-shadow: var(--shadow); }
+  .step::before { counter-increment: s; content: counter(s);
+                  position: absolute; inset-inline-start: 20px; top: 18px;
+                  font-family: "IBM Plex Mono", monospace; font-size: 12px; font-weight: 600;
+                  color: var(--accent); background: var(--accent-soft);
+                  width: 24px; height: 24px; border-radius: 50%;
+                  display: grid; place-items: center; }
+  .step h3 { margin: 0 0 6px; font-size: 1rem; }
+  .step p { font-size: 14.5px; }
+
+  /* callouts */
+  .callout { background: var(--surface); border: 1px solid var(--line);
+             border-inline-start: 3px solid var(--accent); border-radius: 6px;
+             padding: 18px 20px; margin: 16px 0; }
+  .callout.warn  { border-inline-start-color: var(--warn); }
+  .callout.alert { border-inline-start-color: var(--alert); }
+  .callout h3 { margin: 0 0 6px; font-size: 1rem;
+                font-family: "Noto Kufi Arabic", "IBM Plex Sans Arabic", sans-serif;
+                font-weight: 500; line-height: 1.65; }
+  .callout p { font-size: 14.5px; }
+  .callout ul { margin: 8px 0 0; padding-inline-start: 20px;
+                display: flex; flex-direction: column; gap: 6px; }
+  .callout li { font-size: 14.5px; color: var(--ink-2); max-width: 66ch; }
+
+  .lede { font-size: 1rem; color: var(--ink-2); max-width: 66ch; margin: 0 0 18px; }
+
+  footer { margin-top: 64px; padding-top: 22px; border-top: 1px solid var(--line);
+           display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between;
+           font-size: 12.5px; color: var(--muted); }
+
+  a { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+<style>
+  .row .lb.plain { font-family: "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif; direction: inherit; unicode-bidi: normal; font-size: 1.02rem; font-weight: 600; }
+  .row .lb.plain a { color: var(--accent); text-decoration: none; }
+  .row .lb.plain a:hover, .row .lb.plain a:focus-visible { text-decoration: underline; }
+  .row { grid-template-columns: 230px minmax(0,1fr); align-items: baseline; }
+  @media (max-width: 620px) { .row { grid-template-columns: minmax(0,1fr); } }
+</style>
+<style>
+  header.site {
+    max-width: 1180px; margin: 0 auto; padding: 18px 24px 0;
+    display: flex; gap: 1.25rem; align-items: baseline;
+    font-size: .875rem; flex-wrap: wrap;
+  }
+  header.site a { color: var(--ink-2); text-decoration: none; }
+  header.site a:hover, header.site a:focus-visible { color: var(--accent); text-decoration: underline; }
+  header.site a[aria-current="page"] { color: var(--accent); font-weight: 600; }
+  header.site .lang { margin-inline-start: auto; font-weight: 600; }
+  header.site + .wrap .masthead { padding-top: 30px; }
+</style>
+</head>
+<body>
+  <header class="site">
+    <a href="index.html">الرئيسية</a>
+    <a href="calibration.html">سجل المعايرة</a>
+    <a href="disclaimer.html">إخلاء المسؤولية</a>
+    <a href="docs.html" aria-current="page">التوثيق</a>
+    <a class="lang" href="docs-en.html" hreflang="en">English</a>
+  </header>
+
+  <div class="wrap" dir="rtl" lang="ar">
+    <header class="masthead">
+      <span class="eyebrow">Metric Risk · QuantMarketEngine</span>
+      <h1>التوثيق</h1>
+      <p class="standfirst">
+        كيف بتنشغّل المنصة، وشو بيعمل كل أمر، وكل إعداد بيقراه الكود.
+        <strong>مكتوبة على المستودع مش من الذاكرة</strong> — وكل صفحة بتقول كيف تتأكد منها.
+      </p>
+    </header>
+    <div class="columns" style="grid-template-columns: minmax(0,1fr);">
+      <main>
+        <section>
+          <div class="plate">
+            <div class="row">
+              <span class="lb plain"><a href="running.html">تشغيل المنصة</a></span>
+              <p>المستضيفات الأربعة، والحسابات المطلوبة، والفاتورة الشهرية، وإضافة الأدوات، وتبديل
+              مزوّد البيانات، والنشر.</p>
+            </div>
+            <div class="row">
+              <span class="lb plain"><a href="commands.html">أوامر المحرّك</a></span>
+              <p>كل أمر بيولّد تقريراً أو بيدقّقه — وشو منهم بياكل من حصة المزوّد وشو بيقرأ المخزّن بس.</p>
+            </div>
+            <div class="row">
+              <span class="lb plain"><a href="configuration.html">مرجع الإعدادات</a></span>
+              <p>كل قسم إعدادات بيقراه الكود، وقيمته الافتراضية، وشو بيتشحن مفعّل وشو مطفي.</p>
+            </div>
+          </div>
+        </section>
+
+        <section style="margin-top:44px">
+          <h2>لمن بيقيّم المنصة نفسها</h2>
+          <p class="lede">الصفحات اللي فوق عن <strong>تشغيل</strong> Metric Risk. وهاي الصفحة عن
+          <strong>الاستحواذ عليها</strong> — مكتوبة لمشترٍ تقني، ومش الصفحة اللي بتقرأها إذا إنت هون
+          كقارئ للتحاليل.</p>
+          <div class="plate">
+            <div class="row">
+              <span class="lb plain"><a href="handover.html">شو بترث فعلاً</a></span>
+              <p>شو بينتقل إلك، والإعدادات اللي ما إلها قيمة افتراضية آمنة، والسلوكيات اللي بتنقرأ
+              كأخطاء إذا ما حدا حكالك، والحدود المعروفة بصراحة — والأوامر اللي بتفحص فيها كل ادعاء
+              في الصفحة.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+</body>
+</html>

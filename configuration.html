@@ -1,0 +1,1273 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مرجع إعدادات Metric Risk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Kufi+Arabic:wght@500;600&display=swap">
+
+<style>
+  :root {
+    --ground:      #EAEEF0;
+    --surface:     #FFFFFF;
+    --surface-2:   #F4F7F8;
+    --line:        #D2DCDF;
+    --line-soft:   #E3EAEC;
+    --ink:         #12202A;
+    --ink-2:       #38505D;
+    --muted:       #61757F;
+    --accent:      #0F6F5C;
+    --accent-soft: #E2F0EC;
+    --warn:        #8C5A0C;
+    --warn-soft:   #F7EEDD;
+    --alert:       #98303C;
+    --alert-soft:  #F8E7E8;
+    --code-bg:     #EDF2F3;
+    --shadow:      0 1px 2px rgba(18,32,42,.05), 0 8px 24px -18px rgba(18,32,42,.30);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #0C151B;
+      --surface:     #131F27;
+      --surface-2:   #182630;
+      --line:        #2A3B46;
+      --line-soft:   #1F2E38;
+      --ink:         #DCE6EA;
+      --ink-2:       #AEC1C9;
+      --muted:       #8399A3;
+      --accent:      #4DBFA5;
+      --accent-soft: #12302B;
+      --warn:        #D9A65A;
+      --warn-soft:   #322612;
+      --alert:       #E08A94;
+      --alert-soft:  #351A1E;
+      --code-bg:     #1B2A34;
+      --shadow:      0 1px 2px rgba(0,0,0,.30), 0 8px 24px -18px rgba(0,0,0,.70);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #0C151B;
+    --surface:     #131F27;
+    --surface-2:   #182630;
+    --line:        #2A3B46;
+    --line-soft:   #1F2E38;
+    --ink:         #DCE6EA;
+    --ink-2:       #AEC1C9;
+    --muted:       #8399A3;
+    --accent:      #4DBFA5;
+    --accent-soft: #12302B;
+    --warn:        #D9A65A;
+    --warn-soft:   #322612;
+    --alert:       #E08A94;
+    --alert-soft:  #351A1E;
+    --code-bg:     #1B2A34;
+    --shadow:      0 1px 2px rgba(0,0,0,.30), 0 8px 24px -18px rgba(0,0,0,.70);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "IBM Plex Sans Arabic", ui-sans-serif, system-ui, Segoe UI, Tahoma, sans-serif;
+    font-size: 16px;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px 96px;
+  }
+
+  /* code and identifiers stay left-to-right inside Arabic text */
+  code, .key, .def, .flow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    direction: ltr;
+    unicode-bidi: isolate;
+    font-variant-ligatures: none;
+  }
+
+  /* ---------- masthead ---------- */
+
+  .masthead {
+    padding: 56px 0 32px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    direction: ltr;
+    unicode-bidi: isolate;
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    align-self: flex-start;
+  }
+
+  h1 {
+    font-family: "Noto Kufi Arabic", "IBM Plex Sans Arabic", sans-serif;
+    font-weight: 600;
+    font-size: clamp(1.7rem, 1.2rem + 2.1vw, 2.7rem);
+    line-height: 1.42;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .standfirst {
+    font-size: 1.05rem;
+    color: var(--ink-2);
+    max-width: 64ch;
+    margin: 0;
+  }
+
+  .standfirst strong { color: var(--ink); font-weight: 600; }
+
+  .meta-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 28px;
+    padding-top: 6px;
+  }
+
+  .meta { display: flex; flex-direction: column; gap: 2px; }
+
+  .meta dt {
+    font-size: 11.5px;
+    letter-spacing: .02em;
+    color: var(--muted);
+  }
+
+  .meta dd {
+    margin: 0;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    direction: ltr;
+    unicode-bidi: isolate;
+    font-size: 13.5px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+
+  .meta.ar dd {
+    font-family: "IBM Plex Sans Arabic", sans-serif;
+    direction: rtl;
+  }
+
+  /* ---------- layout ---------- */
+
+  .columns {
+    display: grid;
+    grid-template-columns: 224px minmax(0, 1fr);
+    gap: 56px;
+    align-items: start;
+    padding-top: 40px;
+  }
+
+  @media (max-width: 900px) {
+    .columns { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  }
+
+  /* ---------- index rail ---------- */
+
+  .rail {
+    position: sticky;
+    top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  @media (max-width: 900px) {
+    .rail {
+      position: static;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 8px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+  }
+
+  .rail-label {
+    font-size: 11.5px;
+    letter-spacing: .02em;
+    color: var(--muted);
+    padding: 0 10px 8px;
+  }
+
+  @media (max-width: 900px) { .rail-label { display: none; } }
+
+  .rail a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+    white-space: nowrap;
+    padding: 6px 10px;
+    border-radius: 4px;
+    border-inline-start: 2px solid transparent;
+    color: var(--ink-2);
+    text-decoration: none;
+    font-size: 14px;
+    transition: background .14s, color .14s, border-color .14s;
+  }
+
+  .rail a:hover,
+  .rail a:focus-visible {
+    background: var(--surface);
+    color: var(--ink);
+    border-inline-start-color: var(--accent);
+  }
+
+  .rail a .n {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    direction: ltr;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+  }
+
+  @media (max-width: 900px) {
+    .rail a { border-inline-start: none; border-bottom: 2px solid transparent; }
+    .rail a:hover, .rail a:focus-visible { border-inline-start: none; border-bottom-color: var(--accent); }
+  }
+
+  /* ---------- sections ---------- */
+
+  main { display: flex; flex-direction: column; gap: 52px; min-width: 0; }
+
+  section { scroll-margin-top: 20px; }
+
+  h2 {
+    font-family: "Noto Kufi Arabic", "IBM Plex Sans Arabic", sans-serif;
+    font-weight: 600;
+    font-size: 1.42rem;
+    line-height: 1.5;
+    margin: 0 0 6px;
+    text-wrap: balance;
+  }
+
+  h3.mono {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    direction: ltr;
+    unicode-bidi: isolate;
+    font-weight: 600;
+    font-size: 1.02rem;
+    margin: 0;
+  }
+
+  .sec-note {
+    color: var(--ink-2);
+    max-width: 66ch;
+    margin: 0 0 22px;
+    font-size: 15px;
+  }
+
+  .sec-note strong { color: var(--ink); font-weight: 600; }
+
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+  }
+
+  .host {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    direction: ltr;
+    unicode-bidi: isolate;
+    font-size: 11px;
+    letter-spacing: .08em;
+    color: var(--muted);
+  }
+
+  .host.ar {
+    font-family: "IBM Plex Sans Arabic", sans-serif;
+    direction: rtl;
+    letter-spacing: 0;
+    font-size: 12.5px;
+  }
+
+  /* ---------- setting plate ---------- */
+
+  .plate {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .setting {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 18px 20px;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .setting:first-child { border-top: none; }
+
+  .setting-head {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+  }
+
+  .key {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--code-bg);
+    border-radius: 4px;
+    padding: 2px 7px;
+    overflow-wrap: anywhere;
+  }
+
+  p code, li code {
+    font-size: .875em;
+    background: var(--code-bg);
+    border-radius: 3px;
+    padding: 1px 5px;
+    overflow-wrap: anywhere;
+  }
+
+  .def {
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .def b { font-weight: 500; color: var(--ink-2); }
+
+  .setting p {
+    margin: 0;
+    font-size: 14.5px;
+    color: var(--ink-2);
+    max-width: 72ch;
+  }
+
+  .setting p + p { margin-top: 4px; }
+
+  .setting strong { color: var(--ink); font-weight: 600; }
+
+  /* ---------- chips ---------- */
+
+  .chip {
+    font-size: 11.5px;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 3px;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    line-height: 1.6;
+  }
+
+  .chip-req   { background: var(--alert-soft);  color: var(--alert);  border-color: var(--alert); }
+  .chip-sec   { background: var(--alert-soft);  color: var(--alert); }
+  .chip-off   { background: var(--warn-soft);   color: var(--warn); }
+  .chip-on    { background: var(--accent-soft); color: var(--accent); }
+  .chip-diff  { background: var(--warn-soft);   color: var(--warn);  border-color: var(--warn); }
+
+  /* ---------- callout ---------- */
+
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-inline-start: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .callout.warn { border-inline-start-color: var(--warn); }
+
+  .callout h3 {
+    font-family: "Noto Kufi Arabic", "IBM Plex Sans Arabic", sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .callout p, .callout li {
+    margin: 0;
+    font-size: 14.5px;
+    color: var(--ink-2);
+    max-width: 70ch;
+  }
+
+  .callout ul {
+    margin: 0;
+    padding-inline-start: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .callout strong { color: var(--ink); font-weight: 600; }
+
+  /* ---------- prose ---------- */
+
+  .prose { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+  .prose p { margin: 0; font-size: 14.5px; color: var(--ink-2); max-width: 70ch; }
+  .prose strong { color: var(--ink); font-weight: 600; }
+
+  .flow {
+    background: var(--surface-2);
+    border: 1px solid var(--line-soft);
+    border-radius: 6px;
+    padding: 16px 18px;
+    font-size: 12.5px;
+    line-height: 2;
+    color: var(--ink-2);
+    overflow-x: auto;
+  }
+
+  .flow b { color: var(--accent); font-weight: 500; }
+
+  .step-ar {
+    font-family: "IBM Plex Sans Arabic", sans-serif;
+    direction: rtl;
+    unicode-bidi: isolate;
+  }
+
+  /* ---------- routes ---------- */
+
+  .routes { display: flex; flex-direction: column; }
+
+  .route {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 18px;
+    padding: 14px 20px;
+    border-top: 1px solid var(--line-soft);
+    align-items: start;
+  }
+
+  .route:first-child { border-top: none; }
+
+  @media (max-width: 620px) {
+    .route { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  }
+
+  .route .tier {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    padding-top: 2px;
+  }
+
+  .route .paths { margin: 0; font-size: 14px; color: var(--ink-2); }
+
+  footer {
+    margin-top: 64px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    justify-content: space-between;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+
+  a { color: var(--accent); }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+<style>
+  header.site {
+    max-width: 1180px; margin: 0 auto; padding: 18px 24px 0;
+    display: flex; gap: 1.25rem; align-items: baseline;
+    font-size: .875rem; flex-wrap: wrap;
+  }
+  header.site a { color: var(--ink-2); text-decoration: none; }
+  header.site a:hover, header.site a:focus-visible { color: var(--accent); text-decoration: underline; }
+  header.site a[aria-current="page"] { color: var(--accent); font-weight: 600; }
+  header.site .lang { margin-inline-start: auto; font-weight: 600; }
+  header.site + .wrap .masthead { padding-top: 30px; }
+</style>
+</head>
+<body>
+  <header class="site">
+    <a href="index.html">الرئيسية</a>
+    <a href="calibration.html">سجل المعايرة</a>
+    <a href="disclaimer.html">إخلاء المسؤولية</a>
+    <a href="docs.html">التوثيق</a>
+    <a class="lang" href="configuration-en.html" hreflang="en">English</a>
+  </header>
+
+
+<div class="wrap" dir="rtl" lang="ar">
+
+  <header class="masthead">
+    <span class="eyebrow">Metric Risk · QuantMarketEngine</span>
+    <h1>مرجع الإعدادات والمفاتيح السرّية</h1>
+    <p class="standfirst">
+      كل إعداد بينقرأ من <code>appsettings.json</code>، أو من المخزن السرّي (التطوير)، أو من متغيّرات
+      البيئة (الإنتاج، بصيغة <code>Section__Key</code>).
+      <strong>المفاتيح السرّية ما بتنحط في ملف الإعدادات أبداً.</strong>
+    </p>
+    <p class="standfirst">
+      هاي الصفحة بتعدّد <strong>كل قسم إعدادات بيقراه الكود</strong>. إذا القسم مش هون، فهو مش
+      مقروء — والعكس متحقَّق منه: الأسماء تحت هي ثوابت <code>SectionName</code> المعلَنة على
+      أصناف الخيارات.
+    </p>
+    <dl class="meta-strip">
+      <div class="meta"><dt>عدد الأقسام</dt><dd>19</dd></div>
+      <div class="meta"><dt>المستضيفات</dt><dd>Bot · API · Dashboard · Migrator</dd></div>
+      <div class="meta"><dt>المصدر</dt><dd>docs/configuration.md</dd></div>
+      <div class="meta"><dt>آخر مراجعة</dt><dd>2026-08-31</dd></div>
+    </dl>
+  </header>
+
+  <div class="columns">
+
+    <nav class="rail" aria-label="أقسام الصفحة">
+      <span class="rail-label">المحتويات</span>
+      <a href="#environment"><span>بيئة التشغيل</span></a>
+      <a href="#secrets"><span>المفاتيح السرّية</span><span class="n">8</span></a>
+      <a href="#billing"><span>دورة الفوترة</span></a>
+      <a href="#scaling"><span>التوسّع والنسخ</span><span class="n">7</span></a>
+      <a href="#dashboard"><span>لوحة المشتركين</span><span class="n">8</span></a>
+      <a href="#layers"><span>طبقات التحليل</span><span class="n">4</span></a>
+      <a href="#bot"><span>مستضيف البوت</span><span class="n">6</span></a>
+      <a href="#workers"><span>العمّال الخلفيون</span><span class="n">7</span></a>
+      <a href="#site"><span>الموقع الثابت</span><span class="n">3</span></a>
+      <a href="#api"><span>مستضيف الـ API</span><span class="n">5</span></a>
+      <a href="#security"><span>نموذج الصلاحيات</span></a>
+      <a href="#ops"><span>التشغيل والمراقبة</span></a>
+    </nav>
+
+    <main>
+
+      <!-- ENVIRONMENT -->
+      <section id="environment">
+        <h2>على أي بيئة إنت شغّال</h2>
+        <p class="sec-note">اقرأ هاد قبل أي إشي تاني بالصفحة. في سلوكين بيعتمدوا على البيئة، وولا
+        واحد فيهم بيعلن عن حاله.</p>
+
+        <div class="callout warn">
+          <h3>الأمر <code>dotnet run</code> بيرجع لوضع Production لما المشروع ما يكون فيه ملف تشغيل</h3>
+          <p>ملف <code>Properties/launchSettings.json</code> بكل مشروع هو اللي بيختار البيئة. وبدونه
+          .NET بيختار <strong>Production</strong> — ووقتها:</p>
+          <ul>
+            <li><strong>المخزن السرّي بينقرأ على Development بس</strong> في مستضيفَي الـ API واللوحة.
+            على Production بيكون غايب ببساطة: إعداد إنت متأكد إنك خزّنته بيصير مفقود، وبلا أي رسالة
+            خطأ. (مستضيف البوت بينادي <code>AddUserSecrets</code> صراحةً، فبيقراه بأي بيئة.)</li>
+            <li><strong>اللوحة بترفض تقوم على Production</strong> بدون
+            <code>DataProtection:KeysDirectory</code>.</li>
+          </ul>
+          <p>اللوحة والـ API بيجوا مع ملف تشغيل بيحدّد
+          <code>ASPNETCORE_ENVIRONMENT=Development</code>، فالتشغيل المحلي بيمشي صح.
+          <strong>وعلى الخادم، حطّ كل قيمة عن طريق متغيّرات البيئة</strong> ولا تعتمد على المخزن
+          السرّي.</p>
+        </div>
+      </section>
+
+      <!-- SECRETS -->
+      <section id="secrets">
+        <div class="sec-head">
+          <h2>المفاتيح السرّية</h2>
+          <span class="host ar">في الإنتاج: متغيّرات بيئة فقط</span>
+        </div>
+        <p class="sec-note">ولا واحد من هدول إله قيمة افتراضية آمنة على بنية تحتية تبع حدا تاني.</p>
+
+        <div class="plate">
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Saas__AdminApiKey</span>
+              <span class="chip chip-sec">سرّي</span>
+              <span class="def">host <b>API</b></span>
+            </div>
+            <p>بيفعّل واجهة التشغيل (<code>/api/v1/admin</code> والمسارات القديمة <code>api/*</code>).
+            بدونه كل نقطة تشغيل بترد <strong>503</strong>. والمقارنة بتتم بزمن ثابت.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">AlphaVantage__ApiKey</span>
+              <span class="chip chip-sec">سرّي</span>
+              <span class="def">host <b>all</b></span>
+            </div>
+            <p>بيانات السوق الحيّة. بدونه المحرّك بيرجع لمزوّد الـ CSV المرفق — وهو للتطوير فقط، بس
+            بيعني إن المحرّك بيشتغل وبينقاس بلا حساب عند أي جهة.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Telegram__BotToken</span>
+              <span class="chip chip-sec">سرّي</span>
+              <span class="def">host <b>bot</b></span>
+            </div>
+            <p>النشر والمراجعة عبر تيليجرام.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">ConnectionStrings__Quant</span>
+              <span class="def">host <b>all</b></span>
+            </div>
+            <p>مسار قاعدة SQLite. الافتراضي على Docker
+            <code>Data Source=/data/quant.db</code> على وحدة تخزين مشتركة.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Stripe__SecretKey</span>
+              <span class="chip chip-sec">سرّي</span>
+              <span class="def">host <b>API + Dashboard</b></span>
+            </div>
+            <p>بدونه الفوترة معطّلة بكل مكان، واللوحة بتحوّل الترقيات لتفعيل يدوي —
+            <strong>وبتقول ذلك للمستخدم</strong> بدل ما تفشل بصمت.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Stripe__WebhookSecret</span>
+              <span class="chip chip-sec">سرّي</span>
+              <span class="def">host <b>API</b></span>
+            </div>
+            <p>مفتاح توقيع <code>POST /api/v1/billing/webhook</code>. النقطة بترد 503 لحد ما ينحط.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Stripe__PriceIds__analyst</span>
+              <span class="key">Stripe__PriceIds__desk</span>
+              <span class="def">host <b>API + Dashboard</b></span>
+            </div>
+            <p>معرّفات أسعار Stripe لكل رمز خطة. <strong>الخطط المرتبطة فقط هي القابلة للشراء.</strong></p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Email__SmtpHost / SmtpPort / SmtpUser / SmtpPassword / FromAddress</span>
+              <span class="chip chip-sec">سرّي</span>
+              <span class="def">host <b>Dashboard (+API)</b></span>
+            </div>
+            <p>إرسال البريد عبر أي مزوّد. <strong>بدون المضيف، الرسائل بتصير أسطر في السجل</strong> —
+            يعني مسار استعادة كلمة المرور بيصير ما بيعمل إشي بصمت.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- BILLING -->
+      <section id="billing">
+        <h2>دورة حياة الفوترة</h2>
+        <p class="sec-note">كلها مستضافة عند Stripe. <strong>بيانات البطاقة ما بتمرّ على المنصة
+        إطلاقاً.</strong></p>
+
+        <div class="flow" dir="ltr">
+          <span class="step-ar">الدفع يبدأ من</span> <b>/actions/billing/checkout</b><br>
+          <span aria-hidden="true">→</span> <span class="step-ar">صفحة دفع مستضافة عند Stripe</span><br>
+          <span aria-hidden="true">→</span> <b>checkout.session.completed</b> — <span class="step-ar">بتفعّل الخطة المدفوعة وبتلغي صف الخطة المجانية (اشتراك حيّ واحد لكل مستخدم)</span><br>
+          <span aria-hidden="true">→</span> <b>customer.subscription.updated</b> — <span class="step-ar">بتعكس الحالة ونهاية الفترة، وبتغطّي</span> <b>past_due</b><br>
+          <span aria-hidden="true">→</span> <b>customer.subscription.deleted</b> — <span class="step-ar">بتلغي وبترجّع الحساب للخطة المجانية</span>
+        </div>
+
+        <div class="prose">
+          <p>كل انتقال بينكتب في سجل التدقيق بفاعل <code>billing</code>.</p>
+          <p>إعداد الـ webhook عند Stripe: النقطة
+          <code>https://&lt;api-host&gt;/api/v1/billing/webhook</code>، والأحداث: التلاتة فوق.</p>
+        </div>
+      </section>
+
+      <!-- SCALING -->
+      <section id="scaling">
+        <div class="sec-head">
+          <h2>التوسّع والنسخ الاحتياطي</h2>
+          <span class="host ar">كل المستضيفات</span>
+        </div>
+
+        <div class="plate">
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Database:Provider</span>
+              <span class="def">default <b>Sqlite</b></span>
+            </div>
+            <p><code>Sqlite</code> لعقدة واحدة، أو <code>Postgres</code> عبر Npgsql. وPostgres بدّه
+            مجموعة ترحيلات خاصة فيه.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Database:MigrateOnStartup</span>
+              <span class="def">default <b>true</b></span>
+            </div>
+            <p>حطّه <code>false</code> على النشر متعدّد العقد، وشغّل الـ Migrator مرة قبلها، عشان
+            العقد ما تتسابق على <code>Migrate()</code>.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Redis:ConnectionString</span>
+              <span class="def">default <b>unset</b></span>
+            </div>
+            <p>لما ينحط، حصة الـ API وقفل تسجيل الدخول بيستخدموا Redis — مشترك بين العقد — بدل
+            العدّادات داخل العملية. <strong>مطلوب للتوسّع الأفقي.</strong></p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Database:Backup:Enabled</span>
+              <span class="def">default <b>true</b></span>
+            </div>
+            <p>نسخ احتياطي مجدوَل ومتحقَّق منه داخل مستضيف البوت. طفّيه بس لو في عملية خارجية بتصوّر
+            وحدة التخزين.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Database:Backup:Directory</span>
+              <span class="def">default <b>backups</b></span>
+            </div>
+            <p>المسارات النسبية بتنحلّ جنب قاعدة البيانات. <strong>حطّ مساراً مطلقاً على وحدة تخزين
+            منفصلة في الإنتاج</strong> — النسخة على نفس القرص بتموت مع القرص.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Database:Backup:RetainCount</span>
+              <span class="def">default <b>7</b></span>
+            </div>
+            <p>عدد النسخ المحفوظة. الأقدم بتنشطب بعد كل تشغيل، مرتّبة حسب الطابع الزمني في اسم الملف.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Database:Backup:IntervalHours</span>
+              <span class="def">default <b>24</b></span>
+            </div>
+            <p>الفاصل بين التشغيلات التلقائية. وفي واحدة بتشتغل دايماً عند إقلاع المستضيف.</p>
+          </div>
+        </div>
+
+        <div class="prose">
+          <p><strong>الـ Migrator كونسول بيشتغل مرة واحدة</strong>
+          (<code>Dockerfile.migrator</code>) — بيطبّق الترحيلات وبيزرع الخطط بغضّ النظر عن الإعداد
+          فوق. هاي خطوة ما قبل النشر لعنقود.</p>
+          <p>النسخ الاحتياطي خاص بـ SQLite (<code>VACUUM INTO</code>) وما بينسجّل لما يكون المزوّد
+          Postgres؛ هديك النشرة بتاخد نسخها بأدوات الخادم نفسه.</p>
+        </div>
+      </section>
+
+      <!-- DASHBOARD -->
+      <section id="dashboard">
+        <div class="sec-head">
+          <h2>لوحة المشتركين</h2>
+          <span class="host">QuantMarketEngine.Dashboard</span>
+        </div>
+
+        <div class="plate">
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Admin:Emails</span>
+              <span class="chip chip-req">اضبطه أولاً</span>
+              <span class="def">default <b>[] فاضي</b></span>
+            </div>
+            <p><strong>الطريقة الوحيدة اللي بيصير فيها حدا مشغّلاً.</strong> مصفوفة عناوين بريد؛
+            المستخدم المسجَّل اللي عنوانه فيها بيوصل صفحات الإدارة، وغيره لأ.</p>
+            <p>الفاضي معناه ولا حدا. <code>AdminAccess</code> بيفشل مقفولاً، وصفحة الإدارة بتقول إنها
+            غير مضبوطة بدل ما توهم إن الحساب ناقصه صلاحية.</p>
+            <p>وهو إعداد مش صفّاً في قاعدة البيانات عن قصد: <strong>المهاجم اللي بيوصل لقاعدة
+            البيانات من خلال التطبيق ما بيقدر يعطي حاله صفحات المشغّل.</strong> بيتشحن فاضي،
+            والمشتري بيحطّ عنوانه هو.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">ConnectionStrings__Quant</span>
+              <span class="def">default <b>content-root quant.db</b></span>
+            </div>
+            <p>لازم يأشّر على نفس قاعدة البيانات اللي بيستخدمها الـ API والبوت — <code>/data/quant.db</code>
+            على Docker. <strong>المستضيفات التلاتة بتُشحن كلها مؤشّرة على ملف البوت</strong>:
+            <code>../QuantMarketEngine.TelegramBot/quant.db</code> من الـ API واللوحة،
+            و<code>quant.db</code> من البوت نفسه.</p>
+            <p><strong>وإذا غلط، ما بيطلع خطأ.</strong> المستضيف بيتعلّق بملف تاني، والواجهة بتبيّن
+            فاضية وهي شغّالة تمام.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">DataProtection:KeysDirectory</span>
+              <span class="chip chip-req">مطلوب في الإنتاج</span>
+              <span class="def">default <b>unset</b></span>
+            </div>
+            <p><strong>المستضيف بيرفض يقوم بدونه خارج بيئة التطوير.</strong> بيحفظ مفاتيح تشفير
+            الكوكيز عبر إعادات التشغيل — <code>/data/dp-keys</code> على Docker.</p>
+            <p>وبدونه، ASP.NET Core بيولّد حلقة مفاتيح لكل عملية، فكل إعادة تشغيل بتسجّل خروج كل
+            المشتركين، وما في بالسجلات إشي بيفسّر ليش.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Support:Email</span>
+              <span class="def">default <b>placeholder</b></span>
+            </div>
+            <p>بيظهر على صفحتَي الفوترة والدعم. حطّ العنوان الحقيقي قبل الإطلاق.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">PdfExport:BrowserPath</span>
+              <span class="def">default <b>auto-detect</b></span>
+            </div>
+            <p>المسار الكامل لـ Chrome أو Edge أو Chromium. خلّيه فاضي عشان يدوّر بأماكن التثبيت
+            المعتادة.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">PdfExport:Enabled</span>
+              <span class="def">default <b>true</b></span>
+            </div>
+            <p><code>false</code> بتطفّي تصدير الـ PDF حتى لو كان في متصفّح مثبّت.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">PdfExport:NoSandbox</span>
+              <span class="chip chip-off">مطفي افتراضياً</span>
+              <span class="def">default <b>false</b></span>
+            </div>
+            <p>بيشغّل المتصفّح بصندوق حماية معطّل. بينلزم لما تكون الحاوية شغّالة كـ root بدون
+            صلاحيات النواة اللي Chrome بحاجتها — هناك ما بيقوم أصلاً.</p>
+            <p>ومطفي افتراضياً لأن <strong>الخيار بيخلّي الميزة تشتغل بكل مكان وبيضعّفها بكل
+            مكان</strong>، وهاد قرار المشغّل مش قرارنا. والسجل بيسمّي هاد الإعداد لما تفشل طباعة
+            بشكل بيوحي برفض من صندوق الحماية.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">PdfExport:TimeoutSeconds</span>
+              <span class="def">default <b>30</b></span>
+            </div>
+            <p>السقف الزمني لطباعة واحدة قبل ما ينقتل المتصفّح. الطباعة الحقيقية بتاخد حوالي ثانية.</p>
+          </div>
+        </div>
+
+        <div class="prose">
+          <p><strong>تصدير تقرير PDF.</strong> صفحة التقارير بتعرض كل جلسة مؤرشفة كـ PDF منسّق —
+          جداول مع رسم مخروط الاحتمالات — بتطبعها نسخة Chromium مثبّتة بوضع بلا واجهة. وما في إشي
+          بيثبّت هاد المتصفّح عنك: على مستضيف بلا متصفّح، رابط الـ PDF بيخفي حاله، والنقطة بترد 503،
+          وتصديرات العربي والإنجليزي والـ JSON ما بتتأثر. <strong>وصور Docker ما فيها متصفّح</strong>،
+          فالتصدير مطفي في الحاوية الافتراضية لحد ما ينثبّت واحد.</p>
+          <p><strong>الـ PDF إنجليزي فقط.</strong> العربي في PDF بدّه تخطيطاً ثنائي الاتجاه، والمُصيِّر
+          المستخدَم بهاد المشروع بيعكس الأرقام داخل نص مختلط عربي/لاتيني — طبع <code>1.16805</code>
+          على شكل <code>50861.1</code>. والتقرير العربي لسّه بينسلّم كنص.</p>
+          <p><strong>نموذج الدخول.</strong> بريد وكلمة مرور (<code>UserCredential</code> مع PBKDF2)
+          بيتحوّلوا لكوكي جلسة <code>HttpOnly</code> منزلقة مدّتها 7 أيام. والتسجيل الذاتي بيمنح خطة
+          <code>observer</code> المجانية. ومخمّد لكل عنوان IP: 8 محاولات فاشلة خلال 10 دقائق.
+          ومفاتيح الـ API بتضل هي بيانات اعتماد الآلة؛ اللوحة بتصدرها وبتلغيها، والمفتاح الخام بينعرض
+          مرة وحدة بالضبط.</p>
+        </div>
+      </section>
+
+      <!-- LAYERS -->
+      <section id="layers">
+        <div class="sec-head">
+          <h2>طبقات التحليل</h2>
+          <span class="host ar">كل المستضيفات</span>
+        </div>
+        <p class="sec-note">أربع طبقات من خط التحليل قابلة للضبط، واتنتين منهم <strong>بيتشحنوا
+        مطفيين</strong>. وهاد قرار مش إهمال، وكل واحدة بتقول ليش.
+        <strong>القسمان <code>CrossAsset</code> و<code>EconomicIndicators</code> مش موجودين في أي
+        <code>appsettings.json</code></strong> — بيشتغلوا على القيم الافتراضية بالكود، وهاد بيستاهل
+        تعرفه قبل ما تدوّر على قسم مش موجود.</p>
+
+        <div class="plate">
+          <div class="setting">
+            <div class="setting-head">
+              <h3 class="mono">CrossAsset</h3>
+              <span class="chip chip-on">مفعّل افتراضياً</span>
+            </div>
+            <p>مقابل شو بينقاس ارتباط كل رمز مُحلَّل — هاي الطبقة اللي وراها أشرطة الارتباط بالتقرير.</p>
+            <p><code>Enabled</code> افتراضي <code>true</code>؛ و<code>false</code> بتتخطّى الطبقة كلها.</p>
+            <p><code>Map</code> افتراضي <code>[]</code>، يعني المجموعة المؤسسية المدمجة لليورو/دولار:
+            مؤشر الدولار، الذهب، وعائد السندات الأمريكية لعشر سنين. والمدخلات بصيغة
+            <code>{ BaseSymbol, Symbol, Label }</code>.</p>
+            <p><strong>والأداة اللي ما بيقدر مزوّد البيانات يخدمها بتنتخطّى وقت التشغيل بدل ما تفشّل
+            التقرير</strong>، فإدراج مؤشر أو عائد هون آمن حتى على باقة مجانية للعملات بس.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <h3 class="mono">EconomicIndicators</h3>
+              <span class="chip chip-on">مفعّل افتراضياً</span>
+            </div>
+            <p>الخلفية الاقتصادية الأمريكية: التضخّم، سعر الفائدة، سوق العمل.</p>
+            <p><code>Enabled</code> <code>true</code> · <code>Timeframe</code> <code>MONTHLY</code> ·
+            <code>FreshnessDays</code> <code>45</code> · <code>AttemptIntervalDays</code>
+            <code>1</code> · <code>Indicators</code> <code>[]</code> للمجموعة المدمجة.</p>
+            <p><strong>و<code>AttemptIntervalDays</code> هو الإعداد اللي بيحكم التكلفة</strong>، مش
+            <code>FreshnessDays</code>. البيانات الأمريكية بتُنشر بتأخير شهر لشهرين، فأحدث قراءة
+            متاحة بتكون عادةً أقدم من أي بوابة نضارة معقولة، والبيانات ما بتقدر تخلّي حالها تبيّن
+            حديثة أبداً. وقبل ما هاد الإعداد يوجد، أربع مؤشرات كانت بتنجلب من جديد <strong>في كل
+            تشغيلة</strong> وترجع نفس الأرقام.</p>
+            <p><strong>التكلفة:</strong> على الأكثر نداء واحد لكل مؤشر يومياً — يعني نداءات معدودة
+            بالشهر.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <h3 class="mono">EconomicCalendar</h3>
+              <span class="chip chip-diff">مطفي بالكود · مفعّل بالمشحون</span>
+            </div>
+            <p>قائمة يدوية بالإصدارات عالية الأثر القادمة، بتُستخدم للتحذير إن القراءة واقعة داخل
+            نافذة تعتيم. والافتراضي بالكود مطفي لأن <strong>هاي قائمة لازم حدا يضل يكتبها</strong>:
+            ما ورها تغذية آلية، والتقويم القديم أسوأ من ولا تقويم لأنه بيحذّر من أيام غلط.</p>
+            <p><strong>وملف <code>appsettings.json</code> تبع البوت بيشغّلها، وحامل 14 إصداراً
+            لبنوك مركزية وبيانات أمريكية لحد 17 ديسمبر 2026.</strong> ولما تخلص القائمة الطبقة بتسكت
+            بدل ما تغلط — بس هاي مهمة صيانة إلها تاريخ، والمشتري لازم يعرف أي تاريخ.</p>
+            <p><code>BlackoutWindowHours</code> <code>24</code> · <code>MinimumImpact</code>
+            <code>High</code> · ومدخلات <code>Events</code> بصيغة
+            <code>{ Name, ScheduledAt (UTC), Impact, Currencies[] }</code>، والعملات الفاضية معناها
+            عالمي.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <h3 class="mono">FundamentalAnalysis</h3>
+              <span class="chip chip-off">مطفي — ومسيَّج حتى لو انفتح</span>
+            </div>
+            <p><code>Enabled</code> <code>false</code> · و<code>DataFilePath</code> فاضي. أشّر المسار
+            على ملف JSON معبّى يدوياً بالإصدارات والفوائد والمواقف عشان تغذّي الطبقة ببيانات اختبار.</p>
+            <p><strong>وتشغيلها ما بيحطّ أرقاماً مُدخَلة يدوياً قدّام العميل.</strong> المزوّد بيبلّغ
+            <code>IsLiveSource=false</code> ومُخرِج الإخراج بيرمي القيم. الطبقة موجودة عشان يتطوّر
+            عليها، والسياج بالكود عشان مساهم مستقبلي ما يقدر يفتحها للإنتاج بقلب إعداد.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- BOT -->
+      <section id="bot">
+        <div class="sec-head">
+          <h2>مستضيف البوت</h2>
+          <span class="host">QuantMarketEngine.TelegramBot</span>
+        </div>
+
+        <div class="plate">
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Telegram:BotToken</span>
+              <span class="def">default <b>empty</b></span>
+            </div>
+            <p>من <code>@BotFather</code>. وبدونه <strong>البوت بيضل ساكن</strong> — لا مستقبِل ولا
+            مجدوِل. وباقي المستضيف بيضل شغّال.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Telegram:ReviewerChatId</span>
+              <span class="def">default <b>0</b></span>
+            </div>
+            <p>معرّف المحادثة الخاصة للمراجع البشري. <strong>هاد هو صندوق بوابة الموافقة.</strong></p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Telegram:PublicChannelId</span>
+              <span class="def">default <b>empty</b></span>
+            </div>
+            <p>معرّف القناة أو <code>@username</code> اللي بينُشر عليها التقارير المعتمَدة.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Telegram:ActiveSymbols</span>
+              <span class="def">default <b>[]</b></span>
+            </div>
+            <p>الرموز اللي بيحلّلها العامل المجدوَل كل دورة. <strong>وفاضية بالكود عن قصد</strong>:
+            رابط الإعدادات في .NET <em>بيضيف</em> على المصفوفة الافتراضية غير الفاضية، فافتراضي
+            <code>["EURUSD"]</code> زائد نفس القيمة بالإعدادات بينربط لـ
+            <code>["EURUSD","EURUSD"]</code> — وبيولّد كل تقرير مرتين. فالقيمة بتيجي من الإعدادات
+            وبس.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Telegram:Timeframe</span>
+              <span class="def">default <b>4H</b></span>
+            </div>
+            <p>الإطار الزمني اللي بيطلبه العامل المجدوَل.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Telegram:ScheduleHours</span>
+              <span class="def">default <b>4</b></span>
+            </div>
+            <p>كل قدّيش بيشتغل العامل المجدوَل.</p>
+          </div>
+        </div>
+
+        <div class="prose">
+          <p><code>ReviewerChatId</code> و<code>PublicChannelId</code> حالياً في
+          <code>appsettings.json</code> تبع البوت للتسهيل. وهم خاصّون بالنشرة: انقلهم لمتغيّرات بيئة
+          بأي مكان مشترك.</p>
+        </div>
+      </section>
+
+      <!-- WORKERS -->
+      <section id="workers">
+        <div class="sec-head">
+          <h2>العمّال الخلفيون</h2>
+          <span class="host ar">مستضيف البوت</span>
+        </div>
+        <p class="sec-note">الحلقتين إلهم قيم افتراضية آمنة وبيشتغلوا بلا أي ضبط.</p>
+
+        <div class="plate">
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">EventTrigger:Enabled</span>
+              <span class="chip chip-diff">true بالكود · false بالمشحون</span>
+            </div>
+            <p>المراقب المدفوع بالأحداث. بيشتغل أكتر من الدورة المجدولة، بس بيحجز تقريراً بس لما
+            يكتشف تغيّراً هيكلياً أو انقلاب نظام سائد.</p>
+            <p>وملف <code>appsettings.json</code> تبع البوت بيطفّيه. هاد هو سطر
+            <em>«المشغّل المدفوع بالأحداث بيتشحن معطّلاً»</em> اللي بمواد البيع — وهو
+            <strong>قيمة إعداد، مش كود ناقص</strong>.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">EventTrigger:IntervalMinutes</span>
+              <span class="def">default <b>60</b></span>
+            </div>
+            <p>الدقائق بين تمريرات الكشف. محدودة بدقيقة كحد أدنى.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">EventTrigger:StartupDelaySeconds</span>
+              <span class="def">default <b>45</b></span>
+            </div>
+            <p>بيخلّي ترحيلات الإقلاع وتحميل البيانات تستقر أول.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">OutcomeEvaluation:Enabled</span>
+              <span class="chip chip-on">مفعّل</span>
+              <span class="def">default <b>true</b></span>
+            </div>
+            <p><strong>حلقة التقييم الذاتي</strong> — الاختبار الرجعي الخلفي لـ VaR اللي بيُنتج سجلّ
+            المعايرة. <strong>وتطفيتها بتوقّف الادعاء المركزي للمنتَج عن كونه مكتسَباً.</strong></p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">OutcomeEvaluation:IntervalMinutes</span>
+              <span class="def">default <b>60</b></span>
+            </div>
+            <p>محدودة بدقيقة كحد أدنى.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">OutcomeEvaluation:StartupDelaySeconds</span>
+              <span class="def">default <b>30</b></span>
+            </div>
+            <p>بيخلّي ترحيلات الإقلاع وتحميل البيانات تستقر أول.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">OutcomeEvaluation:BatchSize</span>
+              <span class="def">default <b>200</b></span>
+            </div>
+            <p>أقصى عدد تحليلات بينتقيّم في التمريرة الوحدة.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SITE -->
+      <section id="site">
+        <h2>الموقع الثابت</h2>
+        <p class="sec-note">بيصيّر التقارير المعتمَدة لصفحات HTML مسطّحة لـ GitHub أو Cloudflare أو
+        Netlify Pages.</p>
+
+        <div class="plate">
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">WebPublisher:OutputDirectory</span>
+              <span class="def">default <b>empty</b></span>
+            </div>
+            <p><strong>الفاضي بيعطّل النشر على الويب.</strong> حطّه وبتنكتب التقارير المعتمَدة هناك.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">WebPublisher:SiteTitle</span>
+              <span class="def">default <b>Quant Market Monitor</b></span>
+            </div>
+            <p>بيُستخدم على الصفحات العربية، وحامل الشعار العربي.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">WebPublisher:SiteTitleEnglish</span>
+              <span class="def">default <b>Metric Risk — Market Watch</b></span>
+            </div>
+            <p>محفوظ لحاله بدل ما ينشتق من اللي فوقه: طباعة الشعار العربي على صفحة إنجليزية كانت آخر
+            إشي ضل بلا ترجمة لما الموقع صار بلغتين.</p>
+          </div>
+        </div>
+
+        <div class="prose">
+          <p>القالب محتوى تعليمي فقط — حامل إخلاء المسؤولية المحايد، وما بيحمل أبداً دعوة اشتراك أو
+          سعر.</p>
+        </div>
+      </section>
+
+      <!-- API -->
+      <section id="api">
+        <div class="sec-head">
+          <h2>مستضيف الـ API</h2>
+          <span class="host">QuantMarketEngine.API</span>
+        </div>
+
+        <div class="plate">
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Security:RequestsPerMinutePerIp</span>
+              <span class="def">default <b>120</b></span>
+            </div>
+            <p>حدّ محيطي بنافذة ثابتة لكل عنوان IP؛ وبعده 429. ونقاط الصحة مستثناة.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Security:AllowedOrigins</span>
+              <span class="def">default <b>[]</b></span>
+            </div>
+            <p>أصول CORS. والفاضي معناه لا CORS إطلاقاً.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">AnalysisCache:TtlSeconds</span>
+              <span class="def">default <b>300</b></span>
+            </div>
+            <p>عمر ذاكرة التحليل المؤقتة داخل العملية، لكل رمز وإطار زمني. و<code>0</code> بتعطّلها.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Serilog:*</span>
+              <span class="def">default <b>console, Information</b></span>
+            </div>
+            <p>قسم إعدادات Serilog القياسي.</p>
+          </div>
+
+          <div class="setting">
+            <div class="setting-head">
+              <span class="key">Engine:SupportedSymbols</span>
+              <span class="def">default <b>EURUSD / 4H</b></span>
+            </div>
+            <p>كتالوج الرموز. مشترك بين كل المستضيفات، فالرمز اللي بينضاف هون بتعرفه المنصة كلها.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECURITY -->
+      <section id="security">
+        <h2>نموذج الصلاحيات</h2>
+        <p class="sec-note">تلات مستويات، بينتفحّصوا عند النقطة نفسها مش بينفترضوا من المسار.</p>
+
+        <div class="plate routes">
+          <div class="route">
+            <span class="tier">عام</span>
+            <p class="paths"><code>/api/v1/plans</code> · <code>/api/symbols</code> ·
+            <code>/health/live</code> · <code>/health/ready</code> · <code>/openapi/v1.json</code></p>
+          </div>
+          <div class="route">
+            <span class="tier">مشترك</span>
+            <p class="paths">بمخطط <code>X-Api-Key</code> —
+            <code>/api/v1/intelligence/*</code> و<code>/api/v1/alerts</code> (محسوبة على الحصة)،
+            و<code>/api/v1/account</code> (خارج الحصة)</p>
+          </div>
+          <div class="route">
+            <span class="tier">مشغّل</span>
+            <p class="paths">بمخطط <code>X-Admin-Key</code> — <code>/api/v1/admin/*</code>
+            <strong>وكل</strong> المسارات القديمة: <code>api/analysis</code>،
+            <code>api/history</code>، <code>api/reports/*</code>، <code>api/review</code>،
+            <code>api/calibration</code>. وهاي أدوات تشغيل داخلية؛ <strong>واجهة العميل هي
+            <code>/api/v1</code> فقط</strong>، والمسارات القديمة مش جزء من العقد العام.</p>
+          </div>
+        </div>
+
+        <div class="prose">
+          <p>كل إجراء ذي صلاحية بيكتب صفّاً في <code>AuditLogEntries</code>. وكل نداء مشترك محسوب على
+          الحصة بيكتب أو بيزيد صفّاً في <code>ApiUsageRecords</code> — وهو مصدر الحقيقة للفوترة
+          وللوحة معاً.</p>
+        </div>
+      </section>
+
+      <!-- OPS -->
+      <section id="ops">
+        <h2>التشغيل والمراقبة</h2>
+
+        <div class="plate">
+          <div class="setting">
+            <div class="setting-head"><span class="key">GET /health/live</span></div>
+            <p>حياة العملية، بلا أي اعتماديات.</p>
+          </div>
+          <div class="setting">
+            <div class="setting-head"><span class="key">GET /health/ready</span></div>
+            <p>بيشمل ذهاباً وإياباً لقاعدة البيانات.</p>
+          </div>
+          <div class="setting">
+            <div class="setting-head"><span class="key">CorrelationId</span></div>
+            <p>السجلات مهيكلة عبر Serilog، وكل طلب حامل معرّف ربط، مع احترام
+            <code>X-Correlation-Id</code> الوارد.</p>
+          </div>
+        </div>
+
+        <div class="prose">
+          <p>الترحيلات بتنطبّق تلقائياً عند إقلاع الـ API، على افتراض نسخة واحدة — راجع هاد قبل
+          التوسّع الأفقي.</p>
+          <p>النسخ الاحتياطي لـ SQLite بيصوّر وحدة <code>/data</code> المركّبة، أو بيستخدم
+          <code>VACUUM INTO</code>، بجدول. والانتقال لـ PostgreSQL مُدار هو المسار بعد العقدة الوحدة.</p>
+          <p>والتكامل المستمر بيبني وبيختبر، <strong>وبيفشل على أي حزمة NuGet معروفة الثغرة</strong>.</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer>
+    <span>Metric Risk · QuantMarketEngine · مرجع الإعدادات</span>
+    <span>19 قسماً · آخر مراجعة 2026-08-31</span>
+  </footer>
+
+</div>
+
+</body>
+</html>

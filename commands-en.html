@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Metric Risk Commands</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap">
+
+<style>
+  :root {
+    --ground:#EAEEF0; --surface:#FFFFFF; --surface-2:#F4F7F8;
+    --line:#D2DCDF; --line-soft:#E3EAEC;
+    --ink:#12202A; --ink-2:#38505D; --muted:#61757F;
+    --accent:#0F6F5C; --accent-soft:#E2F0EC;
+    --warn:#8C5A0C; --warn-soft:#F7EEDD;
+    --alert:#98303C; --alert-soft:#F8E7E8;
+    --info:#1F5F86; --info-soft:#E3EEF5;
+    --code-bg:#EDF2F3; --term-bg:#10202A; --term-ink:#C9DBE1;
+    --shadow:0 1px 2px rgba(18,32,42,.05), 0 8px 24px -18px rgba(18,32,42,.30);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#0C151B; --surface:#131F27; --surface-2:#182630;
+      --line:#2A3B46; --line-soft:#1F2E38;
+      --ink:#DCE6EA; --ink-2:#AEC1C9; --muted:#8399A3;
+      --accent:#4DBFA5; --accent-soft:#12302B;
+      --warn:#D9A65A; --warn-soft:#322612;
+      --alert:#E08A94; --alert-soft:#351A1E;
+      --info:#7FB6D8; --info-soft:#122733;
+      --code-bg:#1B2A34; --term-bg:#08121A; --term-ink:#B6CCD4;
+      --shadow:0 1px 2px rgba(0,0,0,.30), 0 8px 24px -18px rgba(0,0,0,.70);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#0C151B; --surface:#131F27; --surface-2:#182630;
+    --line:#2A3B46; --line-soft:#1F2E38;
+    --ink:#DCE6EA; --ink-2:#AEC1C9; --muted:#8399A3;
+    --accent:#4DBFA5; --accent-soft:#12302B;
+    --warn:#D9A65A; --warn-soft:#322612;
+    --alert:#E08A94; --alert-soft:#351A1E;
+    --info:#7FB6D8; --info-soft:#122733;
+    --code-bg:#1B2A34; --term-bg:#08121A; --term-ink:#B6CCD4;
+    --shadow:0 1px 2px rgba(0,0,0,.30), 0 8px 24px -18px rgba(0,0,0,.70);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground); color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+    font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px 96px; }
+
+  .masthead { padding: 56px 0 34px; border-bottom: 1px solid var(--line);
+              display: flex; flex-direction: column; gap: 18px; }
+  .eyebrow { font-family: "IBM Plex Mono", ui-monospace, monospace;
+             font-size: 11.5px; font-weight: 500; letter-spacing: .16em;
+             text-transform: uppercase; color: var(--accent); align-self: flex-start; }
+  h1 { font-family: "IBM Plex Serif", Georgia, serif; font-weight: 600;
+       font-size: clamp(2rem, 1.4rem + 2.4vw, 3.1rem); line-height: 1.1;
+       letter-spacing: -.02em; text-wrap: balance; margin: 0; }
+  .standfirst { font-size: 1.075rem; color: var(--ink-2); max-width: 64ch; margin: 0; }
+  .standfirst strong { color: var(--ink); font-weight: 600; }
+
+  pre.term { background: var(--term-bg); color: var(--term-ink); border-radius: 6px;
+             padding: 16px 18px; margin: 6px 0; font-family: "IBM Plex Mono", monospace;
+             font-size: 13px; line-height: 1.75; overflow-x: auto; }
+
+  .columns { display: grid; grid-template-columns: 200px minmax(0,1fr);
+             gap: 56px; align-items: start; padding-top: 40px; }
+  @media (max-width: 900px) { .columns { grid-template-columns: minmax(0,1fr); gap: 28px; } }
+
+  .rail { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 3px; }
+  @media (max-width: 900px) {
+    .rail { position: static; flex-direction: row; overflow-x: auto; gap: 8px;
+            padding-bottom: 10px; border-bottom: 1px solid var(--line); } }
+  .rail-label { font-family: "IBM Plex Mono", monospace; font-size: 10.5px;
+                letter-spacing: .13em; text-transform: uppercase;
+                color: var(--muted); padding: 0 0 8px 10px; }
+  @media (max-width: 900px) { .rail-label { display: none; } }
+  .rail a { display: block; white-space: nowrap; padding: 6px 10px; border-radius: 4px;
+            border-left: 2px solid transparent; color: var(--ink-2);
+            text-decoration: none; font-size: 13.5px;
+            transition: background .14s, color .14s, border-color .14s; }
+  .rail a:hover, .rail a:focus-visible { background: var(--surface); color: var(--ink);
+            border-left-color: var(--accent); }
+  @media (max-width: 900px) {
+    .rail a { border-left: none; border-bottom: 2px solid transparent; }
+    .rail a:hover, .rail a:focus-visible { border-left: none; border-bottom-color: var(--accent); } }
+
+  main { display: flex; flex-direction: column; gap: 52px; min-width: 0; }
+  section { scroll-margin-top: 20px; }
+
+  h2 { font-family: "IBM Plex Serif", Georgia, serif; font-weight: 600;
+       font-size: 1.62rem; letter-spacing: -.012em; line-height: 1.24;
+       margin: 0 0 6px; text-wrap: balance; }
+  h3 { font-family: "IBM Plex Sans", sans-serif; font-weight: 600;
+       font-size: 1.04rem; margin: 22px 0 8px; }
+
+  p { margin: 0 0 12px; color: var(--ink-2); max-width: 70ch; }
+  p:last-child { margin-bottom: 0; }
+  strong { color: var(--ink); font-weight: 600; }
+  code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: .875em;
+         background: var(--code-bg); border-radius: 3px; padding: 1px 5px; overflow-wrap: anywhere; }
+
+  .sec-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+  .tier-dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+  .t-daily  { background: var(--accent); }
+  .t-period { background: var(--warn); }
+  .t-setup  { background: var(--info); }
+  .t-service{ background: var(--muted); }
+  .lede { font-size: 15px; color: var(--ink-2); max-width: 68ch; margin: 0 0 18px; }
+
+  .cmds { display: flex; flex-direction: column; gap: 12px; }
+  .cmd-card { background: var(--surface); border: 1px solid var(--line);
+              border-radius: 8px; box-shadow: var(--shadow); overflow: hidden; }
+  .cmd-top { display: flex; align-items: center; flex-wrap: wrap; gap: 10px;
+             padding: 14px 18px 12px; }
+  .cmd { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 14px;
+         font-weight: 600; color: var(--ink); background: var(--code-bg);
+         border-radius: 4px; padding: 3px 9px; }
+  .cmd-body { padding: 0 18px 16px; display: flex; flex-direction: column; gap: 10px; }
+  .cmd-body p { font-size: 14.5px; margin: 0; }
+  .field { display: grid; grid-template-columns: 78px minmax(0,1fr); gap: 14px; align-items: start; }
+  @media (max-width: 560px) { .field { grid-template-columns: minmax(0,1fr); gap: 3px; } }
+  .field .fl { font-family: "IBM Plex Mono", monospace; font-size: 11px;
+               letter-spacing: .06em; text-transform: uppercase;
+               color: var(--muted); padding-top: 4px; }
+  .field .fv { font-size: 14.5px; color: var(--ink-2); }
+  .field .fv strong { color: var(--ink); }
+
+  .chip { font-family: "IBM Plex Mono", monospace; font-size: 10.5px; font-weight: 500;
+          letter-spacing: .06em; text-transform: uppercase; padding: 3px 8px;
+          border-radius: 3px; white-space: nowrap; border: 1px solid transparent; }
+  .chip-calls { background: var(--warn-soft); color: var(--warn); border-color: var(--warn); }
+  .chip-free  { background: var(--accent-soft); color: var(--accent); }
+  .chip-danger{ background: var(--alert-soft); color: var(--alert); border-color: var(--alert); }
+  .chip-file  { background: var(--surface-2); color: var(--ink-2); }
+
+  .plate { background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+           box-shadow: var(--shadow); overflow: hidden; }
+  .row { display: grid; grid-template-columns: 152px minmax(0,1fr); gap: 18px;
+         padding: 14px 20px; border-top: 1px solid var(--line-soft); align-items: start; }
+  .row:first-child { border-top: none; }
+  @media (max-width: 620px) { .row { grid-template-columns: minmax(0,1fr); gap: 5px; } }
+  .row .lb { font-family: "IBM Plex Mono", monospace; font-size: 13px;
+             font-weight: 500; color: var(--ink); }
+  .row p { font-size: 14px; margin: 0; }
+
+  .callout { background: var(--surface); border: 1px solid var(--line);
+             border-left: 3px solid var(--accent); border-radius: 6px;
+             padding: 18px 20px; margin: 16px 0; }
+  .callout.warn  { border-left-color: var(--warn); }
+  .callout.alert { border-left-color: var(--alert); }
+  .callout h3 { margin: 0 0 6px; font-size: 1rem; }
+  .callout p { font-size: 14.5px; }
+  .callout ul { margin: 8px 0 0; padding-left: 20px;
+                display: flex; flex-direction: column; gap: 6px; }
+  .callout li { font-size: 14.5px; color: var(--ink-2); max-width: 68ch; }
+
+  footer { margin-top: 64px; padding-top: 22px; border-top: 1px solid var(--line);
+           display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between;
+           font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--muted); }
+  a { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+<style>
+  header.site {
+    max-width: 1180px; margin: 0 auto; padding: 18px 24px 0;
+    display: flex; gap: 1.25rem; align-items: baseline;
+    font-size: .875rem; flex-wrap: wrap;
+  }
+  header.site a { color: var(--ink-2); text-decoration: none; }
+  header.site a:hover, header.site a:focus-visible { color: var(--accent); text-decoration: underline; }
+  header.site a[aria-current="page"] { color: var(--accent); font-weight: 600; }
+  header.site .lang { margin-inline-start: auto; font-weight: 600; }
+  header.site + .wrap .masthead { padding-top: 30px; }
+</style>
+</head>
+<body>
+  <header class="site">
+    <a href="index-en.html">Home</a>
+    <a href="calibration-en.html">Calibration record</a>
+    <a href="disclaimer-en.html">Disclaimer</a>
+    <a href="docs-en.html">Documentation</a>
+    <a class="lang" href="commands.html" hreflang="ar">العربية</a>
+  </header>
+
+
+<div class="wrap">
+
+  <header class="masthead">
+    <span class="eyebrow">Metric Risk · QuantMarketEngine</span>
+    <h1>Engine commands</h1>
+    <p class="standfirst">
+      The commands that generate reports or audit them. <strong>All of them run after changing into
+      the bot project's folder once:</strong>
+    </p>
+<pre class="term">cd QuantMarketEngine/src/QuantMarketEngine.TelegramBot</pre>
+    <p class="standfirst">
+      <code>reports/</code> and <code>drafts/</code> are created inside that folder.
+    </p>
+  </header>
+
+  <div class="columns">
+
+    <nav class="rail" aria-label="Sections">
+      <span class="rail-label">Contents</span>
+      <a href="#daily">Daily</a>
+      <a href="#periodic">Periodic</a>
+      <a href="#setup">Setup</a>
+      <a href="#service">As a service</a>
+      <a href="#markets">Supported markets</a>
+      <a href="#quota">Provider quota</a>
+      <a href="#audit">Audit cards</a>
+      <a href="#notes">Notes</a>
+    </nav>
+
+    <main>
+
+      <section id="daily">
+        <div class="sec-head"><span class="tier-dot t-daily"></span><h2>Daily commands</h2></div>
+        <p class="lede">These are the everyday ones — and the first covers the rest.</p>
+
+        <div class="cmds">
+          <div class="cmd-card">
+            <div class="cmd-top">
+              <span class="cmd">dotnet run -- todayreport</span>
+              <span class="chip chip-calls">spends calls</span>
+            </div>
+            <div class="cmd-body">
+              <p><strong>The whole morning routine in one command</strong> — runs
+              <code>report</code>, then <code>drafts</code>, then <code>audit</code>, for every pair.</p>
+              <div class="field"><span class="fl">When</span><span class="fv">Every morning. <strong>Usually the only command you need.</strong></span></div>
+              <div class="field"><span class="fl">Output</span><span class="fv">Files in <code>reports/</code> and <code>drafts/</code>, plus the audit cards on screen.</span></div>
+            </div>
+          </div>
+
+          <div class="cmd-card">
+            <div class="cmd-top">
+              <span class="cmd">dotnet run -- report</span>
+              <span class="chip chip-calls">spends calls</span>
+              <span class="chip chip-file">5 files per pair</span>
+            </div>
+            <div class="cmd-body">
+              <p>The institutional report — narrative and quantitative — for every active pair.</p>
+              <div class="field"><span class="fl">When</span><span class="fv">You want the reports only, without drafts or the audit.</span></div>
+              <div class="field"><span class="fl">Output</span><span class="fv">
+                In <code>reports/</code>, per pair: <code>{pair}-{date}.json</code> ·
+                <code>-ar.txt</code> · <code>-en.txt</code> · <code>-cone.svg</code>
+                (the probability-cone chart, ready to drop into Word or a PDF) ·
+                <code>-validation.json</code> (the pre-publication check results)
+              </span></div>
+              <div class="field"><span class="fl">Also</span><span class="fv"><strong>It archives the reading as unpublished</strong> — it becomes the "what changed" reference for next time, and enters the outcome-scoring loop.</span></div>
+            </div>
+          </div>
+
+          <div class="cmd-card">
+            <div class="cmd-top">
+              <span class="cmd">dotnet run -- report XAUUSD 1D</span>
+              <span class="chip chip-calls">spends calls</span>
+            </div>
+            <div class="cmd-body">
+              <p>Exactly the same report but for <strong>one specified pair</strong> — the same five files.</p>
+              <div class="field"><span class="fl">When</span><span class="fv">Refreshing gold, or the euro, on its own.</span></div>
+            </div>
+          </div>
+
+          <div class="cmd-card">
+            <div class="cmd-top">
+              <span class="cmd">dotnet run -- drafts</span>
+              <span class="chip chip-calls">spends calls</span>
+            </div>
+            <div class="cmd-body">
+              <p>English Substack drafts for every pair.</p>
+              <div class="field"><span class="fl">Output</span><span class="fv"><code>drafts/{pair}.txt</code></span></div>
+            </div>
+          </div>
+
+          <div class="cmd-card">
+            <div class="cmd-top">
+              <span class="cmd">dotnet run -- audit</span>
+              <span class="chip chip-free">zero calls</span>
+              <span class="chip chip-file">no file</span>
+            </div>
+            <div class="cmd-body">
+              <p><strong>A quality audit of the numbers — self-calibration, not a report.</strong>
+              It is the one command that <strong>checks</strong> rather than produces.</p>
+              <div class="field"><span class="fl">When</span><span class="fv">To confirm the numbers hold up against what actually happened.</span></div>
+              <div class="field"><span class="fl">Output</span><span class="fv">Terminal only — <strong>four cards</strong>, detailed below.</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="periodic">
+        <div class="sec-head"><span class="tier-dot t-period"></span><h2>Periodic commands</h2></div>
+        <p class="lede">Not every day. All of them read stored data — <strong>zero provider calls</strong>.</p>
+
+        <div class="cmds">
+          <div class="cmd-card">
+            <div class="cmd-top"><span class="cmd">dotnet run -- weekly</span><span class="chip chip-free">zero calls</span></div>
+            <div class="cmd-body">
+              <p>A weekly summary built from the archived reports.</p>
+              <div class="field"><span class="fl">When</span><span class="fv">End of the week.</span></div>
+              <div class="field"><span class="fl">Output</span><span class="fv"><code>drafts/weekly-ar.txt</code> and <code>weekly-en.txt</code></span></div>
+            </div>
+          </div>
+
+          <div class="cmd-card">
+            <div class="cmd-top"><span class="cmd">dotnet run -- publishsite</span><span class="chip chip-free">zero calls</span></div>
+            <div class="cmd-body">
+              <p>Turns published reports into site pages.</p>
+              <div class="field"><span class="fl">Output</span><span class="fv">HTML pages in <code>WebPublisher:OutputDirectory</code>.</span></div>
+            </div>
+          </div>
+
+          <div class="cmd-card">
+            <div class="cmd-top"><span class="cmd">dotnet run -- publishcalibration</span><span class="chip chip-free">zero calls</span></div>
+            <div class="cmd-body">
+              <p><strong>The public calibration page</strong> — boundary breaches against the 5% target,
+              per pair. This is a trust and sales instrument, not a report.</p>
+              <div class="field"><span class="fl">When</span><span class="fv">After <code>audit</code> or <code>backfill</code>, when refreshing the site.</span></div>
+              <div class="field"><span class="fl">Output</span><span class="fv"><code>calibration.html</code></span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="setup">
+        <div class="sec-head"><span class="tier-dot t-setup"></span><h2>Setup commands</h2></div>
+        <p class="lede">Once, or rarely.</p>
+
+        <div class="cmds">
+          <div class="cmd-card">
+            <div class="cmd-top"><span class="cmd">dotnet run -- seedhistory</span><span class="chip chip-calls">spends calls</span></div>
+            <div class="cmd-body">
+              <p>Fetches and stores the full daily history, deepening what the analysis can reach back into.</p>
+              <div class="field"><span class="fl">When</span><span class="fv"><strong>Once, at setup.</strong></span></div>
+            </div>
+          </div>
+
+          <div class="cmd-card">
+            <div class="cmd-top"><span class="cmd">dotnet run -- backfill</span><span class="chip chip-calls">one call per symbol</span></div>
+            <div class="cmd-body">
+              <p>Builds the VaR and ES record out of the past with a walk-forward sweep.</p>
+              <div class="field"><span class="fl">When</span><span class="fv"><strong>Once, after <code>seedhistory</code></strong> — this is what brings the calibration cards to life, ES especially.</span></div>
+              <div class="field"><span class="fl">Output</span><span class="fv">Stores the scored outcomes that feed the <code>audit</code> cards.</span></div>
+            </div>
+          </div>
+
+          <div class="cmd-card">
+            <div class="cmd-top"><span class="cmd">dotnet run -- backup</span><span class="chip chip-free">zero calls</span></div>
+            <div class="cmd-body">
+              <p>A <strong>verified backup</strong> of the database — its integrity is checked before it counts.</p>
+              <div class="field"><span class="fl">When</span><span class="fv"><strong>Before any destructive command.</strong> The live bot also takes one daily on its own.</span></div>
+              <div class="field"><span class="fl">Output</span><span class="fv"><code>backups/quant-YYYYMMDD-HHmmss-fff.db</code></span></div>
+            </div>
+          </div>
+
+          <div class="cmd-card">
+            <div class="cmd-top"><span class="cmd">dotnet run -- purgeweekend</span><span class="chip chip-free">preview · deletes nothing</span></div>
+            <div class="cmd-body">
+              <p>A <strong>preview</strong> of the stored weekend candles. <strong>It deletes nothing.</strong></p>
+              <div class="field"><span class="fl">Output</span><span class="fv">A table of series and how many candles are candidates for deletion.</span></div>
+            </div>
+          </div>
+
+          <div class="cmd-card">
+            <div class="cmd-top"><span class="cmd">dotnet run -- purgeweekend apply</span><span class="chip chip-danger">destructive</span></div>
+            <div class="cmd-body">
+              <p>Actually deletes those candles.</p>
+              <div class="field"><span class="fl">When</span><span class="fv"><strong>After <code>backup</code>, and after reading the preview.</strong></span></div>
+              <div class="field"><span class="fl">Scope</span><span class="fv">Saturdays and Sundays from <strong>daily series only</strong> — the monthly macro series are untouched.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout warn">
+          <h3>Why a command that deletes candles exists at all</h3>
+          <p>The <code>GOLD_SILVER_HISTORY</code> feed returned a row per <strong>calendar day</strong> —
+          26% of them Saturdays and Sundays, which are not trading sessions. Ingestion now drops them,
+          and accumulated history is cleaned with this command.</p>
+          <p><strong>The effect was measured:</strong> gold's VaR95 over the live window moved from
+          <strong>96.33 to 113.44</strong>, up 17.8%. Silver moved 17.9%. The euro, sterling, the yen
+          and the US 10-year were unchanged — they carry no weekend candles to begin with.</p>
+        </div>
+      </section>
+
+      <section id="service">
+        <div class="sec-head"><span class="tier-dot t-service"></span><h2>Running as a service</h2></div>
+        <div class="cmd-card">
+          <div class="cmd-top"><span class="cmd">dotnet run</span><span class="chip chip-file">no command</span></div>
+          <div class="cmd-body">
+            <p>Runs the bot <strong>live</strong>: the Telegram receiver, the automatic scheduler, and
+            continuous scoring.</p>
+            <div class="field"><span class="fl">When</span><span class="fv">Continuous operation, or production.</span></div>
+            <div class="field"><span class="fl">Output</span><span class="fv">It keeps running until you stop it.</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="markets">
+        <h2>Supported markets</h2>
+        <p class="lede">Three active symbols. What separates them is <strong>the shape of the
+        data</strong>, not the engine.</p>
+
+        <div class="plate">
+          <div class="row">
+            <span class="lb">EURUSD</span>
+            <p>Euro / US dollar, FX · <code>FX_DAILY</code> endpoint · <strong>full OHLC</strong> ·
+            quality <strong>complete</strong></p>
+          </div>
+          <div class="row">
+            <span class="lb">XAUUSD</span>
+            <p>Gold / US dollar · <code>GOLD_SILVER_HISTORY</code> · <strong>one price per day</strong>,
+            no intraday movement · quality <strong>FAIR</strong></p>
+          </div>
+          <div class="row">
+            <span class="lb">XAGUSD</span>
+            <p>Silver / US dollar · same feed and same shape · quality <strong>FAIR</strong> —
+            <strong>and its calibration still reads "sample too small"</strong>, because it has fewer
+            outcomes it can score</p>
+          </div>
+        </div>
+
+        <div class="callout alert">
+          <h3>The metals' limit — and it is a data limit, not an engine limit</h3>
+          <p>The free tier returns one price per day (about 5,300 candles back to 2011), with no
+          separate open, high and low. The consequence:</p>
+          <ul>
+            <li><strong>Works well:</strong> trend, momentum, risk (VaR), state, support and
+            resistance, the liquidity map, historical context.</li>
+            <li><strong>Weak or empty:</strong> candle patterns, intraday liquidity sweeps, fair-value
+            gaps — all of which need movement inside the day.</li>
+            <li>Market quality settles at <strong>FAIR</strong> and may return "no read" more often
+            than the euro does.</li>
+          </ul>
+          <p style="margin-top:10px"><strong><code>seedhistory</code> will not lift it</strong> — this
+          is the shape of the data itself. Raising the quality needs a paid provider that supplies
+          intraday movement.</p>
+          <p><strong>In short:</strong> <code>dotnet run -- report XAUUSD 1D</code> works perfectly —
+          just expect FAIR from the metals rather than complete.</p>
+        </div>
+      </section>
+
+      <section id="quota">
+        <h2>The provider quota</h2>
+        <p class="lede">The free allowance is <strong>25 requests a day</strong>, with a burst limit
+        of roughly one a second — handled automatically by spacing the calls.</p>
+
+        <div class="plate">
+          <div class="row">
+            <span class="lb">Spends calls</span>
+            <p><code>report</code> · <code>drafts</code> · <code>seedhistory</code> ·
+            <code>backfill</code> (one call per symbol — it fetches the full history, then sweeps it)</p>
+          </div>
+          <div class="row">
+            <span class="lb">Zero calls</span>
+            <p><code>audit</code> · <code>weekly</code> · <code>publishsite</code> ·
+            <code>publishcalibration</code> · <code>backup</code> · <code>purgeweekend</code> —
+            all read stored data only</p>
+          </div>
+        </div>
+
+        <div class="callout warn">
+          <h3>What does a report cost? Don't plan on a remembered number</h3>
+          <p><code>report XAUUSD 1D</code> measured <strong>5 calls</strong> — the pair itself, its
+          cross-asset companions, and the macro series.</p>
+          <p><strong>That number is not fixed.</strong> It moves with the fetch spacer (candles pulled
+          a moment ago are not pulled again), with which companions are configured, and with the
+          economic calendar and fundamental analysis being disabled at present.</p>
+          <p><code>report</code>, <code>drafts</code>, <code>seedhistory</code> and
+          <code>todayreport</code> each print this run's call count at the end. The counter is
+          per-process — every run starts at zero, there is no daily total.
+          <strong>It is the reference, not this page.</strong></p>
+        </div>
+      </section>
+
+      <section id="audit">
+        <h2>The four audit cards</h2>
+        <p class="lede">What <code>audit</code> prints to the terminal.</p>
+
+        <div class="plate">
+          <div class="row">
+            <span class="lb">VaR calibration</span>
+            <p>Is the 95% expected range breached on about 5% of days, as it should be? Includes the
+            <strong>breach-clustering test</strong> — Christoffersen.</p>
+          </div>
+          <div class="row">
+            <span class="lb">ES calibration</span>
+            <p>On breach days, did the average actual loss match the declared Expected Shortfall — a
+            ratio near 1? It appears once enough breach days have accumulated, after
+            <code>backfill</code> or through live accrual.</p>
+          </div>
+          <div class="row">
+            <span class="lb">Level resilience</span>
+            <p>When the system marks a level as tested, how often did it actually hold? A historical
+            sweep <strong>with no lookahead</strong>.</p>
+          </div>
+          <div class="row">
+            <span class="lb">Correlation stability</span>
+            <p>Is the published 30-day correlation figure dependable, or does it swing?</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="notes">
+        <h2>Notes</h2>
+
+        <div class="callout warn">
+          <h3>Use <code>1D</code>, not <code>4H</code></h3>
+          <p>The free provider is daily only, and asking for <code>4H</code> produces an
+          <strong>empty report</strong>.</p>
+        </div>
+
+        <div class="callout">
+          <h3>The practical route to the institutional report is the <code>report</code> command</h3>
+          <p>The HTTP endpoint <code>api/reports/institutional/...</code> is behind operator
+          permission, not open.</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer>
+    <span>Metric Risk · QuantMarketEngine · command reference</span>
+    <span>revised 2026-08-31</span>
+  </footer>
+
+</div>
+
+</body>
+</html>
