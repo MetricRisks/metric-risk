@@ -33,6 +33,33 @@
               padding: .05rem .4rem; }
     footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid #8883;
              color: #6b7280; font-size: .8rem; }
+    /* Archive filter. The radios are the state; only the labels are visible. */
+    .filter-state { position: absolute; width: 1px; height: 1px; opacity: 0;
+                    pointer-events: none; }
+    .filters { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0 0 1.25rem; }
+    .filters label { font-size: .8rem; line-height: 1.4; color: #475569;
+                     border: 1px solid #cbd5e1; border-radius: 999px;
+                     padding: .25rem .8rem; cursor: pointer; user-select: none; }
+    .filters label:hover { border-color: #2563eb; color: #2563eb; }
+            #f-all:checked ~ .filters label[for="f-all"],
+            #f-eurusd:checked ~ .filters label[for="f-eurusd"],
+            #f-gbpusd:checked ~ .filters label[for="f-gbpusd"],
+            #f-usdjpy:checked ~ .filters label[for="f-usdjpy"],
+            #f-xagusd:checked ~ .filters label[for="f-xagusd"],
+            #f-xauusd:checked ~ .filters label[for="f-xauusd"]
+            { background: #2563eb; border-color: #2563eb; color: #fff; }
+            #f-all:focus-visible ~ .filters label[for="f-all"],
+            #f-eurusd:focus-visible ~ .filters label[for="f-eurusd"],
+            #f-gbpusd:focus-visible ~ .filters label[for="f-gbpusd"],
+            #f-usdjpy:focus-visible ~ .filters label[for="f-usdjpy"],
+            #f-xagusd:focus-visible ~ .filters label[for="f-xagusd"],
+            #f-xauusd:focus-visible ~ .filters label[for="f-xauusd"]
+            { outline: 2px solid #2563eb; outline-offset: 2px; }
+            #f-eurusd:checked ~ ul.index li:not(.s-eurusd) { display: none; }
+            #f-gbpusd:checked ~ ul.index li:not(.s-gbpusd) { display: none; }
+            #f-usdjpy:checked ~ ul.index li:not(.s-usdjpy) { display: none; }
+            #f-xagusd:checked ~ ul.index li:not(.s-xagusd) { display: none; }
+            #f-xauusd:checked ~ ul.index li:not(.s-xauusd) { display: none; }
   </style>
   <!-- Cloudflare Web Analytics - cookieless, no consent banner required -->
   <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js"
@@ -50,28 +77,42 @@
   <main>
   <h1>Metric Risk — Market Watch</h1>
   <p class="meta">An archive of neutral market-state analyses — newest first.</p>
+  <input type="radio" name="symbol-filter" id="f-all" class="filter-state" checked>
+  <input type="radio" name="symbol-filter" id="f-eurusd" class="filter-state">
+  <input type="radio" name="symbol-filter" id="f-gbpusd" class="filter-state">
+  <input type="radio" name="symbol-filter" id="f-usdjpy" class="filter-state">
+  <input type="radio" name="symbol-filter" id="f-xagusd" class="filter-state">
+  <input type="radio" name="symbol-filter" id="f-xauusd" class="filter-state">
+  <nav class="filters">
+    <label for="f-all">All</label>
+    <label for="f-eurusd">EURUSD</label>
+    <label for="f-gbpusd">GBPUSD</label>
+    <label for="f-usdjpy">USDJPY</label>
+    <label for="f-xagusd">XAGUSD</label>
+    <label for="f-xauusd">XAUUSD</label>
+  </nav>
   <ul class="index">
-    <li><a href="reports/xauusd-20260829-1309-en.html">XAUUSD 1D</a> <time>2026-08-29 13:09</time> <span class="regime">TRENDING_UP</span></li>
-    <li><a href="reports/xagusd-20260829-1309-en.html">XAGUSD 1D</a> <time>2026-08-29 13:09</time> <span class="regime">RANGING</span></li>
-    <li><a href="reports/eurusd-20260829-1309-en.html">EURUSD 1D</a> <time>2026-08-29 13:09</time> <span class="regime">RANGING</span></li>
-    <li><a href="reports/xagusd-20260829-1252-en.html">XAGUSD 1D</a> <time>2026-08-29 12:52</time> <span class="regime">RANGING</span></li>
-    <li><a href="reports/xauusd-20260829-1250-en.html">XAUUSD 1D</a> <time>2026-08-29 12:50</time> <span class="regime">TRENDING_UP</span></li>
-    <li><a href="reports/xagusd-20260829-1250-en.html">XAGUSD 1D</a> <time>2026-08-29 12:50</time> <span class="regime">RANGING</span></li>
-    <li><a href="reports/eurusd-20260829-1250-en.html">EURUSD 1D</a> <time>2026-08-29 12:50</time> <span class="regime">RANGING</span></li>
-    <li><a href="reports/eurusd-20260829-1108-en.html">EURUSD 1D</a> <time>2026-08-29 11:08</time> <span class="regime">RANGING</span></li>
-    <li><a href="reports/eurusd-20260829-1050-en.html">EURUSD 1D</a> <time>2026-08-29 10:50</time> <span class="regime">RANGING</span></li>
-    <li><a href="reports/eurusd-20260704-1255-en.html">EURUSD 1D</a> <time>2026-07-04 12:55</time> <span class="regime">UNCLASSIFIED</span></li>
-    <li><a href="reports/usdjpy-20260629-2105-en.html">USDJPY 1D</a> <time>2026-06-29 21:05</time> <span class="regime">RANGING</span></li>
-    <li><a href="reports/gbpusd-20260629-2105-en.html">GBPUSD 1D</a> <time>2026-06-29 21:05</time> <span class="regime">RANGING</span></li>
-    <li><a href="reports/eurusd-20260629-2105-en.html">EURUSD 1D</a> <time>2026-06-29 21:05</time> <span class="regime">RANGING</span></li>
-    <li><a href="reports/eurusd-20260629-0909-en.html">EURUSD 1D</a> <time>2026-06-29 09:09</time> <span class="regime">RANGING</span></li>
-    <li><a href="reports/eurusd-20260628-1959-en.html">EURUSD 1D</a> <time>2026-06-28 19:59</time> <span class="regime">RANGING</span></li>
-    <li><a href="reports/eurusd-20260628-1615-en.html">EURUSD 1D</a> <time>2026-06-28 16:15</time> <span class="regime">RANGING</span></li>
-    <li><a href="reports/eurusd-20260628-1147-en.html">EURUSD 1D</a> <time>2026-06-28 11:47</time> <span class="regime">RANGING</span></li>
-    <li><a href="reports/eurusd-20260628-0742-en.html">EURUSD 1D</a> <time>2026-06-28 07:42</time> <span class="regime">RANGING</span></li>
-    <li><a href="reports/eurusd-20260628-0651-en.html">EURUSD 1D</a> <time>2026-06-28 06:51</time> <span class="regime">RANGING</span></li>
-    <li><a href="reports/eurusd-20260628-0643-en.html">EURUSD 1D</a> <time>2026-06-28 06:43</time> <span class="regime">RANGING</span></li>
-    <li><a href="reports/eurusd-20260628-0634-en.html">EURUSD 1D</a> <time>2026-06-28 06:34</time> <span class="regime">RANGING</span></li>
+    <li class="s-xauusd"><a href="reports/xauusd-20260829-1309-en.html">XAUUSD 1D</a> <time>2026-08-29 13:09</time> <span class="regime">TRENDING_UP</span></li>
+    <li class="s-xagusd"><a href="reports/xagusd-20260829-1309-en.html">XAGUSD 1D</a> <time>2026-08-29 13:09</time> <span class="regime">RANGING</span></li>
+    <li class="s-eurusd"><a href="reports/eurusd-20260829-1309-en.html">EURUSD 1D</a> <time>2026-08-29 13:09</time> <span class="regime">RANGING</span></li>
+    <li class="s-xagusd"><a href="reports/xagusd-20260829-1252-en.html">XAGUSD 1D</a> <time>2026-08-29 12:52</time> <span class="regime">RANGING</span></li>
+    <li class="s-xauusd"><a href="reports/xauusd-20260829-1250-en.html">XAUUSD 1D</a> <time>2026-08-29 12:50</time> <span class="regime">TRENDING_UP</span></li>
+    <li class="s-xagusd"><a href="reports/xagusd-20260829-1250-en.html">XAGUSD 1D</a> <time>2026-08-29 12:50</time> <span class="regime">RANGING</span></li>
+    <li class="s-eurusd"><a href="reports/eurusd-20260829-1250-en.html">EURUSD 1D</a> <time>2026-08-29 12:50</time> <span class="regime">RANGING</span></li>
+    <li class="s-eurusd"><a href="reports/eurusd-20260829-1108-en.html">EURUSD 1D</a> <time>2026-08-29 11:08</time> <span class="regime">RANGING</span></li>
+    <li class="s-eurusd"><a href="reports/eurusd-20260829-1050-en.html">EURUSD 1D</a> <time>2026-08-29 10:50</time> <span class="regime">RANGING</span></li>
+    <li class="s-eurusd"><a href="reports/eurusd-20260704-1255-en.html">EURUSD 1D</a> <time>2026-07-04 12:55</time> <span class="regime">UNCLASSIFIED</span></li>
+    <li class="s-usdjpy"><a href="reports/usdjpy-20260629-2105-en.html">USDJPY 1D</a> <time>2026-06-29 21:05</time> <span class="regime">RANGING</span></li>
+    <li class="s-gbpusd"><a href="reports/gbpusd-20260629-2105-en.html">GBPUSD 1D</a> <time>2026-06-29 21:05</time> <span class="regime">RANGING</span></li>
+    <li class="s-eurusd"><a href="reports/eurusd-20260629-2105-en.html">EURUSD 1D</a> <time>2026-06-29 21:05</time> <span class="regime">RANGING</span></li>
+    <li class="s-eurusd"><a href="reports/eurusd-20260629-0909-en.html">EURUSD 1D</a> <time>2026-06-29 09:09</time> <span class="regime">RANGING</span></li>
+    <li class="s-eurusd"><a href="reports/eurusd-20260628-1959-en.html">EURUSD 1D</a> <time>2026-06-28 19:59</time> <span class="regime">RANGING</span></li>
+    <li class="s-eurusd"><a href="reports/eurusd-20260628-1615-en.html">EURUSD 1D</a> <time>2026-06-28 16:15</time> <span class="regime">RANGING</span></li>
+    <li class="s-eurusd"><a href="reports/eurusd-20260628-1147-en.html">EURUSD 1D</a> <time>2026-06-28 11:47</time> <span class="regime">RANGING</span></li>
+    <li class="s-eurusd"><a href="reports/eurusd-20260628-0742-en.html">EURUSD 1D</a> <time>2026-06-28 07:42</time> <span class="regime">RANGING</span></li>
+    <li class="s-eurusd"><a href="reports/eurusd-20260628-0651-en.html">EURUSD 1D</a> <time>2026-06-28 06:51</time> <span class="regime">RANGING</span></li>
+    <li class="s-eurusd"><a href="reports/eurusd-20260628-0643-en.html">EURUSD 1D</a> <time>2026-06-28 06:43</time> <span class="regime">RANGING</span></li>
+    <li class="s-eurusd"><a href="reports/eurusd-20260628-0634-en.html">EURUSD 1D</a> <time>2026-06-28 06:34</time> <span class="regime">RANGING</span></li>
   </ul>
 
   </main>
