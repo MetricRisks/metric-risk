@@ -33,6 +33,14 @@
               padding: .05rem .4rem; }
     footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid #8883;
              color: #6b7280; font-size: .8rem; }
+    /* Archive filter. The radios are the state; only the labels are visible. */
+    .filter-state { position: absolute; width: 1px; height: 1px; opacity: 0;
+                    pointer-events: none; }
+    .filters { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0 0 1.25rem; }
+    .filters label { font-size: .8rem; line-height: 1.4; color: #475569;
+                     border: 1px solid #cbd5e1; border-radius: 999px;
+                     padding: .25rem .8rem; cursor: pointer; user-select: none; }
+    .filters label:hover { border-color: #2563eb; color: #2563eb; }
   </style>
   <!-- Cloudflare Web Analytics - cookieless, no consent banner required -->
   <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js"
