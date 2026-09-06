@@ -5,50 +5,227 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>EURUSD 1D — analysis 2026-06-28 — Metric Risk — Market Watch</title>
   <meta name="description" content="EURUSD 1D analysis — market state, volatility and risk.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=optional">
   <style>
-    :root { color-scheme: light; }
-    body { font-family: system-ui, "Segoe UI", Tahoma, sans-serif; line-height: 1.7;
-           max-width: 720px; margin: 0 auto; padding: 1.5rem; color: #1e293b; background: #fff; }
-    a { color: #2563eb; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    header.site { border-bottom: 1px solid #8883; padding-bottom: .75rem; margin-bottom: 1.5rem;
-                  display: flex; gap: 1rem; font-size: .9rem; }
-    header.site .lang { margin-inline-start: auto; font-weight: 600; }
+    /* Every colour is a token, defined once for light and once for dark. Nothing below
+       this block states a colour literally — that is what kept the old stylesheet
+       readable in one theme and invisible in the other. */
+    :root {
+      color-scheme: light dark;
+      --paper: #f3f1eb; --surface: #fbfaf7; --surface-strong: #e8e5dc;
+      /* Muted and faint are darker than the mockup's: on this paper the originals
+         measured 4.45 and 2.33 against the background, and the column headers were
+         the worst of it. These clear 4.5. */
+      --ink: #1a211f; --muted: #5b625d; --faint: #6f766f;
+      --line: #d5d5cd; --line-strong: #aeb5ad;
+      --accent: #b03f28;
+      --up: #0e6047; --up-soft: #dcece5;
+      --down: #33517a; --down-soft: #dde5ef;
+      --range: #7d520f; --range-soft: #f2e8cc;
+      --alert: #8a3125; --alert-soft: #f3ded9;
+      --unknown: #565c57; --unknown-soft: #e2e4df;
+      --display: "Fraunces", Georgia, serif;
+      --body: "DM Sans", ui-sans-serif, system-ui, Segoe UI, sans-serif;
+      --mono: "DM Mono", ui-monospace, "Courier New", monospace;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #161a18; --surface: #1d2421; --surface-strong: #26302b;
+        --ink: #edf0e9; --muted: #a5afa8; --faint: #737d76;
+        --line: #37423c; --line-strong: #59665e;
+        --accent: #f0785b;
+        --up: #61c69f; --up-soft: #1e3d33;
+        --down: #8fb2dc; --down-soft: #21303f;
+        --range: #e4b363; --range-soft: #433520;
+        --alert: #e8927f; --alert-soft: #42241e;
+        --unknown: #a8b0aa; --unknown-soft: #303733;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 320px; background: var(--paper); color: var(--ink);
+           font-family: var(--body); line-height: 1.7; }
+    a { color: inherit; }
+    .site-shell { width: min(1180px, calc(100% - 48px)); margin-inline: auto; }
+
+    .topbar { display: flex; align-items: center; justify-content: space-between;
+              gap: 28px; min-height: 78px; border-bottom: 1px solid var(--line); }
+    .wordmark { color: var(--ink); font-family: var(--mono); font-size: .84rem;
+                font-weight: 500; letter-spacing: .13em; text-decoration: none;
+                white-space: nowrap; direction: ltr; }
+    .wordmark span { color: var(--accent); }
+    .nav { display: flex; align-items: center; gap: clamp(14px, 2.5vw, 34px);
+           flex-wrap: wrap; font-size: .78rem; }
+    .nav a { color: var(--muted); text-decoration: none; }
+    .nav a:hover, .nav a:focus-visible { color: var(--accent); }
+    .nav .lang { padding: 7px 10px; border: 1px solid var(--line-strong);
+                 color: var(--ink); font-family: var(--mono); font-size: .7rem; }
+
+    .signal-strip { display: flex; align-items: center; gap: 10px; min-height: 47px;
+                    border-bottom: 1px solid var(--line); color: var(--muted);
+                    font-family: var(--mono); font-size: .67rem; }
+    .signal-strip p { margin: 0; }
+    .signal-dot { width: 7px; height: 7px; flex: 0 0 auto; border-radius: 50%;
+                  background: var(--accent); }
+    .strip-code { margin-inline-start: auto; color: var(--faint); direction: ltr;
+                  white-space: nowrap; }
+
+    .eyebrow, .section-kicker, .note-label {
+      margin: 0 0 16px; color: var(--accent); font-family: var(--mono);
+      font-size: .68rem; letter-spacing: .11em; text-transform: uppercase; }
+
+    .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, .42fr);
+            gap: 48px; padding-block: clamp(48px, 7vw, 84px) 64px; }
+    .hero h1 { max-width: 680px; margin: 0; font-family: var(--display);
+               font-size: clamp(2.6rem, 6vw, 4.6rem); font-weight: 500;
+               letter-spacing: -.045em; line-height: .95; text-wrap: balance; }
+    .hero h1 em { color: var(--accent); font-style: normal; }
+    .lede { max-width: 550px; margin: 24px 0 0; color: var(--muted);
+            font-size: clamp(1rem, 1.7vw, 1.15rem); line-height: 1.85; }
+    .hero-note { align-self: end; padding-inline-start: 20px;
+                 border-inline-start: 2px solid var(--accent); color: var(--muted);
+                 font-size: .87rem; }
+    .hero-note strong { display: block; margin-bottom: 8px; color: var(--ink);
+                        font-family: var(--mono); font-size: .68rem; font-weight: 500;
+                        letter-spacing: .08em; text-transform: uppercase; }
+
+    .archive-section { padding-block: 12px 72px; }
+    .section-head { display: flex; align-items: end; justify-content: space-between;
+                    gap: 24px; margin-bottom: 23px; }
+    .section-head h2 { margin: 0; font-family: var(--display);
+                       font-size: clamp(1.7rem, 3vw, 2.4rem); font-weight: 500;
+                       letter-spacing: -.035em; line-height: 1; }
+    .section-meta { margin: 0; color: var(--muted); font-family: var(--mono);
+                    font-size: .68rem; text-align: start; direction: ltr; }
+
+    .archive-panel { border-top: 1px solid var(--line-strong); }
+    /* The filter is radio state plus sibling selectors: it works with scripting off,
+       and a reader who never loads the CSS still gets every row. */
+    .filter-state { position: absolute; width: 1px; height: 1px; overflow: hidden;
+                    clip-path: inset(50%); white-space: nowrap; }
+    .filters { display: flex; align-items: center; gap: 8px; min-height: 70px;
+               overflow-x: auto; border-bottom: 1px solid var(--line); }
+    .filters label { padding: 8px 13px; border: 1px solid transparent;
+                     color: var(--muted); cursor: pointer; font-family: var(--mono);
+                     font-size: .69rem; white-space: nowrap; direction: ltr; }
+    .filters label:hover { color: var(--ink); }
+
+    .table-wrap { width: 100%; overflow-x: auto; }
+    .archive-list { min-width: 720px; }
+    .table-head, .archive-row {
+      display: grid;
+      grid-template-columns: minmax(150px, 1.4fr) minmax(90px, .6fr)
+                             minmax(190px, 1.4fr) minmax(180px, 1fr) 35px;
+      align-items: center; gap: 20px; padding-inline: 18px; }
+    .table-head { min-height: 42px; color: var(--faint); font-family: var(--mono);
+                  font-size: .62rem; letter-spacing: .07em; text-transform: uppercase; }
+    .archive-row { min-height: 78px; border-top: 1px solid var(--line);
+                   text-decoration: none;
+                   transition: background 160ms ease, border-color 160ms ease; }
+    .archive-row:hover, .archive-row:focus-visible {
+      background: var(--surface-strong); border-color: var(--line-strong); }
+    .archive-row:last-child { border-bottom: 1px solid var(--line); }
+    .symbol { display: flex; align-items: baseline; gap: 12px; color: var(--ink);
+              font-family: var(--mono); font-size: .92rem; font-weight: 500;
+              letter-spacing: .04em; direction: ltr; }
+    .symbol::before { width: 6px; height: 6px; flex: 0 0 auto; border-radius: 50%;
+                      background: var(--accent); content: ""; }
+    .mono { color: var(--ink); font-family: var(--mono); font-size: .75rem;
+            letter-spacing: .03em; direction: ltr; }
+    .state { display: inline-flex; align-items: center; gap: 10px; justify-self: start;
+             padding: 6px 9px; font-family: var(--mono); font-size: .68rem;
+             letter-spacing: .04em; direction: ltr; }
+    .state::before { width: 6px; height: 6px; border-radius: 50%;
+                     background: currentColor; content: ""; }
+    .state.up { color: var(--up); background: var(--up-soft); }
+    .state.down { color: var(--down); background: var(--down-soft); }
+    .state.range { color: var(--range); background: var(--range-soft); }
+    .state.alert { color: var(--alert); background: var(--alert-soft); }
+    .state.unknown { color: var(--unknown); background: var(--unknown-soft); }
+    .arrow { color: var(--faint); font-size: 1.1rem; text-align: end;
+             transition: color 160ms ease, transform 160ms ease; }
+    .archive-row:hover .arrow, .archive-row:focus-visible .arrow { color: var(--accent); }
+    .empty { color: var(--muted); padding: 28px 18px; }
+
+    .notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px;
+             margin-bottom: 72px; background: var(--line);
+             border-block: 1px solid var(--line); }
+    .note { min-height: 178px; padding: 28px; background: var(--surface); }
+    .note h2 { margin: 0 0 12px; font-family: var(--display); font-size: 1.55rem;
+               font-weight: 500; letter-spacing: -.03em; }
+    .note p { max-width: 480px; margin: 0 0 14px; color: var(--muted); font-size: .9rem; }
+    .note a { color: var(--accent); font-family: var(--mono); font-size: .72rem;
+              letter-spacing: .05em; }
+
+    /* Report and disclaimer pages, in the same shell. */
+    .page { padding-block: clamp(40px, 6vw, 66px) 72px; }
+    .page h1 { margin: 0 0 .3rem; font-family: var(--display);
+               font-size: clamp(2rem, 4vw, 3rem); font-weight: 500;
+               letter-spacing: -.04em; line-height: 1; }
+    .page h1 .tf { color: var(--muted); font-family: var(--mono); font-size: 1rem;
+                   font-weight: 400; letter-spacing: .06em; }
+    .meta { margin: 0 0 1.75rem; color: var(--muted); font-family: var(--mono);
+            font-size: .72rem; letter-spacing: .04em; direction: ltr; }
+    .page p { color: var(--muted); max-width: 68ch; }
+    figure.cone { margin: 0 0 1.75rem; padding: 20px; background: var(--surface);
+                  border: 1px solid var(--line); overflow-x: auto; }
+    figure.cone svg { max-width: 100%; height: auto; display: block;
+                      margin-inline: auto; color: var(--ink); }
+    .message { background: var(--surface); border: 1px solid var(--line);
+               padding: 26px 28px; white-space: normal; }
     pre.plain { white-space: pre-wrap; word-wrap: break-word; margin: 0;
-                font-family: inherit; font-size: .92rem; }
-    .banner { background: #fff7ed; color: #9a3412; border: 1px solid #fdba74;
-              border-radius: 8px; padding: .6rem .9rem; font-size: .85rem; margin-bottom: 1.5rem; }
-    h1 { font-size: 1.5rem; margin: 0 0 .25rem; }
-    .tf { font-size: 1rem; color: #6b7280; font-weight: normal; }
-    .meta { color: #6b7280; font-size: .85rem; margin: 0 0 1.25rem; }
-    .message { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px;
-               padding: 1rem 1.25rem; white-space: normal; }
-    figure.cone { margin: 0 0 1.25rem; overflow-x: auto; }
-    figure.cone svg { max-width: 100%; height: auto; }
-    ul.index { list-style: none; padding: 0; }
-    ul.index li { padding: .55rem 0; border-bottom: 1px solid #8882; display: flex;
-                  gap: .75rem; align-items: baseline; }
-    ul.index time { color: #6b7280; font-size: .8rem; }
-    .regime { font-size: .75rem; background: #e0e7ff; color: #3730a3; border-radius: 6px;
-              padding: .05rem .4rem; }
-    footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid #8883;
-             color: #6b7280; font-size: .8rem; }
+                font-family: var(--mono); font-size: .8rem; line-height: 1.85; }
+
+    footer { padding-block: 26px 38px; border-top: 1px solid var(--line-strong);
+             color: var(--muted); }
+    .footer-inner { display: flex; justify-content: space-between; gap: 28px;
+                    font-size: .75rem; }
+    .footer-inner p { margin: 0; }
+    .footer-inner .mono { color: var(--faint); }
+
+    a:focus-visible, .filters label:focus-visible,
+    .filter-state:focus-visible + label { outline: 2px solid var(--accent);
+                                          outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+    @media (max-width: 740px) {
+      .site-shell { width: min(100% - 30px, 1180px); }
+      .topbar { align-items: flex-start; flex-direction: column; gap: 16px;
+                padding-block: 21px; }
+      .nav { gap: 12px 20px; }
+      .hero { display: block; padding-block: 52px 56px; }
+      .hero-note { max-width: 420px; margin-top: 44px; }
+      .section-head { align-items: flex-start; flex-direction: column; gap: 13px; }
+      .notes { grid-template-columns: 1fr; }
+      .footer-inner { align-items: flex-start; flex-direction: column; gap: 9px; }
+    }
   </style>
   <!-- Cloudflare Web Analytics - cookieless, no consent banner required -->
   <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js"
           data-cf-beacon='{"token": "23ffa219aca54e0b9a7b6b1bfd9d00a2"}'></script>
 </head>
 <body>
-  <header class="site">
-    <a href="../index-en.html">Home</a>
-    <a href="../calibration-en.html">Calibration record</a>
-    <a href="../disclaimer-en.html">Disclaimer</a>
-    <a href="../docs-en.html">Documentation</a>
-    <a class="lang" href="eurusd-20260628-1615.html" hreflang="ar">العربية</a>
-  </header>
-  <div class="banner">⚠️ Educational content only — not a trade recommendation. Financial risk is real; manage your capital wisely.</div>
-  <main>
-  <article class="report">
+  <div class="site-shell">
+    <header class="topbar">
+      <a class="wordmark" href="../index-en.html">METRIC <span>RISK</span></a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="../index-en.html">Home</a>
+        <a href="../calibration-en.html">Calibration record</a>
+        <a href="../disclaimer-en.html">Disclaimer</a>
+        <a href="../docs-en.html">Documentation</a>
+        <a class="lang" href="eurusd-20260628-1615.html" hreflang="ar" lang="ar">العربية</a>
+      </nav>
+    </header>
+
+    <div class="signal-strip">
+      <span class="signal-dot" aria-hidden="true"></span>
+      <p>Educational content only — not a trade recommendation. Financial risk is real; manage your capital wisely.</p>
+      <span class="strip-code">PUBLIC RECORD / METRIC RISK</span>
+    </div>
+
+    <main>
+  <article class="page">
     <h1>EURUSD <span class="tf">1D</span></h1>
     <p class="meta">Published 2026-06-28 16:15 UTC</p>
     
@@ -119,9 +296,14 @@ Generated: 2026-06-28 16:15 UTC | Price: 1.13830 (+0.12% — snapshot-to-snapsho
 
 </pre></div>
   </article>
-  </main>
-  <footer>
-    <p>Educational content only — not a trade recommendation. Financial risk is real; manage your capital wisely.</p>
-  </footer>
+    </main>
+
+    <footer>
+      <div class="footer-inner">
+        <p>Educational content only — not a trade recommendation. Financial risk is real; manage your capital wisely.</p>
+        <p class="mono">METRIC RISK / PUBLIC ARCHIVE</p>
+      </div>
+    </footer>
+  </div>
 </body>
 </html>
