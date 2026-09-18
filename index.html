@@ -85,7 +85,13 @@
                font-size: clamp(2.6rem, 6vw, 4.6rem); font-weight: 500;
                letter-spacing: -.045em; line-height: .95; text-wrap: balance; }
     .hero h1 em { color: var(--accent); font-style: normal; }
-    .lede { max-width: 550px; margin: 24px 0 0; color: var(--muted);
+    /* The whole product in one sentence, above the archive it is evidence for. */
+    .claim { max-width: 22ch; margin: 26px 0 0; font-family: var(--display);
+             font-size: clamp(1.45rem, 2.6vw, 2.1rem); font-weight: 500;
+             line-height: 1.25; letter-spacing: -.02em; text-wrap: balance;
+             color: var(--ink); }
+    .claim em { font-style: normal; color: var(--accent); }
+    .lede { max-width: 550px; margin: 20px 0 0; color: var(--muted);
             font-size: clamp(1rem, 1.7vw, 1.15rem); line-height: 1.85; }
     .hero-note { align-self: end; padding-inline-start: 20px;
                  border-inline-start: 2px solid var(--accent); color: var(--muted);
@@ -251,6 +257,7 @@
     <div>
       <p class="eyebrow">أرشيف يومي لحالة السوق</p>
       <h1>Metric <em>Risk</em></h1>
+      <p class="claim">الجميع يخبرك إلى أين يذهب السعر. <em>هنا نخبرك كم مرّة أخطأنا — وننشر الرقم.</em></p>
       <p class="lede">سجل عام مؤرّخ لقراءات العملات والمعادن. كل إدخال يحفظ حالة السوق كما نشرها المحرّك وقت النشر.</p>
     </div>
     <aside class="hero-note">
