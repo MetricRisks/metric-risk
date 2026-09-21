@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EURUSD 1D — analysis 2026-09-21 — Metric Risk — Market Watch</title>
+  <meta name="description" content="EURUSD 1D analysis — market state, volatility and risk.">
+  <style>
+    @font-face { font-family: "DM Sans"; font-style: normal; font-weight: 400 500;
+                 font-display: optional; src: url(../fonts/dm-sans.woff2) format("woff2"); }
+    @font-face { font-family: "Fraunces"; font-style: normal; font-weight: 500;
+                 font-display: optional; src: url(../fonts/fraunces.woff2) format("woff2"); }
+    @font-face { font-family: "DM Mono"; font-style: normal; font-weight: 400;
+                 font-display: optional; src: url(../fonts/dm-mono-400.woff2) format("woff2"); }
+    @font-face { font-family: "DM Mono"; font-style: normal; font-weight: 500;
+                 font-display: optional; src: url(../fonts/dm-mono-500.woff2) format("woff2"); }
+    /* Every colour is a token, defined once for light and once for dark. Nothing below
+       this block states a colour literally — that is what kept the old stylesheet
+       readable in one theme and invisible in the other. */
+    :root {
+      color-scheme: light dark;
+      --paper: #f3f1eb; --surface: #fbfaf7; --surface-strong: #e8e5dc;
+      /* Muted and faint are darker than the mockup's: on this paper the originals
+         measured 4.45 and 2.33 against the background, and the column headers were
+         the worst of it. These clear 4.5. */
+      --ink: #1a211f; --muted: #5b625d; --faint: #6f766f;
+      --line: #d5d5cd; --line-strong: #aeb5ad;
+      --accent: #b03f28;
+      --up: #0e6047; --up-soft: #dcece5;
+      --down: #33517a; --down-soft: #dde5ef;
+      --range: #7d520f; --range-soft: #f2e8cc;
+      --alert: #8a3125; --alert-soft: #f3ded9;
+      --unknown: #565c57; --unknown-soft: #e2e4df;
+      --display: "Fraunces", Georgia, serif;
+      --body: "DM Sans", ui-sans-serif, system-ui, Segoe UI, sans-serif;
+      --mono: "DM Mono", ui-monospace, "Courier New", monospace;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #161a18; --surface: #1d2421; --surface-strong: #26302b;
+        --ink: #edf0e9; --muted: #a5afa8; --faint: #737d76;
+        --line: #37423c; --line-strong: #59665e;
+        --accent: #f0785b;
+        --up: #61c69f; --up-soft: #1e3d33;
+        --down: #8fb2dc; --down-soft: #21303f;
+        --range: #e4b363; --range-soft: #433520;
+        --alert: #e8927f; --alert-soft: #42241e;
+        --unknown: #a8b0aa; --unknown-soft: #303733;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 320px; background: var(--paper); color: var(--ink);
+           font-family: var(--body); line-height: 1.7; }
+    a { color: inherit; }
+    .site-shell { width: min(1180px, calc(100% - 48px)); margin-inline: auto; }
+
+    .topbar { display: flex; align-items: center; justify-content: space-between;
+              gap: 28px; min-height: 78px; border-bottom: 1px solid var(--line); }
+    .wordmark { color: var(--ink); font-family: var(--mono); font-size: .84rem;
+                font-weight: 500; letter-spacing: .13em; text-decoration: none;
+                white-space: nowrap; direction: ltr; }
+    .wordmark span { color: var(--accent); }
+    .nav { display: flex; align-items: center; gap: clamp(14px, 2.5vw, 34px);
+           flex-wrap: wrap; font-size: .78rem; }
+    .nav a { color: var(--muted); text-decoration: none; }
+    .nav a:hover, .nav a:focus-visible { color: var(--accent); }
+    .nav .lang { padding: 7px 10px; border: 1px solid var(--line-strong);
+                 color: var(--ink); font-family: var(--mono); font-size: .7rem; }
+
+    .signal-strip { display: flex; align-items: center; gap: 10px; min-height: 47px;
+                    border-bottom: 1px solid var(--line); color: var(--muted);
+                    font-family: var(--mono); font-size: .67rem; }
+    .signal-strip p { margin: 0; }
+    .signal-dot { width: 7px; height: 7px; flex: 0 0 auto; border-radius: 50%;
+                  background: var(--accent); }
+    .strip-code { margin-inline-start: auto; color: var(--faint); direction: ltr;
+                  white-space: nowrap; }
+
+    .eyebrow, .section-kicker, .note-label {
+      margin: 0 0 16px; color: var(--accent); font-family: var(--mono);
+      font-size: .68rem; letter-spacing: .11em; text-transform: uppercase; }
+
+    .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, .42fr);
+            gap: 48px; padding-block: clamp(48px, 7vw, 84px) 64px; }
+    .hero h1 { max-width: 680px; margin: 0; font-family: var(--display);
+               font-size: clamp(2.6rem, 6vw, 4.6rem); font-weight: 500;
+               letter-spacing: -.045em; line-height: .95; text-wrap: balance; }
+    .hero h1 em { color: var(--accent); font-style: normal; }
+    /* The whole product in one sentence, above the archive it is evidence for. */
+    .claim { max-width: 22ch; margin: 26px 0 0; font-family: var(--display);
+             font-size: clamp(1.45rem, 2.6vw, 2.1rem); font-weight: 500;
+             line-height: 1.25; letter-spacing: -.02em; text-wrap: balance;
+             color: var(--ink); }
+    .claim em { font-style: normal; color: var(--accent); }
+    .lede { max-width: 550px; margin: 20px 0 0; color: var(--muted);
+            font-size: clamp(1rem, 1.7vw, 1.15rem); line-height: 1.85; }
+    .hero-note { align-self: end; padding-inline-start: 20px;
+                 border-inline-start: 2px solid var(--accent); color: var(--muted);
+                 font-size: .87rem; }
+    .hero-note strong { display: block; margin-bottom: 8px; color: var(--ink);
+                        font-family: var(--mono); font-size: .68rem; font-weight: 500;
+                        letter-spacing: .08em; text-transform: uppercase; }
+
+    .archive-section { padding-block: 12px 72px; }
+    .section-head { display: flex; align-items: end; justify-content: space-between;
+                    gap: 24px; margin-bottom: 23px; }
+    .section-head h2 { margin: 0; font-family: var(--display);
+                       font-size: clamp(1.7rem, 3vw, 2.4rem); font-weight: 500;
+                       letter-spacing: -.035em; line-height: 1; }
+    .section-meta { margin: 0; color: var(--muted); font-family: var(--mono);
+                    font-size: .68rem; text-align: start; direction: ltr; }
+
+    .archive-panel { border-top: 1px solid var(--line-strong); }
+    /* The filter is radio state plus sibling selectors: it works with scripting off,
+       and a reader who never loads the CSS still gets every row. */
+    .filter-state { position: absolute; width: 1px; height: 1px; overflow: hidden;
+                    clip-path: inset(50%); white-space: nowrap; }
+    .filters { display: flex; align-items: center; gap: 8px; min-height: 70px;
+               overflow-x: auto; border-bottom: 1px solid var(--line); }
+    .filters label { padding: 8px 13px; border: 1px solid transparent;
+                     color: var(--muted); cursor: pointer; font-family: var(--mono);
+                     font-size: .69rem; white-space: nowrap; direction: ltr; }
+    .filters label:hover { color: var(--ink); }
+
+    .table-wrap { width: 100%; overflow-x: auto; }
+    .archive-list { min-width: 720px; }
+    .table-head, .archive-row {
+      display: grid;
+      grid-template-columns: minmax(150px, 1.4fr) minmax(90px, .6fr)
+                             minmax(190px, 1.4fr) minmax(180px, 1fr) 35px;
+      align-items: center; gap: 20px; padding-inline: 18px; }
+    .table-head { min-height: 42px; color: var(--faint); font-family: var(--mono);
+                  font-size: .62rem; letter-spacing: .07em; text-transform: uppercase; }
+    .archive-row { min-height: 78px; border-top: 1px solid var(--line);
+                   text-decoration: none;
+                   transition: background 160ms ease, border-color 160ms ease; }
+    .archive-row:hover, .archive-row:focus-visible {
+      background: var(--surface-strong); border-color: var(--line-strong); }
+    .archive-row:last-child { border-bottom: 1px solid var(--line); }
+    .symbol { display: flex; align-items: baseline; gap: 12px; color: var(--ink);
+              font-family: var(--mono); font-size: .92rem; font-weight: 500;
+              letter-spacing: .04em; direction: ltr; }
+    .symbol::before { width: 6px; height: 6px; flex: 0 0 auto; border-radius: 50%;
+                      background: var(--accent); content: ""; }
+    .mono { color: var(--ink); font-family: var(--mono); font-size: .75rem;
+            letter-spacing: .03em; direction: ltr; }
+    .state { display: inline-flex; align-items: center; gap: 10px; justify-self: start;
+             padding: 6px 9px; font-family: var(--mono); font-size: .68rem;
+             letter-spacing: .04em; direction: ltr; }
+    .state::before { width: 6px; height: 6px; border-radius: 50%;
+                     background: currentColor; content: ""; }
+    .state.up { color: var(--up); background: var(--up-soft); }
+    .state.down { color: var(--down); background: var(--down-soft); }
+    .state.range { color: var(--range); background: var(--range-soft); }
+    .state.alert { color: var(--alert); background: var(--alert-soft); }
+    .state.unknown { color: var(--unknown); background: var(--unknown-soft); }
+    .arrow { color: var(--faint); font-size: 1.1rem; text-align: end;
+             transition: color 160ms ease, transform 160ms ease; }
+    .archive-row:hover .arrow, .archive-row:focus-visible .arrow { color: var(--accent); }
+    .empty { color: var(--muted); padding: 28px 18px; }
+
+    .notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px;
+             margin-bottom: 72px; background: var(--line);
+             border-block: 1px solid var(--line); }
+    .note { min-height: 178px; padding: 28px; background: var(--surface); }
+    .note h2 { margin: 0 0 12px; font-family: var(--display); font-size: 1.55rem;
+               font-weight: 500; letter-spacing: -.03em; }
+    .note p { max-width: 480px; margin: 0 0 14px; color: var(--muted); font-size: .9rem; }
+    .note a { color: var(--accent); font-family: var(--mono); font-size: .72rem;
+              letter-spacing: .05em; }
+
+    /* Report and disclaimer pages, in the same shell. */
+    .page { padding-block: clamp(40px, 6vw, 66px) 72px; }
+    .page h1 { margin: 0 0 .3rem; font-family: var(--display);
+               font-size: clamp(2rem, 4vw, 3rem); font-weight: 500;
+               letter-spacing: -.04em; line-height: 1; }
+    .page h1 .tf { color: var(--muted); font-family: var(--mono); font-size: 1rem;
+                   font-weight: 400; letter-spacing: .06em; }
+    .meta { margin: 0 0 1.75rem; color: var(--muted); font-family: var(--mono);
+            font-size: .72rem; letter-spacing: .04em; direction: ltr; }
+    .page p { color: var(--muted); max-width: 68ch; }
+    figure.cone { margin: 0 0 1.75rem; padding: 20px; background: var(--surface);
+                  border: 1px solid var(--line); overflow-x: auto; }
+    figure.cone svg { max-width: 100%; height: auto; display: block;
+                      margin-inline: auto; color: var(--ink); }
+    .message { background: var(--surface); border: 1px solid var(--line);
+               padding: 26px 28px; white-space: normal; }
+    pre.plain { white-space: pre-wrap; word-wrap: break-word; margin: 0;
+                font-family: var(--mono); font-size: .8rem; line-height: 1.85; }
+
+    footer { padding-block: 26px 38px; border-top: 1px solid var(--line-strong);
+             color: var(--muted); }
+    .footer-inner { display: flex; justify-content: space-between; gap: 28px;
+                    font-size: .75rem; }
+    .footer-inner p { margin: 0; }
+    .footer-inner .mono { color: var(--faint); }
+
+    a:focus-visible, .filters label:focus-visible,
+    .filter-state:focus-visible + label { outline: 2px solid var(--accent);
+                                          outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+    @media (max-width: 740px) {
+      .site-shell { width: min(100% - 30px, 1180px); }
+      .topbar { align-items: flex-start; flex-direction: column; gap: 16px;
+                padding-block: 21px; }
+      .nav { gap: 12px 20px; }
+      .hero { display: block; padding-block: 52px 56px; }
+      .hero-note { max-width: 420px; margin-top: 44px; }
+      .section-head { align-items: flex-start; flex-direction: column; gap: 13px; }
+      .notes { grid-template-columns: 1fr; }
+      .footer-inner { align-items: flex-start; flex-direction: column; gap: 9px; }
+    }
+  </style>
+  <!-- Cloudflare Web Analytics - cookieless, no consent banner required -->
+  <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon='{"token": "23ffa219aca54e0b9a7b6b1bfd9d00a2"}'></script>
+</head>
+<body>
+  <div class="site-shell">
+    <header class="topbar">
+      <a class="wordmark" href="../index-en.html">METRIC <span>RISK</span></a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="../index-en.html">Home</a>
+        <a href="../calibration-en.html">Calibration record</a>
+        <a href="../disclaimer-en.html">Disclaimer</a>
+        <a href="../docs-en.html">Documentation</a>
+        <a class="lang" href="eurusd-20260921-0429.html" hreflang="ar" lang="ar">العربية</a>
+      </nav>
+    </header>
+
+    <div class="signal-strip">
+      <span class="signal-dot" aria-hidden="true"></span>
+      <p>Educational content only — not a trade recommendation. Financial risk is real; manage your capital wisely.</p>
+      <span class="strip-code">PUBLIC RECORD / METRIC RISK</span>
+    </div>
+
+    <main>
+  <article class="page">
+    <h1>EURUSD <span class="tf">1D</span></h1>
+    <p class="meta">Published 2026-09-21 04:29 UTC</p>
+    <figure class="cone"><svg viewBox="0 0 680 402" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="EURUSD probability cone" font-family="system-ui, sans-serif" font-size="11"><rect width="100%" height="100%" fill="none"/><text x="66" y="18" font-size="13" font-weight="600" fill="currentColor">EURUSD — مخروط الاحتمالات (90%) · probability cone</text><line x1="66" y1="34" x2="66" y2="346" stroke="currentColor" stroke-opacity="0.5"/><line x1="66" y1="346" x2="552" y2="346" stroke="currentColor" stroke-opacity="0.5"/><line x1="66" y1="34" x2="552" y2="34" stroke="currentColor" stroke-opacity="0.12"/><text x="60" y="37" text-anchor="end" fill="currentColor" fill-opacity="0.75">1.1755</text><line x1="66" y1="112" x2="552" y2="112" stroke="currentColor" stroke-opacity="0.12"/><text x="60" y="115" text-anchor="end" fill="currentColor" fill-opacity="0.75">1.16209</text><line x1="66" y1="190" x2="552" y2="190" stroke="currentColor" stroke-opacity="0.12"/><text x="60" y="193" text-anchor="end" fill="currentColor" fill-opacity="0.75">1.14869</text><line x1="66" y1="268" x2="552" y2="268" stroke="currentColor" stroke-opacity="0.12"/><text x="60" y="271" text-anchor="end" fill="currentColor" fill-opacity="0.75">1.13529</text><line x1="66" y1="346" x2="552" y2="346" stroke="currentColor" stroke-opacity="0.12"/><text x="60" y="349" text-anchor="end" fill="currentColor" fill-opacity="0.75">1.12188</text><polygon points="66,192.3 90.3,161.7 187.5,123.8 309,95.6 552,55.5 552,324.5 309,285.7 187.5,258.4 90.3,221.8" fill="#2563eb" fill-opacity="0.16" stroke="#2563eb" stroke-opacity="0.55" stroke-width="1"/><polyline points="66,192.3 90.3,191.7 187.5,191.1 309,190.6 552,190" fill="none" stroke="#2563eb" stroke-opacity="0.7" stroke-width="1.5" stroke-dasharray="4 3"/><line x1="66" y1="218.5" x2="552" y2="218.5" stroke="#059669" stroke-opacity="0.8" stroke-width="1" stroke-dasharray="5 3"/><text x="558" y="221.5" fill="#059669">دعم 1.1438</text><line x1="66" y1="186.7" x2="552" y2="186.7" stroke="#dc2626" stroke-opacity="0.8" stroke-width="1" stroke-dasharray="5 3"/><text x="558" y="189.7" fill="#dc2626">مقاومة 1.14925</text><circle cx="66" cy="192.3" r="3.5" fill="currentColor"/><text x="72" y="186.3" fill="currentColor" font-weight="600">1.1483</text><polygon points="187.5,267.4 183,259.4 192,259.4" fill="none" stroke="#b45309" stroke-width="1.2"/><polygon points="552,333.5 547.5,325.5 556.5,325.5" fill="none" stroke="#b45309" stroke-width="1.2"/><text x="66" y="382" fill="#b45309" fill-opacity="0.95">⚠ الحدود المُعلَّمة (△) لا تصمد كحدّ 95% على هذا الرمز عند ذلك الأفق · flagged edges did not hold</text><line x1="90.3" y1="346" x2="90.3" y2="350" stroke="currentColor" stroke-opacity="0.5"/><text x="90.3" y="364" text-anchor="middle" fill="currentColor" fill-opacity="0.75">1d</text><line x1="187.5" y1="346" x2="187.5" y2="350" stroke="currentColor" stroke-opacity="0.5"/><text x="187.5" y="364" text-anchor="middle" fill="currentColor" fill-opacity="0.75">5d</text><line x1="309" y1="346" x2="309" y2="350" stroke="currentColor" stroke-opacity="0.5"/><text x="309" y="364" text-anchor="middle" fill="currentColor" fill-opacity="0.75">10d</text><line x1="552" y1="346" x2="552" y2="350" stroke="currentColor" stroke-opacity="0.5"/><text x="552" y="364" text-anchor="middle" fill="currentColor" fill-opacity="0.75">20d</text></svg></figure>
+    <div class="message"><pre class="plain">═══ Institutional Daily Report — EURUSD (1D) ═══
+Last bar: 2026-09-18 (Friday) close
+Generated: 2026-09-21 04:29 UTC | Price: 1.14830 (+0.08%)
+
+■ Executive Synthesis
+  Price at 1.14830 in a ranging (sideways) market, volatility in the 23rd percentile of the last 90 days (near normal). Nearest support at 1.14380 and resistance at 1.14925; the statistical week (5-day cone) spans 1.13694–1.16006, so the week&#39;s statistical range reaches out to test both edges. Risk level medium, with a neutral lean that describes the past window, not the future. (Statistical and structural description, not a recommendation.)
+
+■ 1. Market Structure
+  State: RANGING (stable for 1 calendar days since 2026-09-18)
+  Swing structure: HH_HL — no fresh break, but price trades below the last confirmed swing low (1.15650); it was broken on an earlier bar
+  Phase: TREND_EXPANSION (range position 41.1%) — a high trend-strength reading only: it describes how orderly the past move was, and makes no claim that price is going one way
+  Last candle size: 0.75&#215; ATR
+  Candle pattern: none detected on the latest bar(s)
+
+■ Trend &amp; Momentum
+  Trend firmness (ADX): 27.7 (+DI 12.4 / −DI 26.3)
+  Trend strength score◆: +55.4 / &#177;100 (upward structure)
+  Momentum score◆: -37.5 / &#177;100 (RSI distance + MACD slope + rate of change)
+  Momentum strength (RSI): 36.4 (lower range)
+  Short-term momentum (MACD): histogram -0.00223 (MACD line below its signal)
+  Momentum (raw): -0.013 (recent closes drifting lower than earlier ones)
+
+■ Timeframe Alignment
+  Perspectives: 1D: Ranging &#183; 1W: Ranging
+  Verdict: Fully aligned on Ranging (agreement◆ 100%)
+
+■ Supporting &amp; Conflicting Factors
+  Supporting:
+    (none)
+  Conflicting:
+    − The prevailing pattern is aging or showing early structural-change signals.
+
+■ Fibonacci Levels
+  Withheld — price has traded back through the leg&#39;s origin, so the impulse it measured is over. Awaiting a fresh confirmed swing.
+
+■ Fair Value Gaps
+  Bullish gap: 1.14050 – 1.14320 (still open, printed 36 bars ago)
+  Bearish gap: 1.14970 – 1.15250 (still open, printed 1 bar ago)
+  (An unfilled zone the market rushed past — worth watching if price returns to it.)
+
+■ 2. Liquidity
+  Historical pools: 295 resolved, 65% ended as liquidity sweeps rather than clean breaks (by definition: a close back inside the level on the piercing bar itself or within the 3 bars after it).
+  Equal highs at 1.16508 (3 touches) — estimated stop cluster [1.16508 – 1.16632]
+  Equal highs at 1.17165 (5 touches) — estimated stop cluster [1.17165 – 1.17288]
+  Equal highs at 1.17840 (5 touches) — estimated stop cluster [1.17840 – 1.17963]
+  Equal lows at 1.13576 (5 touches) — estimated stop cluster [1.13453 – 1.13576]
+  Equal lows at 1.13213 (3 touches) — estimated stop cluster [1.13090 – 1.13213]
+  Equal lows at 1.12135 (6 touches) — estimated stop cluster [1.12012 – 1.12135]
+
+■ Reference Levels
+  1.14910 — prior session high/low (above price by 0.16 ATR)
+  1.14990 — prior month high/low (above price by 0.32 ATR)
+  1.15000 — round number (above price by 0.34 ATR)
+  1.14540 — prior session high/low (below price by 0.59 ATR)
+  1.14000 — round number (below price by 1.68 ATR)
+  1.15680 — prior week high/low (above price by 1.72 ATR)
+  (Reference points and liquidity magnets, not tested structure. Monitoring only.)
+
+■ 3. Volatility, Risk &amp; Market Regime
+  ATR 0.00493 (MEDIUM, +3.16% vs the report of 11 days ago)
+  Classification: RANGING — current volatility at the 23.3th percentile of the last 90 days (0.88&#215; the window mean).
+  Complexity: MEDIUM — entropy 0.83, at the 38.4th percentile of this symbol&#39;s own trailing year.
+  Risk (VaR95): most you&#39;d expect to lose on a normal day ≈ &#177;0.44% &#183; level: MEDIUM (volatility above its own quiet band — not from the figure above)
+  Bad-day loss (CVaR95): average loss across the worst 5% of days ≈ &#177;0.53%
+  Statistical boundary (95% — breached ~1 day in 20): 1.14322 – 1.15338
+  Adopted method: parametric (the tail was too thin to fit a GPD).
+  Companion for comparison: distribution-free VaR95 ≈ &#177;0.40%
+  Recent volatility (EWMA): ≈ &#177;0.28%/day — near its usual level (recency-weighted).
+  Typical day range (&#177;1σ, recency-weighted): 1.14503 – 1.15157
+  Observed range (last 90 days): 1.13240 – 1.17110
+  ATR against its own average: 0.00493 vs 0.00549 (below normal)
+  Prevailing pattern: 37 days old (similar patterns last 65 days on average) &#183; health◆ 62.1%
+  Deepest realized decline (max drawdown, last 90 bars): −2.59% peak-to-trough over 26 calendar days, recovered to its peak after 82 calendar days under water.
+  Probability cone (90%): a band that widens with √time — each edge breached ~1 day in 20. A description of widening uncertainty, not a price forecast:
+    1 day out: 1.14322 – 1.15356
+    5 days out: 1.13694 – 1.16006   ⚠️ lower edge breached 5.6%, not 5%
+    10 days out: 1.13224 – 1.16492
+    20 days out: 1.12558 – 1.17180   ⚠️ lower edge breached 6.3%, not 5%
+    ⚠️ Flagged edges above do not hold as a 95% bound on this symbol at that horizon. The rate is measured walk-forward on the symbol&#39;s own history; the figure is published with its limit stated rather than as an absolute.
+  GARCH(1,1) — companion read: tomorrow&#39;s volatility ≈ &#177;0.28% &#183; long-run ≈ &#177;0.27% &#183; persistence α+β=0.72 (closer to 1 = slower reversion to normal).
+  GARCH companion cone (90% — volatility mean-reverts instead of the flat √t rule; does not feed the declared figures, audited alongside them):
+    1 day out: 1.14318 – 1.15360
+    5 days out: 1.13689 – 1.16011
+    10 days out: 1.13220 – 1.16496
+    20 days out: 1.12555 – 1.17183
+
+■ 4. Cross-Asset Correlation
+  USD Strength Index (synthetic proxy): 60-observation correlation -0.73 vs -0.79 baseline, n=60 — 0.06 away from that baseline.
+  US 10Y Treasury Yield: 60-observation correlation -0.29 vs -0.33 baseline, n=60 — 0.04 away from that baseline.
+  Gold (XAU/USD): 60-observation correlation -0.14 vs -0.01 baseline, n=60 — 0.13 away from that baseline.
+  Silver (XAG/USD): 60-observation correlation -0.17 vs 0.00 baseline, n=60 — 0.17 away from that baseline.
+
+■ US Economic Backdrop (Macro)
+  Consumer Price Index (CPI): 334.98 index as of 2026-08 (+0.32% vs 2026-07), trend FLAT.
+  Federal Funds Rate: 3.63% as of 2026-08 (+0% vs 2026-07, -16.17% YoY), trend FLAT.
+  Unemployment Rate: 4.1% as of 2026-08 (+0% vs 2026-07), trend FLAT.
+  Nonfarm Payroll (not seasonally adjusted): 158880.0 thousands as of 2026-08 (+456.0 thousands YoY, +0.29%), trend FLAT.
+
+■ Scheduled Economic Events (Next 7 Days)
+  No high-impact events on the calendar for the next 7 days.
+
+■ 5. Statistical Context
+  Under the same conditions (20-bar move DOWN, ATR percentile LOW, position in the 90-bar range MID),
+  148 historical analogs moved positively over the next 5 days in 57% of cases
+  (median +0.26%, interquartile -0.46% … +0.97%). Probabilistic context — not a forecast.
+  For comparison, ALL 5,011 sessions on record moved positively in 49% of cases — the conditioning added +8 percentage points.
+  Seasonality — September historically (19 years): closed positive in 47% of years, median -0.41% &#183; Wilson 95% CI on that share [27% – 68%] → NOT statistically significant — the interval straddles 50%; context, nothing more.
+  Fridays historically (1012 days): mean -0.021%/day → inside the noise (t=-1.22).
+
+■ 6. Anomaly Detection
+  No anomalous behaviour detected — price is moving within its usual statistical bounds.
+
+■ 7. Market Quality Score◆
+  Clearer than 59.2% of this symbol&#39;s own recent sessions.
+  Trend quality◆ 55.4 | Movement clarity◆ 17.3 | Noise◆ 96.2
+
+■ 8. Reading Confidence &amp; Engine Credibility
+  Reading confidence◆: 44.1 - Moderate (above 36.4% of this symbol&#39;s sessions)
+  Components: trend strength 27.0 | volatility stability 95.4 | pattern health 62.1 | historical similarity 97.0 - 4 of 4 measurable today
+  Data quality: 100% of the inputs this reading wanted were present.
+  Engine credibility◆: VaR breach 5.3% against 5% expected (4978 evaluations) - 29 live and 4949 historical sweep
+
+■ 9. Executive Summary
+  Sensitive zones (nearest first):
+    RESISTANCE 1.14925 [1.14830 – 1.15172], touches: 8
+    SUPPORT 1.14380 [1.14133 – 1.14627], touches: 5
+    RESISTANCE 1.15476 [1.15229 – 1.15723], touches: 2
+    LIQUIDITY_BELOW 1.13576 [1.13453 – 1.13576], touches: 5
+    LIQUIDITY_BELOW 1.13213 [1.13090 – 1.13213], touches: 3
+    LIQUIDITY_ABOVE 1.16508 [1.16508 – 1.16632], touches: 3
+  2 change(s) since the report that read the 2026-09-07 close (11 days ago) — see JSON for details.
+  ⚠ Risk estimator changed: EVT_GPD+EMPIRICAL → PARAMETRIC+EMPIRICAL (reason: no GPD tail could be fitted to this window, so the declared figures fall back to the parametric method). The declared VaR/ES below are not measured the same way as the previous report&#39;s.
+
+◆ Composed by this engine: built from our own formula, not read from a standard indicator. Everything unmarked (RSI, ADX, ATR, MACD, VaR, Fibonacci) is a standard method computed on our data. The breach rate is marked because the track record behind it is ours — run forward and scored, not asserted.
+
+⚠ This report is statistical and structural market analysis for educational purposes only. It contains no trading recommendation of any kind.
+⚠ Financial risk is real - manage your capital prudently.
+</pre></div>
+  </article>
+    </main>
+
+    <footer>
+      <div class="footer-inner">
+        <p>Educational content only — not a trade recommendation. Financial risk is real; manage your capital wisely.</p>
+        <p class="mono">METRIC RISK / PUBLIC ARCHIVE</p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

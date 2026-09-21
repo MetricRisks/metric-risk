@@ -172,7 +172,7 @@
     <h1>Calibration record</h1>
     <p class="lede">There is no win rate here and no trading results — we do not have them at all. We publish one thing: are the risk boundaries printed in every report breached at the rate they claim? An honest model at 95% confidence is breached on ~5% of days only — no more (which would understate the risk) and no less (which would overstate the caution).</p>
     <p class="note">Every figure below is computed by a point-in-time historical sweep, with no forward look. Where the sample is too small for a reliable judgement (minimum 20), we say so rather than guess.</p>
-    <p class="meta">Updated 2026-09-19 03:40 UTC</p>
+    <p class="meta">Updated 2026-09-21 04:30 UTC</p>
     <section class="symbol">
       <h2>EURUSD <span class="tf">1D</span></h2>
       <div class="panels">
@@ -183,7 +183,7 @@
           <p><span class="pill ok">Sound calibration — the band describes the risk honestly</span></p>
           <p class="line ok">✓ Formal Kupiec test: calibration not rejected at 95% confidence (p=0.33)</p>
           <p class="line ok">✓ Timing (Christoffersen): breaches are dispersed — no clustering</p>
-          <p class="src">Sample: 4978 scored readings (29 live &#183; 4949 historical sweep) &#183; 264 actual breaches.</p>
+          <p class="src">Sample: 4979 scored readings (30 live &#183; 4949 historical sweep) &#183; 264 actual breaches.</p>
         </div>
         <div class="panel">
           <h3>Loss depth on breach days (ES 95%)</h3>
@@ -196,7 +196,7 @@
           <p class="src">Each edge is a one-sided 95% bound: the healthy standard is ~5% broken per side, at every horizon.</p>
           <table class="horizons"><thead><tr><th>Horizon</th><th>Lower edge</th><th>Upper edge</th></tr></thead><tbody>
             <tr><td>1 day</td><td><span class="pass">5.3% ✓</span></td><td><span class="pass">5.2% ✓</span></td></tr>
-            <tr><td>5 day</td><td><span class="pass">5.6% ✓</span></td><td><span class="pass">5% ✓</span></td></tr>
+            <tr><td>5 day</td><td><span class="fail">5.6% ⚠</span></td><td><span class="pass">5% ✓</span></td></tr>
             <tr><td>10 day</td><td><span class="pass">5.5% ✓</span></td><td><span class="pass">4.8% ✓</span></td></tr>
             <tr><td>20 day</td><td><span class="fail">6.3% ⚠</span></td><td><span class="pass">4.8% ✓</span></td></tr>
           </tbody></table>
@@ -204,8 +204,8 @@
         </div>
         <div class="panel">
           <h3>Holding rate of tested support/resistance</h3>
-          <p class="side"><span class="side-label">Supports</span> <span class="pill warn">51.2% held</span> <span class="src">(1358 of 2654 tests)</span></p>
-          <p class="side"><span class="side-label">Resistances</span> <span class="pill warn">56.5% held</span> <span class="src">(1612 of 2854 tests)</span></p>
+          <p class="side"><span class="side-label">Supports</span> <span class="pill warn">51.1% held</span> <span class="src">(1360 of 2662 tests)</span></p>
+          <p class="side"><span class="side-label">Resistances</span> <span class="pill warn">56.6% held</span> <span class="src">(1620 of 2862 tests)</span></p>
         </div>
       </div>
     </section>
@@ -225,16 +225,16 @@
           <p class="src">Each edge is a one-sided 95% bound: the healthy standard is ~5% broken per side, at every horizon.</p>
           <table class="horizons"><thead><tr><th>Horizon</th><th>Lower edge</th><th>Upper edge</th></tr></thead><tbody>
             <tr><td>1 day</td><td><span class="pass">5.1% ✓</span></td><td><span class="pass">5.1% ✓</span></td></tr>
-            <tr><td>5 day</td><td><span class="fail">5.7% ⚠</span></td><td><span class="fail">6.2% ⚠</span></td></tr>
+            <tr><td>5 day</td><td><span class="pass">5.7% ✓</span></td><td><span class="fail">6.2% ⚠</span></td></tr>
             <tr><td>10 day</td><td><span class="fail">6.1% ⚠</span></td><td><span class="fail">7.7% ⚠</span></td></tr>
-            <tr><td>20 day</td><td><span class="pass">4.8% ✓</span></td><td><span class="fail">7.7% ⚠</span></td></tr>
+            <tr><td>20 day</td><td><span class="pass">4.8% ✓</span></td><td><span class="fail">7.6% ⚠</span></td></tr>
           </tbody></table>
           <p class="src">For horizons &gt; 1 the evaluation windows overlap, so Kupiec is indicative there rather than conclusive — the rate itself stays unbiased.</p>
         </div>
         <div class="panel">
           <h3>Holding rate of tested support/resistance</h3>
-          <p class="side"><span class="side-label">Supports</span> <span class="pill warn">48.9% held</span> <span class="src">(1005 of 2055 tests)</span></p>
-          <p class="side"><span class="side-label">Resistances</span> <span class="pill warn">47.8% held</span> <span class="src">(974 of 2037 tests)</span></p>
+          <p class="side"><span class="side-label">Supports</span> <span class="pill warn">48.9% held</span> <span class="src">(1010 of 2064 tests)</span></p>
+          <p class="side"><span class="side-label">Resistances</span> <span class="pill warn">47.9% held</span> <span class="src">(976 of 2039 tests)</span></p>
         </div>
       </div>
     </section>
@@ -248,7 +248,7 @@
           <p><span class="pill ok">Sound calibration — the band describes the risk honestly</span></p>
           <p class="line ok">✓ Formal Kupiec test: calibration not rejected at 95% confidence (p=0.07)</p>
           <p class="line ok">✓ Timing (Christoffersen): breaches are dispersed — no clustering</p>
-          <p class="src">Sample: 3928 scored readings (21 live &#183; 3907 historical sweep) &#183; 222 actual breaches.</p>
+          <p class="src">Sample: 3929 scored readings (22 live &#183; 3907 historical sweep) &#183; 222 actual breaches.</p>
         </div>
         <div class="panel">
           <h3>Loss depth on breach days (ES 95%)</h3>
@@ -269,8 +269,8 @@
         </div>
         <div class="panel">
           <h3>Holding rate of tested support/resistance</h3>
-          <p class="side"><span class="side-label">Supports</span> <span class="pill warn">51.9% held</span> <span class="src">(931 of 1794 tests)</span></p>
-          <p class="side"><span class="side-label">Resistances</span> <span class="pill muted">40.7% held</span> <span class="src">(744 of 1829 tests)</span></p>
+          <p class="side"><span class="side-label">Supports</span> <span class="pill warn">51.9% held</span> <span class="src">(933 of 1796 tests)</span></p>
+          <p class="side"><span class="side-label">Resistances</span> <span class="pill muted">40.7% held</span> <span class="src">(745 of 1830 tests)</span></p>
         </div>
       </div>
     </section>
