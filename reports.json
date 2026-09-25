@@ -1,5 +1,26 @@
 [
   {
+    "File": "reports/xauusd-20260925-1228.html",
+    "Symbol": "XAUUSD",
+    "Timeframe": "1D",
+    "GeneratedAt": "2026-09-25T12:28:19.0173661",
+    "Regime": "UNCLASSIFIED"
+  },
+  {
+    "File": "reports/xagusd-20260925-1228.html",
+    "Symbol": "XAGUSD",
+    "Timeframe": "1D",
+    "GeneratedAt": "2026-09-25T12:28:17.0176886",
+    "Regime": "UNCLASSIFIED"
+  },
+  {
+    "File": "reports/eurusd-20260925-1228.html",
+    "Symbol": "EURUSD",
+    "Timeframe": "1D",
+    "GeneratedAt": "2026-09-25T12:28:10.6620933",
+    "Regime": "RANGING"
+  },
+  {
     "File": "reports/eurusd-20260921-0429.html",
     "Symbol": "EURUSD",
     "Timeframe": "1D",

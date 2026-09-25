@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XAUUSD 1D — تحليل 2026-09-25 — Metric Risk — مراقبة السوق</title>
+  <meta name="description" content="تحليل XAUUSD 1D — حالة السوق، التقلب، والمخاطرة.">
+  <style>
+    @font-face { font-family: "Noto Sans Arabic"; font-style: normal; font-weight: 400 500;
+                 font-display: optional; src: url(../fonts/noto-sans-arabic.woff2) format("woff2"); }
+    @font-face { font-family: "DM Mono"; font-style: normal; font-weight: 400;
+                 font-display: optional; src: url(../fonts/dm-mono-400.woff2) format("woff2"); }
+    @font-face { font-family: "DM Mono"; font-style: normal; font-weight: 500;
+                 font-display: optional; src: url(../fonts/dm-mono-500.woff2) format("woff2"); }
+    /* Every colour is a token, defined once for light and once for dark. Nothing below
+       this block states a colour literally — that is what kept the old stylesheet
+       readable in one theme and invisible in the other. */
+    :root {
+      color-scheme: light dark;
+      --paper: #f3f1eb; --surface: #fbfaf7; --surface-strong: #e8e5dc;
+      /* Muted and faint are darker than the mockup's: on this paper the originals
+         measured 4.45 and 2.33 against the background, and the column headers were
+         the worst of it. These clear 4.5. */
+      --ink: #1a211f; --muted: #5b625d; --faint: #6f766f;
+      --line: #d5d5cd; --line-strong: #aeb5ad;
+      --accent: #b03f28;
+      --up: #0e6047; --up-soft: #dcece5;
+      --down: #33517a; --down-soft: #dde5ef;
+      --range: #7d520f; --range-soft: #f2e8cc;
+      --alert: #8a3125; --alert-soft: #f3ded9;
+      --unknown: #565c57; --unknown-soft: #e2e4df;
+      --display: "Noto Sans Arabic", Georgia, serif;
+      --body: "Noto Sans Arabic", ui-sans-serif, system-ui, Segoe UI, Tahoma, sans-serif;
+      --mono: "DM Mono", ui-monospace, "Courier New", monospace;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #161a18; --surface: #1d2421; --surface-strong: #26302b;
+        --ink: #edf0e9; --muted: #a5afa8; --faint: #737d76;
+        --line: #37423c; --line-strong: #59665e;
+        --accent: #f0785b;
+        --up: #61c69f; --up-soft: #1e3d33;
+        --down: #8fb2dc; --down-soft: #21303f;
+        --range: #e4b363; --range-soft: #433520;
+        --alert: #e8927f; --alert-soft: #42241e;
+        --unknown: #a8b0aa; --unknown-soft: #303733;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 320px; background: var(--paper); color: var(--ink);
+           font-family: var(--body); line-height: 1.7; }
+    a { color: inherit; }
+    .site-shell { width: min(1180px, calc(100% - 48px)); margin-inline: auto; }
+
+    .topbar { display: flex; align-items: center; justify-content: space-between;
+              gap: 28px; min-height: 78px; border-bottom: 1px solid var(--line); }
+    .wordmark { color: var(--ink); font-family: var(--mono); font-size: .84rem;
+                font-weight: 500; letter-spacing: .13em; text-decoration: none;
+                white-space: nowrap; direction: ltr; }
+    .wordmark span { color: var(--accent); }
+    .nav { display: flex; align-items: center; gap: clamp(14px, 2.5vw, 34px);
+           flex-wrap: wrap; font-size: .78rem; }
+    .nav a { color: var(--muted); text-decoration: none; }
+    .nav a:hover, .nav a:focus-visible { color: var(--accent); }
+    .nav .lang { padding: 7px 10px; border: 1px solid var(--line-strong);
+                 color: var(--ink); font-family: var(--mono); font-size: .7rem; }
+
+    .signal-strip { display: flex; align-items: center; gap: 10px; min-height: 47px;
+                    border-bottom: 1px solid var(--line); color: var(--muted);
+                    font-family: var(--mono); font-size: .67rem; }
+    .signal-strip p { margin: 0; }
+    .signal-dot { width: 7px; height: 7px; flex: 0 0 auto; border-radius: 50%;
+                  background: var(--accent); }
+    .strip-code { margin-inline-start: auto; color: var(--faint); direction: ltr;
+                  white-space: nowrap; }
+
+    .eyebrow, .section-kicker, .note-label {
+      margin: 0 0 16px; color: var(--accent); font-family: var(--mono);
+      font-size: .68rem; letter-spacing: .11em; text-transform: uppercase; }
+
+    .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, .42fr);
+            gap: 48px; padding-block: clamp(48px, 7vw, 84px) 64px; }
+    .hero h1 { max-width: 680px; margin: 0; font-family: var(--display);
+               font-size: clamp(2.6rem, 6vw, 4.6rem); font-weight: 500;
+               letter-spacing: -.045em; line-height: .95; text-wrap: balance; }
+    .hero h1 em { color: var(--accent); font-style: normal; }
+    /* The whole product in one sentence, above the archive it is evidence for. */
+    .claim { max-width: 22ch; margin: 26px 0 0; font-family: var(--display);
+             font-size: clamp(1.45rem, 2.6vw, 2.1rem); font-weight: 500;
+             line-height: 1.25; letter-spacing: -.02em; text-wrap: balance;
+             color: var(--ink); }
+    .claim em { font-style: normal; color: var(--accent); }
+    .lede { max-width: 550px; margin: 20px 0 0; color: var(--muted);
+            font-size: clamp(1rem, 1.7vw, 1.15rem); line-height: 1.85; }
+    .hero-note { align-self: end; padding-inline-start: 20px;
+                 border-inline-start: 2px solid var(--accent); color: var(--muted);
+                 font-size: .87rem; }
+    .hero-note strong { display: block; margin-bottom: 8px; color: var(--ink);
+                        font-family: var(--mono); font-size: .68rem; font-weight: 500;
+                        letter-spacing: .08em; text-transform: uppercase; }
+
+    .archive-section { padding-block: 12px 72px; }
+    .section-head { display: flex; align-items: end; justify-content: space-between;
+                    gap: 24px; margin-bottom: 23px; }
+    .section-head h2 { margin: 0; font-family: var(--display);
+                       font-size: clamp(1.7rem, 3vw, 2.4rem); font-weight: 500;
+                       letter-spacing: -.035em; line-height: 1; }
+    .section-meta { margin: 0; color: var(--muted); font-family: var(--mono);
+                    font-size: .68rem; text-align: start; direction: ltr; }
+
+    .archive-panel { border-top: 1px solid var(--line-strong); }
+    /* The filter is radio state plus sibling selectors: it works with scripting off,
+       and a reader who never loads the CSS still gets every row. */
+    .filter-state { position: absolute; width: 1px; height: 1px; overflow: hidden;
+                    clip-path: inset(50%); white-space: nowrap; }
+    .filters { display: flex; align-items: center; gap: 8px; min-height: 70px;
+               overflow-x: auto; border-bottom: 1px solid var(--line); }
+    .filters label { padding: 8px 13px; border: 1px solid transparent;
+                     color: var(--muted); cursor: pointer; font-family: var(--mono);
+                     font-size: .69rem; white-space: nowrap; direction: ltr; }
+    .filters label:hover { color: var(--ink); }
+
+    .table-wrap { width: 100%; overflow-x: auto; }
+    .archive-list { min-width: 720px; }
+    .table-head, .archive-row {
+      display: grid;
+      grid-template-columns: minmax(150px, 1.4fr) minmax(90px, .6fr)
+                             minmax(190px, 1.4fr) minmax(180px, 1fr) 35px;
+      align-items: center; gap: 20px; padding-inline: 18px; }
+    .table-head { min-height: 42px; color: var(--faint); font-family: var(--mono);
+                  font-size: .62rem; letter-spacing: .07em; text-transform: uppercase; }
+    .archive-row { min-height: 78px; border-top: 1px solid var(--line);
+                   text-decoration: none;
+                   transition: background 160ms ease, border-color 160ms ease; }
+    .archive-row:hover, .archive-row:focus-visible {
+      background: var(--surface-strong); border-color: var(--line-strong); }
+    .archive-row:last-child { border-bottom: 1px solid var(--line); }
+    .symbol { display: flex; align-items: baseline; gap: 12px; color: var(--ink);
+              font-family: var(--mono); font-size: .92rem; font-weight: 500;
+              letter-spacing: .04em; direction: ltr; }
+    .symbol::before { width: 6px; height: 6px; flex: 0 0 auto; border-radius: 50%;
+                      background: var(--accent); content: ""; }
+    .mono { color: var(--ink); font-family: var(--mono); font-size: .75rem;
+            letter-spacing: .03em; direction: ltr; }
+    .state { display: inline-flex; align-items: center; gap: 10px; justify-self: start;
+             padding: 6px 9px; font-family: var(--mono); font-size: .68rem;
+             letter-spacing: .04em; direction: ltr; }
+    .state::before { width: 6px; height: 6px; border-radius: 50%;
+                     background: currentColor; content: ""; }
+    .state.up { color: var(--up); background: var(--up-soft); }
+    .state.down { color: var(--down); background: var(--down-soft); }
+    .state.range { color: var(--range); background: var(--range-soft); }
+    .state.alert { color: var(--alert); background: var(--alert-soft); }
+    .state.unknown { color: var(--unknown); background: var(--unknown-soft); }
+    .arrow { color: var(--faint); font-size: 1.1rem; text-align: end;
+             transition: color 160ms ease, transform 160ms ease; }
+    .archive-row:hover .arrow, .archive-row:focus-visible .arrow { color: var(--accent); }
+    .empty { color: var(--muted); padding: 28px 18px; }
+
+    .notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px;
+             margin-bottom: 72px; background: var(--line);
+             border-block: 1px solid var(--line); }
+    .note { min-height: 178px; padding: 28px; background: var(--surface); }
+    .note h2 { margin: 0 0 12px; font-family: var(--display); font-size: 1.55rem;
+               font-weight: 500; letter-spacing: -.03em; }
+    .note p { max-width: 480px; margin: 0 0 14px; color: var(--muted); font-size: .9rem; }
+    .note a { color: var(--accent); font-family: var(--mono); font-size: .72rem;
+              letter-spacing: .05em; }
+
+    /* Report and disclaimer pages, in the same shell. */
+    .page { padding-block: clamp(40px, 6vw, 66px) 72px; }
+    .page h1 { margin: 0 0 .3rem; font-family: var(--display);
+               font-size: clamp(2rem, 4vw, 3rem); font-weight: 500;
+               letter-spacing: -.04em; line-height: 1; }
+    .page h1 .tf { color: var(--muted); font-family: var(--mono); font-size: 1rem;
+                   font-weight: 400; letter-spacing: .06em; }
+    .meta { margin: 0 0 1.75rem; color: var(--muted); font-family: var(--mono);
+            font-size: .72rem; letter-spacing: .04em; direction: ltr; }
+    .page p { color: var(--muted); max-width: 68ch; }
+    figure.cone { margin: 0 0 1.75rem; padding: 20px; background: var(--surface);
+                  border: 1px solid var(--line); overflow-x: auto; }
+    figure.cone svg { max-width: 100%; height: auto; display: block;
+                      margin-inline: auto; color: var(--ink); }
+    .message { background: var(--surface); border: 1px solid var(--line);
+               padding: 26px 28px; white-space: normal; }
+    pre.plain { white-space: pre-wrap; word-wrap: break-word; margin: 0;
+                font-family: var(--mono); font-size: .8rem; line-height: 1.85; }
+
+    footer { padding-block: 26px 38px; border-top: 1px solid var(--line-strong);
+             color: var(--muted); }
+    .footer-inner { display: flex; justify-content: space-between; gap: 28px;
+                    font-size: .75rem; }
+    .footer-inner p { margin: 0; }
+    .footer-inner .mono { color: var(--faint); }
+
+    a:focus-visible, .filters label:focus-visible,
+    .filter-state:focus-visible + label { outline: 2px solid var(--accent);
+                                          outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+    @media (max-width: 740px) {
+      .site-shell { width: min(100% - 30px, 1180px); }
+      .topbar { align-items: flex-start; flex-direction: column; gap: 16px;
+                padding-block: 21px; }
+      .nav { gap: 12px 20px; }
+      .hero { display: block; padding-block: 52px 56px; }
+      .hero-note { max-width: 420px; margin-top: 44px; }
+      .section-head { align-items: flex-start; flex-direction: column; gap: 13px; }
+      .notes { grid-template-columns: 1fr; }
+      .footer-inner { align-items: flex-start; flex-direction: column; gap: 9px; }
+    }
+  </style>
+  <!-- Cloudflare Web Analytics - cookieless, no consent banner required -->
+  <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon='{"token": "23ffa219aca54e0b9a7b6b1bfd9d00a2"}'></script>
+</head>
+<body>
+  <div class="site-shell">
+    <header class="topbar">
+      <a class="wordmark" href="../index.html">METRIC <span>RISK</span></a>
+      <nav class="nav" aria-label="التنقل الرئيسي">
+        <a href="../index.html">الرئيسية</a>
+        <a href="../calibration.html">سجل المعايرة</a>
+        <a href="../disclaimer.html">إخلاء المسؤولية</a>
+        <a href="../docs.html">التوثيق</a>
+        <a class="lang" href="xauusd-20260925-1228-en.html" hreflang="en" lang="en">English</a>
+      </nav>
+    </header>
+
+    <div class="signal-strip">
+      <span class="signal-dot" aria-hidden="true"></span>
+      <p>محتوى تعليمي توعوي فقط — ليس توصية تداول. المخاطر المالية حقيقية؛ أدر رأس مالك بحكمة.</p>
+      <span class="strip-code">PUBLIC RECORD / METRIC RISK</span>
+    </div>
+
+    <main>
+  <article class="page">
+    <h1>XAUUSD <span class="tf">1D</span></h1>
+    <p class="meta">صدر في 2026-09-25 12:28 UTC</p>
+    <figure class="cone"><svg viewBox="0 0 680 402" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="XAUUSD probability cone" font-family="system-ui, sans-serif" font-size="11"><rect width="100%" height="100%" fill="none"/><text x="66" y="18" font-size="13" font-weight="600" fill="currentColor">XAUUSD — مخروط الاحتمالات (90%) · probability cone</text><line x1="66" y1="34" x2="66" y2="346" stroke="currentColor" stroke-opacity="0.5"/><line x1="66" y1="346" x2="552" y2="346" stroke="currentColor" stroke-opacity="0.5"/><line x1="66" y1="34" x2="552" y2="34" stroke="currentColor" stroke-opacity="0.12"/><text x="60" y="37" text-anchor="end" fill="currentColor" fill-opacity="0.75">4816.66724</text><line x1="66" y1="112" x2="552" y2="112" stroke="currentColor" stroke-opacity="0.12"/><text x="60" y="115" text-anchor="end" fill="currentColor" fill-opacity="0.75">4561.95211</text><line x1="66" y1="190" x2="552" y2="190" stroke="currentColor" stroke-opacity="0.12"/><text x="60" y="193" text-anchor="end" fill="currentColor" fill-opacity="0.75">4307.23699</text><line x1="66" y1="268" x2="552" y2="268" stroke="currentColor" stroke-opacity="0.12"/><text x="60" y="271" text-anchor="end" fill="currentColor" fill-opacity="0.75">4052.52186</text><line x1="66" y1="346" x2="552" y2="346" stroke="currentColor" stroke-opacity="0.12"/><text x="60" y="349" text-anchor="end" fill="currentColor" fill-opacity="0.75">3797.80674</text><polygon points="66,195.8 90.3,164.4 187.5,125.7 309,96.6 552,55.5 552,324.5 309,286.8 187.5,260.2 90.3,224.6" fill="#2563eb" fill-opacity="0.16" stroke="#2563eb" stroke-opacity="0.55" stroke-width="1"/><polyline points="66,195.8 90.3,194.5 187.5,192.9 309,191.7 552,190" fill="none" stroke="#2563eb" stroke-opacity="0.7" stroke-width="1.5" stroke-dasharray="4 3"/><line x1="66" y1="277.4" x2="552" y2="277.4" stroke="#059669" stroke-opacity="0.8" stroke-width="1" stroke-dasharray="5 3"/><text x="558" y="280.4" fill="#059669">دعم 4021.9158</text><line x1="66" y1="174.8" x2="552" y2="174.8" stroke="#dc2626" stroke-opacity="0.8" stroke-width="1" stroke-dasharray="5 3"/><text x="558" y="177.8" fill="#dc2626">مقاومة 4356.78196</text><circle cx="66" cy="195.8" r="3.5" fill="currentColor"/><text x="72" y="189.8" fill="currentColor" font-weight="600">4288.22535</text><polygon points="187.5,116.7 183,124.7 192,124.7" fill="none" stroke="#b45309" stroke-width="1.2"/><polygon points="309,87.6 304.5,95.6 313.5,95.6" fill="none" stroke="#b45309" stroke-width="1.2"/><polygon points="552,46.5 547.5,54.5 556.5,54.5" fill="none" stroke="#b45309" stroke-width="1.2"/><text x="66" y="382" fill="#b45309" fill-opacity="0.95">⚠ الحدود المُعلَّمة (△) لا تصمد كحدّ 95% على هذا الرمز عند ذلك الأفق · flagged edges did not hold</text><line x1="90.3" y1="346" x2="90.3" y2="350" stroke="currentColor" stroke-opacity="0.5"/><text x="90.3" y="364" text-anchor="middle" fill="currentColor" fill-opacity="0.75">1d</text><line x1="187.5" y1="346" x2="187.5" y2="350" stroke="currentColor" stroke-opacity="0.5"/><text x="187.5" y="364" text-anchor="middle" fill="currentColor" fill-opacity="0.75">5d</text><line x1="309" y1="346" x2="309" y2="350" stroke="currentColor" stroke-opacity="0.5"/><text x="309" y="364" text-anchor="middle" fill="currentColor" fill-opacity="0.75">10d</text><line x1="552" y1="346" x2="552" y2="350" stroke="currentColor" stroke-opacity="0.5"/><text x="552" y="364" text-anchor="middle" fill="currentColor" fill-opacity="0.75">20d</text></svg></figure>
+    <div class="message">القراءة اليومية — XAU/USD (إطار 1D)<br>
+Metric Risk &#183; 2026-09-25<br>
+<br>
+⏸ لا اتجاه ولا نطاق — القراءات لا تتفق على تصنيف<br>
+السعر 4288.23 (-1.76% مقارنة لقطتين لا إغلاقين) &#183; الثقة 49.6%◆ (مرتفعة — أعلى من 75.2% من جلسات هذا الرمز) &#183; المخاطرة منخفضة &#183; جودة البيانات 100%<br>
+<br>
+للمراقبة: RSI يميل إلى النطاق المنخفض.<br>
+<br>
+— نظرة عامة على السوق — [الباقة المجانية]<br>
+القراءات لا تتفق على اتجاه ولا على نطاق. نترك الحالة غير مصنّفة بدل فرض تصنيف عليها.<br>
+<br>
+— القراءات الفنية (إطار 1D) — [الباقة المجانية]<br>
+• التقلب (ATR): 45.2 (المتوسط التاريخي 53.87 &#183; أقل من الطبيعي)<br>
+• الزخم: -107.74618 (سالب — الإغلاقات الأخيرة تنجرف أدنى من سابقاتها)<br>
+• قوة الزخم (RSI): 44.1 (نطاق منخفض)<br>
+• الزخم قصير المدى (MACD): الهيستوغرام -12.69693 (خط MACD أدنى من خط الإشارة)<br>
+• المدى الملاحظ (آخر 90 يوماً): 3984.54 – 4683.72<br>
+• نطاق اليوم العادي (&#177;1σ، مرجّح بالحداثة): 4225.96 – 4350.49<br>
+• الحد الإحصائي الأقصى (95% — يُكسر ~يوماً من 20): 4194.28 – 4382.17<br>
+<br>
+— حركة السعر والسيولة (إطار 1D) — [الباقة المجانية]<br>
+• نمط الشمعة: لم يُكتشف نمط في الشمعات الأخيرة<br>
+• اختطاف السيولة: لم يُكتشف<br>
+<br>
+— المستويات المرجعية (إطار 1D) — [الباقة المجانية]<br>
+• 4282.47 — قمة/قاع الأسبوع السابق (تحت السعر بمقدار 0.13 ATR)<br>
+• 4300 — رقم مستدير (فوق السعر بمقدار 0.26 ATR)<br>
+• 4353.66 — قمة/قاع الأسبوع السابق (فوق السعر بمقدار 1.45 ATR)<br>
+• 4200 — رقم مستدير (تحت السعر بمقدار 1.95 ATR)<br>
+• 4064.91 — قمة/قاع الشهر السابق (تحت السعر بمقدار 4.94 ATR)<br>
+• 4683.72 — قمة/قاع الشهر السابق (فوق السعر بمقدار 8.75 ATR)<br>
+  (نقاط مرجعية ومغناطيس سيولة، وليست بنية مُختبَرة. للمراقبة فقط.)<br>
+<br>
+— المخاطرة والنمط — [الباقة المجانية]<br>
+• المخاطرة — أقصى ما يُتوقع خسارته في يوم عادي (VaR95): ≈ &#177;2.19% (مستوى المخاطرة: منخفضة)<br>
+• خسارة اليوم السيّئ — متوسط الخسارة في أسوأ 5% من الأيام (CVaR95): ≈ &#177;2.77% (أعمق من حافة VaR95)<br>
+• التقلب الحديث (EWMA، مرجّح بالحداثة): ≈ &#177;1.45%/يوم — قرب مستواه المعتاد (λ=0.94، تُرجَّح الأيام الأحدث)<br>
+• الذيل المتطرف (EVT، بلا افتراض التوزيع الطبيعي): خسارة مرة كل 100 يوم ≈ &#177;3.13%/يوم &#183; متوسط الذيل ≈ &#177;3.61% &#183; شكل الذيل ξ=-0.11 (ذيل محدود)<br>
+• النمط: المدة 41 يوماً (متوسط النمط المشابه: 69 يوماً) &#183; الصحة◆ 60.4%<br>
+• الموثوقية التاريخية: خرق VaR◆: 222 / 3,930 (5.7%) مقابل 5% المتوقعة — 23 حيّة &#183; 3,907 تقدّمية.<br>
+<br>
+— الاتجاه والزخم المتقدم (إطار 1D) — [الباقة المميزة &#183; 5–10$ شهرياً]<br>
+• درجة قوة الاتجاه◆: +22.5 / &#177;100 (بنية صاعدة)<br>
+• متانة الاتجاه (ADX): 11.3 (لا يوجد اتجاه هيكلي &#183; +DI 44.1 / −DI 55.9)<br>
+• درجة الزخم◆: -36.8 / &#177;100 (مسافة RSI + ميل MACD + معدل التغير)<br>
+<br>
+— توافق الإطارات الزمنية — [الباقة المميزة &#183; 5–10$ شهرياً]<br>
+• القراءات: 1D: غير مصنّفة — لا اتجاه ولا نطاق &#183; 1W: تذبذب<br>
+• الخلاصة: متعارضة — الإطارات لا تتفق (نسبة التوافق◆ 50%)<br>
+<br>
+— العوامل المؤيّدة والمتعارضة — [الباقة المميزة &#183; 5–10$ شهرياً]<br>
+مؤيّدة:<br>
+  (لا يوجد)<br>
+متعارضة:<br>
+  − الأطر الزمنية المرصودة متضاربة في قراءة حالة السوق — الصورة غير محسومة<br>
+<br>
+— هيكل السوق (إطار 1D) — [الباقة المتقدمة &#183; 10–19$ شهرياً]<br>
+• هيكل التأرجح: قمم أدنى وقيعان أدنى — تسلسل هابط<br>
+• آخر قمة/قاع تأرجح: 4371.4 / 4282.47<br>
+• كسر الهيكل: لا يوجد — الإغلاق الأخير بقي داخل الهيكل<br>
+<br>
+— مستويات فيبوناتشي (إطار 1D) — [الباقة المتقدمة &#183; 10–19$ شهرياً]<br>
+• ساق التأرجح: صاعدة — 4282.47 → 4371.4<br>
+• نسب التصحيح: 23.6% @ 4350.41 &#183; 38.2% @ 4337.43 &#183; 50% @ 4326.93 &#183; 61.8% @ 4316.44 &#183; 78.6% @ 4301.5<br>
+• الامتدادات: 127.2% @ 4395.59 &#183; 161.8% @ 4426.36<br>
+  (فيبوناتشي يعلّم أسعاراً يراقبها المتداولون. مرجع للمراقبة فقط — وليست أهدافاً.)<br>
+<br>
+— سلوك السوق وسيولة الجلسة (إطار 1D) — [الباقة المتقدمة &#183; 10–19$ شهرياً]<br>
+• سلوك شاذ: لا يوجد — التغير الأخير ضمن توزيعه الإحصائي<br>
+• أوزان الثقة: ملف أساسي — الاتجاه 30% / التقلب 20% / النمط 25% / التاريخ 10% (أُعيدت المعايرة على 4 من 4 مكوّنات قابلة للقياس اليوم — وجودة البيانات تُقاس وتُنشر منفصلة، ولم تعد تزن في الدرجة)<br>
+<br>
+◆ من تركيب هذا المحرّك: مبنيّ على معادلتنا نحن، لا مقروء من مؤشر معياري. وكل ما بلا علامة (RSI &#183; ADX &#183; ATR &#183; MACD &#183; VaR &#183; فيبوناتشي) طريقة معيارية محسوبة على بياناتنا. ونسبة الخرق معلّمة لأن السجلّ خلفها سجلّنا — شُغّل إلى الأمام وسُجّل، ولم يُدّعَ.<br>
+<br>
+جديد هنا؟ اقرأ &#171;كيف تقرأ هذه التقارير&#187; أولاً.<br>
+<br>
+إخلاء المسؤولية: هذا مرصد إحصائي للسوق. لا يقدّم إشارات تداول ولا توصيات. هذا التحليل معلومات توعوية، ليس توصية تداول. المخاطر المالية حقيقية — أدر رأس مالك بحكمة. والقرار قرارك.<br>
+</div>
+  </article>
+    </main>
+
+    <footer>
+      <div class="footer-inner">
+        <p>محتوى تعليمي توعوي فقط — ليس توصية تداول. المخاطر المالية حقيقية؛ أدر رأس مالك بحكمة.</p>
+        <p class="mono">METRIC RISK / PUBLIC ARCHIVE</p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
