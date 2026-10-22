@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>معدّل الخرق عبر الزمن — Metric Risk</title>
+  <meta name="description" content="رسم بياني تفاعلي لمعدل خرق حدود VaR 95% عبر الزمن لكل أداة — Metric Risk.">
+  <style>
+    @font-face { font-family: "Noto Sans Arabic"; font-style: normal; font-weight: 400 500;
+                 font-display: optional; src: url(fonts/noto-sans-arabic.woff2) format("woff2"); }
+    @font-face { font-family: "DM Mono"; font-style: normal; font-weight: 400;
+                 font-display: optional; src: url(fonts/dm-mono-400.woff2) format("woff2"); }
+    @font-face { font-family: "DM Mono"; font-style: normal; font-weight: 500;
+                 font-display: optional; src: url(fonts/dm-mono-500.woff2) format("woff2"); }
+    :root {
+      color-scheme: light dark;
+      --paper: #f3f1eb; --surface: #fbfaf7; --surface-strong: #e8e5dc;
+      --ink: #1a211f; --muted: #5b625d; --faint: #6f766f;
+      --line: #d5d5cd; --line-strong: #aeb5ad;
+      --accent: #b03f28;
+      --ok: #0e6047; --ok-soft: #dcece5;
+      --warn: #7d520f; --warn-soft: #f2e8cc;
+      --neutral: #565c57; --neutral-soft: #e2e4df;
+      --display: "Noto Sans Arabic", Georgia, serif;
+      --body: "Noto Sans Arabic", ui-sans-serif, system-ui, Segoe UI, Tahoma, sans-serif;
+      --mono: "DM Mono", ui-monospace, "Courier New", monospace;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #161a18; --surface: #1d2421; --surface-strong: #26302b;
+        --ink: #edf0e9; --muted: #a5afa8; --faint: #737d76;
+        --line: #37423c; --line-strong: #59665e;
+        --accent: #f0785b;
+        --ok: #61c69f; --ok-soft: #1e3d33;
+        --warn: #e4b363; --warn-soft: #433520;
+        --neutral: #a8b0aa; --neutral-soft: #303733;
+      }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 320px; background: var(--paper); color: var(--ink);
+           font-family: var(--body); line-height: 1.7; }
+    a { color: inherit; }
+    .site-shell { width: min(1180px, calc(100% - 48px)); margin-inline: auto; }
+
+    .topbar { display: flex; align-items: center; justify-content: space-between;
+              gap: 28px; min-height: 78px; border-bottom: 1px solid var(--line); }
+    .wordmark { color: var(--ink); font-family: var(--mono); font-size: .84rem;
+                font-weight: 500; letter-spacing: .13em; text-decoration: none;
+                white-space: nowrap; direction: ltr; }
+    .wordmark span { color: var(--accent); }
+    .nav { display: flex; align-items: center; gap: clamp(14px, 2.5vw, 34px);
+           flex-wrap: wrap; font-size: .78rem; }
+    .nav a { color: var(--muted); text-decoration: none; }
+    .nav a:hover, .nav a:focus-visible { color: var(--accent); }
+    .nav a.active { color: var(--ink); font-weight: 500; }
+    .nav .lang { padding: 7px 10px; border: 1px solid var(--line-strong);
+                 color: var(--ink); font-family: var(--mono); font-size: .7rem; }
+
+    .signal-strip { display: flex; align-items: center; gap: 10px; min-height: 47px;
+                    border-bottom: 1px solid var(--line); color: var(--muted);
+                    font-family: var(--mono); font-size: .67rem; }
+    .signal-strip p { margin: 0; }
+    .signal-dot { width: 7px; height: 7px; flex: 0 0 auto; border-radius: 50%;
+                  background: var(--accent); }
+    .strip-code { margin-inline-start: auto; color: var(--faint); direction: ltr;
+                  white-space: nowrap; }
+
+    .page { padding-block: clamp(40px, 6vw, 72px) 64px; }
+    h1 { margin: 0 0 .6rem; font-family: var(--display);
+         font-size: clamp(2rem, 4.4vw, 3.2rem); font-weight: 500;
+         letter-spacing: -.04em; line-height: 1; text-wrap: balance; }
+    .lede { max-width: 68ch; margin: 0 0 1rem; font-size: 1.05rem; color: var(--muted); }
+    .note { max-width: 68ch; color: var(--muted); font-size: .9rem; }
+    .meta { color: var(--faint); font-family: var(--mono); font-size: .7rem;
+            letter-spacing: .04em; margin: 1.2rem 0 2rem; direction: ltr; }
+
+    /* Chart container */
+    .chart-wrap {
+      position: relative; background: var(--surface);
+      border: 1px solid var(--line); padding: 1.5rem 1.5rem 1rem;
+      margin-bottom: 2rem;
+    }
+    .chart-legend { display: flex; gap: 1.5rem; flex-wrap: wrap;
+                    font-family: var(--mono); font-size: .72rem; margin-bottom: 1rem; }
+    .legend-item { display: flex; align-items: center; gap: .4rem; }
+    .legend-swatch { width: 22px; height: 3px; flex: 0 0 auto; }
+    .legend-swatch.dashed { background: repeating-linear-gradient(
+      to right, var(--faint) 0, var(--faint) 4px, transparent 4px, transparent 8px); }
+    canvas#chart { display: block; width: 100%; height: 340px; cursor: crosshair; }
+
+    /* Tooltip */
+    #tooltip {
+      position: absolute; pointer-events: none;
+      background: var(--surface-strong); border: 1px solid var(--line-strong);
+      padding: .5rem .75rem; font-family: var(--mono); font-size: .72rem;
+      color: var(--ink); white-space: nowrap; direction: ltr;
+      opacity: 0; transition: opacity .1s;
+    }
+    #tooltip.visible { opacity: 1; }
+    #tooltip .tt-date { color: var(--faint); font-size: .66rem; margin-bottom: .3rem; }
+    #tooltip .tt-row { display: flex; justify-content: space-between; gap: 1rem; }
+    #tooltip .tt-label { color: var(--muted); }
+    #tooltip .tt-val { font-weight: 500; }
+
+    /* Summary table */
+    .summary-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1px; background: var(--line); border: 1px solid var(--line);
+    }
+    .summary-cell { background: var(--surface); padding: 1.2rem 1.4rem; }
+    .summary-cell h3 { margin: 0 0 .6rem; font-family: var(--mono); font-size: .72rem;
+                       font-weight: 500; letter-spacing: .1em; text-transform: uppercase;
+                       color: var(--muted); direction: ltr; }
+    .stat-big { font-family: var(--mono); font-size: 2rem; font-weight: 500;
+                letter-spacing: -.03em; direction: ltr; margin: .2rem 0 .4rem; }
+    .stat-sub { font-family: var(--mono); font-size: .76rem; color: var(--muted); }
+    .pill { display: inline-block; padding: .2rem .65rem; font-family: var(--mono);
+            font-size: .68rem; letter-spacing: .04em; }
+    .pill.ok { background: var(--ok-soft); color: var(--ok); }
+    .pill.warn { background: var(--warn-soft); color: var(--warn); }
+
+    /* Loading / error */
+    .state { text-align: center; padding: 4rem 2rem; color: var(--muted);
+             font-family: var(--mono); font-size: .85rem; }
+
+    footer { padding-block: 26px 38px; border-top: 1px solid var(--line-strong);
+             color: var(--muted); }
+    .footer-inner { display: flex; justify-content: space-between; gap: 28px;
+                    font-size: .75rem; }
+    .footer-inner p { margin: 0; }
+    .footer-inner .mono { color: var(--faint); font-family: var(--mono); }
+
+    a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    @media (max-width: 740px) {
+      .site-shell { width: min(100% - 30px, 1180px); }
+      .topbar { align-items: flex-start; flex-direction: column; gap: 16px;
+                padding-block: 21px; }
+      .nav { gap: 12px 20px; }
+      .footer-inner { align-items: flex-start; flex-direction: column; gap: 9px; }
+      canvas#chart { height: 240px; }
+    }
+  </style>
+  <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon='{"token": "23ffa219aca54e0b9a7b6b1bfd9d00a2"}'></script>
+</head>
+<body>
+<div class="site-shell">
+  <header class="topbar">
+    <a class="wordmark" href="index.html">METRIC <span>RISK</span></a>
+    <nav class="nav">
+      <a href="index.html">الرئيسية</a>
+      <a href="calibration.html">سجل المعايرة</a>
+      <a href="calibration-chart.html" class="active">الرسم البياني</a>
+      <a href="comparison.html">مقارنة الأدوات</a>
+      <a href="disclaimer.html">إخلاء المسؤولية</a>
+      <a class="lang" href="calibration-chart-en.html" hreflang="en" lang="en">English</a>
+    </nav>
+  </header>
+
+  <div class="signal-strip">
+    <span class="signal-dot" aria-hidden="true"></span>
+    <p>محتوى تعليمي توعوي فقط — ليس توصية تداول. المخاطر المالية حقيقية؛ أدر رأس مالك بحكمة.</p>
+    <span class="strip-code">PUBLIC RECORD / METRIC RISK</span>
+  </div>
+
+  <main class="page">
+    <h1>معدّل الخرق عبر الزمن</h1>
+    <p class="lede">كل نقطة تمثّل المعدّل التراكمي لخروقات VaR 95% حتى ذلك اليوم. المعيار الصحّي: الخطّ يستقر قرب 5%.</p>
+    <p class="note">نموذج صادق عند ثقة 95% يُخرَق ~5% من الأيام — لا أكثر ولا أقل. الانحراف الطفيف الصاعد طبيعي: نسبة 5.3% تعني أن النطاق محافظ قليلاً وهذا مقبول.</p>
+    <p class="meta" id="generated-at">يُحمَّل…</p>
+
+    <div id="main-content">
+      <div id="loading-state" class="state">يُحمَّل البيانات…</div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <p>محتوى تعليمي توعوي فقط — ليس توصية تداول. المخاطر المالية حقيقية؛ أدر رأس مالك بحكمة.</p>
+      <p class="mono">METRIC RISK / PUBLIC ARCHIVE</p>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function() {
+  // Detect color scheme
+  function isDark() {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+
+  function palette() {
+    const d = isDark();
+    return {
+      EURUSD:  d ? '#f0785b' : '#b03f28',
+      XAUUSD:  d ? '#6ba3f7' : '#1d4ed8',
+      XAGUSD:  d ? '#52c49e' : '#047857',
+      target:  d ? '#4b5563' : '#94a3b8',
+      grid:    d ? '#37423c' : '#d5d5cd',
+      text:    d ? '#a5afa8' : '#5b625d',
+      bg:      d ? '#1d2421' : '#fbfaf7',
+      surface: d ? '#26302b' : '#e8e5dc',
+    };
+  }
+
+  // Minimal date formatting
+  function fmtDate(s) {
+    const [y, m, d] = s.split('-');
+    return `${y}-${m}-${d}`;
+  }
+  function fmtPct(r) {
+    return (r * 100).toFixed(2) + '%';
+  }
+
+  function buildRunning(outcomes) {
+    const pts = [];
+    let breaches = 0;
+    for (let i = 0; i < outcomes.length; i++) {
+      if (outcomes[i].breached) breaches++;
+      pts.push({ date: outcomes[i].date, rate: breaches / (i + 1) });
+    }
+    return pts;
+  }
+
+  function renderChart(data) {
+    const wrap = document.createElement('div');
+    wrap.className = 'chart-wrap';
+
+    // Legend
+    const legend = document.createElement('div');
+    legend.className = 'chart-legend';
+
+    const p = palette();
+    const symbolColors = {
+      EURUSD: p.EURUSD,
+      XAUUSD: p.XAUUSD,
+      XAGUSD: p.XAGUSD,
+    };
+
+    data.symbols.forEach(s => {
+      const item = document.createElement('div');
+      item.className = 'legend-item';
+      const sw = document.createElement('div');
+      sw.className = 'legend-swatch';
+      sw.style.background = symbolColors[s.symbol] || p.EURUSD;
+      const lbl = document.createElement('span');
+      lbl.textContent = s.symbol;
+      item.appendChild(sw); item.appendChild(lbl);
+      legend.appendChild(item);
+    });
+    // Target line
+    const tItem = document.createElement('div');
+    tItem.className = 'legend-item';
+    const tSw = document.createElement('div');
+    tSw.className = 'legend-swatch dashed';
+    const tLbl = document.createElement('span');
+    tLbl.textContent = 'الهدف 5%';
+    tLbl.style.color = p.text;
+    tItem.appendChild(tSw); tItem.appendChild(tLbl);
+    legend.appendChild(tItem);
+    wrap.appendChild(legend);
+
+    // Canvas
+    const canvas = document.createElement('canvas');
+    canvas.id = 'chart';
+    wrap.appendChild(canvas);
+
+    // Tooltip
+    const tooltip = document.createElement('div');
+    tooltip.id = 'tooltip';
+    wrap.appendChild(tooltip);
+
+    document.getElementById('main-content').appendChild(wrap);
+
+    // Compute running series
+    const series = data.symbols.map(s => ({
+      symbol: s.symbol,
+      color: symbolColors[s.symbol] || p.EURUSD,
+      pts: buildRunning(s.outcomes),
+    }));
+
+    // Get global date range
+    let minDate = null, maxDate = null;
+    series.forEach(s => {
+      s.pts.forEach(pt => {
+        if (!minDate || pt.date < minDate) minDate = pt.date;
+        if (!maxDate || pt.date > maxDate) maxDate = pt.date;
+      });
+    });
+
+    const minTime = new Date(minDate).getTime();
+    const maxTime = new Date(maxDate).getTime();
+    const minRate = 0;
+    const maxRate = 0.12; // 12% upper bound
+
+    let dpr = window.devicePixelRatio || 1;
+
+    function draw() {
+      const pp = palette();
+      const W = canvas.offsetWidth;
+      const H = canvas.offsetHeight;
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+      const ctx = canvas.getContext('2d');
+      ctx.scale(dpr, dpr);
+
+      const pad = { top: 16, right: 16, bottom: 36, left: 46 };
+      const cW = W - pad.left - pad.right;
+      const cH = H - pad.top - pad.bottom;
+
+      // Clear
+      ctx.clearRect(0, 0, W, H);
+
+      function xOf(dateStr) {
+        const t = new Date(dateStr).getTime();
+        return pad.left + ((t - minTime) / (maxTime - minTime)) * cW;
+      }
+      function yOf(rate) {
+        return pad.top + (1 - (rate - minRate) / (maxRate - minRate)) * cH;
+      }
+
+      // Grid lines — horizontal
+      ctx.strokeStyle = pp.grid;
+      ctx.lineWidth = 1;
+      [0, 0.02, 0.04, 0.06, 0.08, 0.10, 0.12].forEach(r => {
+        const y = yOf(r);
+        ctx.beginPath();
+        ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + cW, y);
+        ctx.stroke();
+        // Labels
+        ctx.fillStyle = pp.text;
+        ctx.font = `10px "DM Mono", monospace`;
+        ctx.textAlign = 'right';
+        ctx.fillText((r * 100).toFixed(0) + '%', pad.left - 6, y + 4);
+      });
+
+      // Year axis labels
+      const firstYear = new Date(minDate).getFullYear();
+      const lastYear  = new Date(maxDate).getFullYear();
+      ctx.fillStyle = pp.text;
+      ctx.font = `10px "DM Mono", monospace`;
+      ctx.textAlign = 'center';
+      for (let y = firstYear; y <= lastYear; y++) {
+        const x = xOf(`${y}-01-01`);
+        if (x >= pad.left && x <= pad.left + cW) {
+          ctx.fillText(String(y), x, H - pad.bottom + 18);
+          ctx.strokeStyle = pp.grid;
+          ctx.lineWidth = 0.5;
+          ctx.setLineDash([3, 4]);
+          ctx.beginPath();
+          ctx.moveTo(x, pad.top); ctx.lineTo(x, pad.top + cH);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+      }
+
+      // Target 5% line — dashed
+      ctx.strokeStyle = pp.target;
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([5, 6]);
+      ctx.beginPath();
+      ctx.moveTo(pad.left, yOf(0.05)); ctx.lineTo(pad.left + cW, yOf(0.05));
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Draw each series
+      series.forEach(s => {
+        if (s.pts.length < 2) return;
+        ctx.strokeStyle = s.color;
+        ctx.lineWidth = 1.8;
+        ctx.lineJoin = 'round';
+        ctx.beginPath();
+        s.pts.forEach((pt, i) => {
+          const x = xOf(pt.date), y = yOf(pt.rate);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+      });
+
+      return { xOf, yOf, pad, cW, cH };
+    }
+
+    let coords = draw();
+
+    // Resize
+    const ro = new ResizeObserver(() => { coords = draw(); });
+    ro.observe(canvas);
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { coords = draw(); });
+
+    // Hover tooltip
+    canvas.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+
+      const tooltipRows = series.map(s => {
+        // Binary search for closest x
+        const pts = s.pts;
+        if (!pts.length) return null;
+        let lo = 0, hi = pts.length - 1;
+        while (lo < hi) {
+          const mid = (lo + hi) >> 1;
+          if (new Date(pts[mid].date).getTime() < minTime + ((mx - coords.pad.left) / coords.cW) * (maxTime - minTime))
+            lo = mid + 1;
+          else hi = mid;
+        }
+        const pt = pts[Math.max(0, Math.min(lo, pts.length - 1))];
+        return { symbol: s.symbol, color: s.color, date: pt.date, rate: pt.rate };
+      }).filter(Boolean);
+
+      if (!tooltipRows.length) { tooltip.classList.remove('visible'); return; }
+
+      const date = tooltipRows[0].date;
+      tooltip.innerHTML = `<div class="tt-date">${date}</div>` +
+        tooltipRows.map(r =>
+          `<div class="tt-row"><span class="tt-label" style="color:${r.color}">${r.symbol}</span>`+
+          `<span class="tt-val">${fmtPct(r.rate)}</span></div>`
+        ).join('') +
+        `<div class="tt-row"><span class="tt-label" style="color:${palette().target}">الهدف</span>`+
+        `<span class="tt-val">5.00%</span></div>`;
+
+      // Position tooltip
+      const tw = 180, th = 20 + tooltipRows.length * 22;
+      let tx = e.clientX - rect.left + 12;
+      let ty = e.clientY - rect.top - th / 2;
+      if (tx + tw > rect.width) tx = e.clientX - rect.left - tw - 12;
+      if (ty < 0) ty = 0;
+      tooltip.style.left = tx + 'px';
+      tooltip.style.top  = ty + 'px';
+      tooltip.classList.add('visible');
+    });
+
+    canvas.addEventListener('mouseleave', () => {
+      tooltip.classList.remove('visible');
+    });
+  }
+
+  function renderSummary(data) {
+    const grid = document.createElement('div');
+    grid.className = 'summary-grid';
+
+    data.symbols.forEach(s => {
+      const cell = document.createElement('div');
+      cell.className = 'summary-cell';
+      const isOk = Math.abs(s.breachRate - 0.05) < 0.02;
+      const pct = (s.breachRate * 100).toFixed(1) + '%';
+      cell.innerHTML =
+        `<h3>${s.symbol} · ${s.timeframe}</h3>` +
+        `<div class="stat-big">${pct}</div>` +
+        `<div class="stat-sub">من ${s.totalSessions.toLocaleString('ar')} جلسة · ${s.breaches} خرق</div>` +
+        `<p style="margin:.6rem 0 0"><span class="pill ${isOk ? 'ok' : 'warn'}">${
+          isOk ? 'معايرة سليمة' : 'انتبه: بعيد عن 5%'
+        }</span></p>` +
+        `<p style="margin:.4rem 0 0;font-family:var(--mono);font-size:.7rem;color:var(--faint)">آخر تحديث: ${s.latestDate || '—'}</p>`;
+      grid.appendChild(cell);
+    });
+
+    document.getElementById('main-content').appendChild(grid);
+  }
+
+  async function init() {
+    try {
+      const res = await fetch('stats.json');
+      if (!res.ok) throw new Error('not found');
+      const data = await res.json();
+
+      document.getElementById('loading-state').remove();
+
+      const at = new Date(data.generatedAt);
+      document.getElementById('generated-at').textContent =
+        'حُدِّث في ' + at.toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
+
+      renderChart(data);
+      renderSummary(data);
+    } catch(e) {
+      document.getElementById('loading-state').innerHTML =
+        '<p>لم يُنشأ stats.json بعد — شغّل <code>directpublish</code> مرة واحدة لتوليده.</p>';
+    }
+  }
+
+  if (document.readyState === 'loading')
+    document.addEventListener('DOMContentLoaded', init);
+  else
+    init();
+})();
+</script>
+</body>
+</html>
