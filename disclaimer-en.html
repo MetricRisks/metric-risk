@@ -17,15 +17,15 @@
     /* Design system — dark-first, teal accent, Space Grotesk display. */
     :root {
       color-scheme: dark;
-      --bg:         #090b0f; --surface: #0f1318; --surface-hi: #161d28;
-      --ink:        #eef2f7; --muted:   #7e8ea6; --faint:      #3d4f65;
-      --line:       #182030; --line-hi: #243348;
-      --accent:     #2dd4bf; --accent-dim: #092e2a;
-      --up:         #34d399; --up-bg:   #052318;
-      --down:       #f43f5e; --down-bg: #230510;
-      --range:      #fbbf24; --range-bg: #231700;
+      --bg:         #0c0d0f; --surface: #141618; --surface-hi: #1b1f24;
+      --ink:        #e2e5ea; --muted:   #8892a0; --faint:      #4e5765;
+      --line:       #1e2128; --line-hi: #2e3440;
+      --accent:     #f5821f;
+      --up:         #00c064; --up-bg:   #001c10;
+      --down:       #e8534a; --down-bg: #1e0808;
+      --range:      #e6b30a; --range-bg: #1a1500;
       --alert:      #fb923c; --alert-bg: #1e0f00;
-      --unknown:    #7e8ea6; --unknown-bg: #182030;
+      --unknown:    #8892a0; --unknown-bg: #1e2128;
       --display: "Space Grotesk", ui-sans-serif, sans-serif;
       --body:    "Space Grotesk", ui-sans-serif, sans-serif;
       --mono: "DM Mono", ui-monospace, "Courier New", monospace;
@@ -93,7 +93,7 @@
     .section-meta { margin: 0; color: var(--muted); font-family: var(--mono);
                     font-size: .68rem; text-align: start; direction: ltr; }
 
-    .archive-panel { border-top: 1px solid var(--line-strong); }
+    .archive-panel { border-top: 1px solid var(--line-hi); }
     /* The filter is radio state plus sibling selectors: it works with scripting off,
        and a reader who never loads the CSS still gets every row. */
     .filter-state { position: absolute; width: 1px; height: 1px; overflow: hidden;
@@ -239,7 +239,7 @@
                  margin-block: 0 28px; }
     .stat { padding: 16px 18px; border-inline-end: 1px solid var(--line); }
     .stat:last-child { border-inline-end: none; }
-    .stat-label { font-family: var(--mono); font-size: 9px; color: var(--faint);
+    .stat-label { font-family: var(--mono); font-size: 9px; color: var(--accent);
                   letter-spacing: .1em; text-transform: uppercase; margin-bottom: 7px;
                   direction: ltr; }
     .stat-value { font-family: var(--display); font-size: 24px; font-weight: 600;
