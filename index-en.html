@@ -288,6 +288,15 @@
     .fi-mark { font-family: var(--mono); font-weight: 600; flex: 0 0 auto; font-size: 13px; }
     .fi-mark.pro { color: var(--up);   }
     .fi-mark.con { color: var(--down); }
+    .fi-mark:not(.pro):not(.con) { color: var(--muted); }
+    .callout { margin-block: 0 28px; padding: 14px 18px;
+               border-inline-start: 3px solid var(--accent); background: var(--surface); }
+    .callout-label { font-family: var(--mono); font-size: 9px; color: var(--accent);
+                     letter-spacing: .14em; margin-bottom: 6px; direction: ltr; }
+    .callout p { margin: 0; color: var(--ink); font-size: 13px; line-height: 1.6; }
+    .disc { margin: 0 0 10px; max-width: 78ch; font-size: 12px; line-height: 1.7;
+            color: var(--muted); }
+    .disc.warn { color: var(--range); }
             #f-all:checked ~ .filters label[for="f-all"],
             #f-eurusd:checked ~ .filters label[for="f-eurusd"],
             #f-gbpusd:checked ~ .filters label[for="f-gbpusd"],
