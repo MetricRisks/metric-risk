@@ -297,6 +297,18 @@
     .disc { margin: 0 0 10px; max-width: 78ch; font-size: 12px; line-height: 1.7;
             color: var(--muted); }
     .disc.warn { color: var(--range); }
+    .disc.mono-line { font-family: var(--mono); direction: ltr; font-size: 11px; }
+    details.more { border-bottom: 1px solid var(--line); }
+    details.more:last-child { border-bottom: none; }
+    details.more summary { cursor: pointer; padding-block: 12px; list-style: none;
+                           font-family: var(--mono); font-size: 10px; color: var(--muted);
+                           letter-spacing: .1em; text-transform: uppercase; direction: ltr;
+                           display: flex; align-items: center; gap: 10px; }
+    details.more summary::-webkit-details-marker { display: none; }
+    details.more summary::before { content: "+"; color: var(--accent); font-weight: 500; }
+    details.more[open] summary::before { content: "−"; }
+    details.more summary:hover { color: var(--ink); }
+    .more-body { padding-bottom: 14px; }
   </style>
   <!-- Cloudflare Web Analytics - cookieless, no consent banner required -->
   <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js"
@@ -402,6 +414,10 @@
         <div class="fi"><span class="fi-mark con">−</span><span>السعر تراجع منذ آخر تحليل بينما الزخم العام تحسّن — السعر والزخم يفترقان، راقب بحذر</span></div>
       </div>
     </div>
+  </section>
+      <section class="section">
+    <div class="section-title">CONTEXT</div>
+    <details class="more"><summary>MARKET QUALITY ◆</summary><div class="more-body"><p class="disc">ضمن أصعب ربع الجلسات قراءةً لهذا الرمز (أوضح من 19.2٪ من جلساته)</p><p class="disc mono-line">جودة الاتجاه ◆ 31.6 | وضوح الحركة ◆ 12.6 | الضوضاء ◆ 98.4</p></div></details><details class="more"><summary>STATISTICAL CONTEXT</summary><div class="more-body"><p class="disc">في 547 حالة تاريخية مشابهة (حركة 20 شمعة هابطة، مئين ATR منخفض)، كانت حركة الـ5 أيام التالية موجبة في 53% من الحالات بوسيط 0.28% — وللمقارنة، كانت موجبة في 51% من كل جلسات هذا الرمز (3964 جلسة)، أي أن التشابه أضاف +2 نقطة مئوية — سياق احتمالي من التاريخ، ليس تنبؤاً</p><p class="disc">الموسمية — شهر أكتوبر تاريخياً (15 سنة): أغلق موجباً 73% من السنوات بوسيط +1.42% &#183; فاصل الثقة 95% للنسبة [48% – 89%] → لا دلالة إحصائية — الفاصل يشمل الـ50%، معلومة سياق لا أكثر</p><p class="disc">يوم الثلاثاء تاريخياً (802 يوماً): متوسط +0.02% يومياً → ضمن الضوضاء (t=0.24)</p></div></details><details class="more"><summary>MAX DRAWDOWN</summary><div class="more-body"><p class="disc">أعمق هبوط فعلي (Max Drawdown، آخر 90 شمعة): −21.23% من قمة إلى قاع خلال 32 يوماً تقويمياً، ولم يتعافَ بعد — تحت القمة منذ 120 يوماً تقويمياً</p></div></details><details class="more"><summary>SUPPORT &amp; RESISTANCE ZONES</summary><div class="more-body"><div class="dr"><span class="dk">دعم 1 — مُختبرة, اختبارات: 5</span><span class="dv pos">57.29 [55.98 – 58.59]</span></div><div class="dr"><span class="dk">دعم 2 — مُختبرة, اختبارات: 2</span><span class="dv pos">49.93 [48.63 – 51.24]</span></div><div class="dr"><span class="dk">مقاومة 1 — مُختبرة, اختبارات: 2</span><span class="dv neg">62.03 [60.72 – 63.34]</span></div><div class="dr"><span class="dk">مقاومة 2 — مُختبرة, اختبارات: 2</span><span class="dv neg">66.48 [65.17 – 67.79]</span></div></div></details>
   </section>
       <section class="section">
     <div class="section-title">SINCE THE LAST REPORT</div>

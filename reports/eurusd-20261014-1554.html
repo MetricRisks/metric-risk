@@ -297,6 +297,18 @@
     .disc { margin: 0 0 10px; max-width: 78ch; font-size: 12px; line-height: 1.7;
             color: var(--muted); }
     .disc.warn { color: var(--range); }
+    .disc.mono-line { font-family: var(--mono); direction: ltr; font-size: 11px; }
+    details.more { border-bottom: 1px solid var(--line); }
+    details.more:last-child { border-bottom: none; }
+    details.more summary { cursor: pointer; padding-block: 12px; list-style: none;
+                           font-family: var(--mono); font-size: 10px; color: var(--muted);
+                           letter-spacing: .1em; text-transform: uppercase; direction: ltr;
+                           display: flex; align-items: center; gap: 10px; }
+    details.more summary::-webkit-details-marker { display: none; }
+    details.more summary::before { content: "+"; color: var(--accent); font-weight: 500; }
+    details.more[open] summary::before { content: "−"; }
+    details.more summary:hover { color: var(--ink); }
+    .more-body { padding-bottom: 14px; }
   </style>
   <!-- Cloudflare Web Analytics - cookieless, no consent banner required -->
   <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js"
@@ -402,6 +414,10 @@
         <div class="fi"><span class="fi-mark con">−</span><span>النمط الحالي قديم أو تظهر عليه مؤشرات تغيّر — ترقب تحولاً في حالة السوق</span></div><div class="fi"><span class="fi-mark con">−</span><span>مستوى المخاطرة الحالي مرتفع — المخاطر المالية حقيقية، أدر رأس مالك بحكمة</span></div><div class="fi"><span class="fi-mark con">−</span><span>الأطر الزمنية المرصودة متضاربة في قراءة حالة السوق — الصورة غير محسومة</span></div>
       </div>
     </div>
+  </section>
+      <section class="section">
+    <div class="section-title">CONTEXT</div>
+    <details class="more"><summary>MARKET QUALITY ◆</summary><div class="more-body"><p class="disc">من أوضح ربع الجلسات قراءةً لهذا الرمز (أوضح من 99.6٪ من جلساته)</p><p class="disc mono-line">جودة الاتجاه ◆ 100 | وضوح الحركة ◆ 19 | الضوضاء ◆ 83.1</p></div></details><details class="more"><summary>STATISTICAL CONTEXT</summary><div class="more-body"><p class="disc">في 548 حالة تاريخية مشابهة (حركة 20 شمعة هابطة، مئين ATR مرتفع)، كانت حركة الـ5 أيام التالية موجبة في 49% من الحالات بوسيط -0.03% — وللمقارنة، كانت موجبة في 49% من كل جلسات هذا الرمز (5028 جلسة)، أي أن التشابه أضاف 0 نقطة مئوية — سياق احتمالي من التاريخ، ليس تنبؤاً</p><p class="disc">الموسمية — شهر أكتوبر تاريخياً (19 سنة): أغلق موجباً 47% من السنوات بوسيط -0.16% &#183; فاصل الثقة 95% للنسبة [27% – 68%] → لا دلالة إحصائية — الفاصل يشمل الـ50%، معلومة سياق لا أكثر</p><p class="disc">يوم الثلاثاء تاريخياً (1015 يوماً): متوسط -0.01% يومياً → ضمن الضوضاء (t=-0.41)</p></div></details><details class="more"><summary>MAX DRAWDOWN</summary><div class="more-body"><p class="disc">أعمق هبوط فعلي (Max Drawdown، آخر 90 شمعة): −4.50% من قمة إلى قاع خلال 52 يوماً تقويمياً، ولم يتعافَ بعد — تحت القمة منذ 53 يوماً تقويمياً</p></div></details><details class="more"><summary>SUPPORT &amp; RESISTANCE ZONES</summary><div class="more-body"><div class="dr"><span class="dk">دعم 1 — مُختبرة, اختبارات: 15</span><span class="dv pos">1.11275 [1.10965 – 1.11584]</span></div><div class="dr"><span class="dk">مقاومة 1 — مُختبرة, اختبارات: 9</span><span class="dv neg">1.12106 [1.11980 – 1.12415]</span></div><div class="dr"><span class="dk">مقاومة 2 — مُختبرة, اختبارات: 13</span><span class="dv neg">1.12792 [1.12483 – 1.13101]</span></div></div></details>
   </section>
       <section class="section">
     <div class="section-title">SINCE THE LAST REPORT</div>

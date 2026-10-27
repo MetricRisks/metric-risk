@@ -297,6 +297,18 @@
     .disc { margin: 0 0 10px; max-width: 78ch; font-size: 12px; line-height: 1.7;
             color: var(--muted); }
     .disc.warn { color: var(--range); }
+    .disc.mono-line { font-family: var(--mono); direction: ltr; font-size: 11px; }
+    details.more { border-bottom: 1px solid var(--line); }
+    details.more:last-child { border-bottom: none; }
+    details.more summary { cursor: pointer; padding-block: 12px; list-style: none;
+                           font-family: var(--mono); font-size: 10px; color: var(--muted);
+                           letter-spacing: .1em; text-transform: uppercase; direction: ltr;
+                           display: flex; align-items: center; gap: 10px; }
+    details.more summary::-webkit-details-marker { display: none; }
+    details.more summary::before { content: "+"; color: var(--accent); font-weight: 500; }
+    details.more[open] summary::before { content: "−"; }
+    details.more summary:hover { color: var(--ink); }
+    .more-body { padding-bottom: 14px; }
   </style>
   <!-- Cloudflare Web Analytics - cookieless, no consent banner required -->
   <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js"
@@ -402,6 +414,10 @@
         <div class="fi"><span class="fi-mark con">−</span><span>النمط الحالي قديم أو تظهر عليه مؤشرات تغيّر — ترقب تحولاً في حالة السوق</span></div><div class="fi"><span class="fi-mark con">−</span><span>مستوى المخاطرة الحالي مرتفع — المخاطر المالية حقيقية، أدر رأس مالك بحكمة</span></div><div class="fi"><span class="fi-mark con">−</span><span>الأطر الزمنية المرصودة متضاربة في قراءة حالة السوق — الصورة غير محسومة</span></div>
       </div>
     </div>
+  </section>
+      <section class="section">
+    <div class="section-title">CONTEXT</div>
+    <details class="more"><summary>MARKET QUALITY ◆</summary><div class="more-body"><p class="disc">Clearer than 99.6% of this symbol&#39;s own recent sessions.</p><p class="disc mono-line">Trend quality ◆ 100 | Movement clarity ◆ 19 | Noise ◆ 83.1</p></div></details><details class="more"><summary>STATISTICAL CONTEXT</summary><div class="more-body"><p class="disc">Under the same conditions (20-bar move DOWN, ATR percentile HIGH, position in the 90-bar range LOW), 548 historical analogs moved positively over the next 5 days in 49% of cases (median -0.03%, interquartile -0.85% … +0.72%). Probabilistic context — not a forecast.</p><p class="disc">For comparison, ALL 5,028 sessions on record moved positively in 49% of cases — the conditioning added 0 percentage points.</p><p class="disc">Seasonality — October historically (19 years): closed positive in 47% of years, median -0.16% &#183; Wilson 95% CI on that share [27% – 68%] → NOT statistically significant — the interval straddles 50%; context, nothing more.</p><p class="disc">Tuesdays historically (1015 days): mean -0.01%/day → inside the noise (t=-0.41).</p></div></details><details class="more"><summary>MAX DRAWDOWN</summary><div class="more-body"><p class="disc">Deepest realized decline (max drawdown, last 90 bars): −4.50% peak-to-trough over 52 calendar days, not yet recovered — 53 calendar days under the peak and counting.</p></div></details><details class="more"><summary>SUPPORT &amp; RESISTANCE ZONES</summary><div class="more-body"><div class="dr"><span class="dk">Support 1 — tested, tests: 15</span><span class="dv pos">1.11275 [1.10965 – 1.11584]</span></div><div class="dr"><span class="dk">Resistance 1 — tested, tests: 9</span><span class="dv neg">1.12106 [1.11980 – 1.12415]</span></div><div class="dr"><span class="dk">Resistance 2 — tested, tests: 13</span><span class="dv neg">1.12792 [1.12483 – 1.13101]</span></div></div></details>
   </section>
       <section class="section">
     <div class="section-title">SINCE THE LAST REPORT</div>

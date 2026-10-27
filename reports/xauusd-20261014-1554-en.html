@@ -297,6 +297,18 @@
     .disc { margin: 0 0 10px; max-width: 78ch; font-size: 12px; line-height: 1.7;
             color: var(--muted); }
     .disc.warn { color: var(--range); }
+    .disc.mono-line { font-family: var(--mono); direction: ltr; font-size: 11px; }
+    details.more { border-bottom: 1px solid var(--line); }
+    details.more:last-child { border-bottom: none; }
+    details.more summary { cursor: pointer; padding-block: 12px; list-style: none;
+                           font-family: var(--mono); font-size: 10px; color: var(--muted);
+                           letter-spacing: .1em; text-transform: uppercase; direction: ltr;
+                           display: flex; align-items: center; gap: 10px; }
+    details.more summary::-webkit-details-marker { display: none; }
+    details.more summary::before { content: "+"; color: var(--accent); font-weight: 500; }
+    details.more[open] summary::before { content: "−"; }
+    details.more summary:hover { color: var(--ink); }
+    .more-body { padding-bottom: 14px; }
   </style>
   <!-- Cloudflare Web Analytics - cookieless, no consent banner required -->
   <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js"
@@ -391,6 +403,10 @@
     <p style="margin-top:12px;font-size:11px;color:var(--muted);font-family:var(--mono)">Agreement ◆: 100% &#183; Fully aligned</p>
   </section>
     
+      <section class="section">
+    <div class="section-title">CONTEXT</div>
+    <details class="more"><summary>MARKET QUALITY ◆</summary><div class="more-body"><p class="disc">Clearer than 20.4% of this symbol&#39;s own recent sessions.</p><p class="disc mono-line">Trend quality ◆ 34 | Movement clarity ◆ 13.5 | Noise ◆ 96.5</p></div></details><details class="more"><summary>STATISTICAL CONTEXT</summary><div class="more-body"><p class="disc">Under the same conditions (20-bar move DOWN, ATR percentile LOW, position in the 90-bar range LOW), 319 historical analogs moved positively over the next 5 days in 56% of cases (median +0.41%, interquartile -1.32% … +1.47%). Probabilistic context — not a forecast.</p><p class="disc">For comparison, ALL 3,964 sessions on record moved positively in 54% of cases — the conditioning added +2 percentage points.</p><p class="disc">Seasonality — October historically (15 years): closed positive in 53% of years, median +1.61% &#183; Wilson 95% CI on that share [30% – 75%] → NOT statistically significant — the interval straddles 50%; context, nothing more.</p><p class="disc">Tuesdays historically (802 days): mean +0.02%/day → inside the noise (t=0.56).</p></div></details><details class="more"><summary>MAX DRAWDOWN</summary><div class="more-body"><p class="disc">Deepest realized decline (max drawdown, last 90 bars): −12.26% peak-to-trough over 44 calendar days, not yet recovered — 49 calendar days under the peak and counting.</p></div></details><details class="more"><summary>SUPPORT &amp; RESISTANCE ZONES</summary><div class="more-body"><div class="dr"><span class="dk">Support 1 — tested, tests: 7</span><span class="dv pos">4018.15 [3964.79 – 4071.51]</span></div><div class="dr"><span class="dk">Resistance 1 — tested, tests: 3</span><span class="dv neg">4177.43 [4162.13 – 4230.79]</span></div><div class="dr"><span class="dk">Resistance 2 — tested, tests: 3</span><span class="dv neg">4356.78 [4303.42 – 4410.14]</span></div></div></details>
+  </section>
       <section class="section">
     <div class="section-title">SINCE THE LAST REPORT</div>
     <p class="disc">Compared with the report that read the 2026-10-06 close (7 days ago)</p><p class="disc">No material change since that report.</p>
