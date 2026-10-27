@@ -296,7 +296,23 @@
     .callout p { margin: 0; color: var(--ink); font-size: 13px; line-height: 1.6; }
     .disc { margin: 0 0 10px; max-width: 78ch; font-size: 12px; line-height: 1.7;
             color: var(--muted); }
+    .page p.disc { max-width: none; }
     .disc.warn { color: var(--range); }
+    .tbl-wrap { overflow-x: auto; margin: 2px 0 14px; }
+    table.dt { border-collapse: collapse; font-size: 12px; }
+    table.dt th { font-family: var(--mono); font-size: 9px; font-weight: 400; color: var(--muted);
+                  letter-spacing: .1em; text-transform: uppercase; text-align: start;
+                  padding: 6px 34px 8px 0; border-bottom: 1px solid var(--line-hi);
+                  white-space: nowrap; }
+    table.dt td { padding: 8px 34px 8px 0; border-bottom: 1px solid var(--line);
+                  color: var(--muted); }
+    table.dt tr:last-child td { border-bottom: none; }
+    table.dt .num { font-family: var(--mono); direction: ltr; text-align: right;
+                    white-space: nowrap; font-variant-numeric: tabular-nums; }
+    table.dt td.num { color: var(--ink); font-weight: 500; }
+    table.dt tr.pos td.num { color: var(--up); }
+    table.dt tr.neg td.num { color: var(--down); }
+    table.dt th:last-child, table.dt td:last-child { padding-inline-end: 0; }
     .disc.mono-line { font-family: var(--mono); direction: ltr; font-size: 11px; }
     details.more { border-bottom: 1px solid var(--line); }
     details.more:last-child { border-bottom: none; }
