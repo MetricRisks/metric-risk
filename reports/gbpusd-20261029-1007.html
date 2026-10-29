@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GBPUSD 1D — تحليل 2026-10-29 — Metric Risk — مراقبة السوق</title>
+  <meta name="description" content="تحليل GBPUSD 1D — حالة السوق، التقلب، والمخاطرة.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap">
+  <style>
+    @font-face { font-family: "Noto Sans Arabic"; font-style: normal; font-weight: 400 500;
+                 font-display: optional; src: url(../fonts/noto-sans-arabic.woff2) format("woff2"); }
+    @font-face { font-family: "DM Mono"; font-style: normal; font-weight: 400;
+                 font-display: optional; src: url(../fonts/dm-mono-400.woff2) format("woff2"); }
+    @font-face { font-family: "DM Mono"; font-style: normal; font-weight: 500;
+                 font-display: optional; src: url(../fonts/dm-mono-500.woff2) format("woff2"); }
+    /* Design system — dark-first, teal accent, Space Grotesk display. */
+    :root {
+      color-scheme: dark;
+      --bg:         #0c0d0f; --surface: #141618; --surface-hi: #1b1f24;
+      --ink:        #e2e5ea; --muted:   #8892a0; --faint:      #4e5765;
+      --line:       #1e2128; --line-hi: #2e3440;
+      --accent:     #f5821f;
+      --up:         #00c064; --up-bg:   #001c10;
+      --down:       #e8534a; --down-bg: #1e0808;
+      --range:      #e6b30a; --range-bg: #1a1500;
+      --alert:      #fb923c; --alert-bg: #1e0f00;
+      --unknown:    #8892a0; --unknown-bg: #1e2128;
+      --display: "Space Grotesk", "Noto Sans Arabic", ui-sans-serif, sans-serif;
+      --body:    "Space Grotesk", "Noto Sans Arabic", ui-sans-serif, sans-serif;
+      --mono: "DM Mono", ui-monospace, "Courier New", monospace;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 320px; background: var(--bg); color: var(--ink);
+           font-family: var(--body); line-height: 1.7; }
+    a { color: inherit; }
+    .site-shell { width: min(1180px, calc(100% - 48px)); margin-inline: auto; }
+
+    .topbar { display: flex; align-items: center; justify-content: space-between;
+              gap: 28px; min-height: 78px; border-bottom: 1px solid var(--line); }
+    .wordmark { color: var(--ink); font-family: var(--mono); font-size: .84rem;
+                font-weight: 500; letter-spacing: .13em; text-decoration: none;
+                white-space: nowrap; direction: ltr; }
+    .wordmark span { color: var(--accent); }
+    .nav { display: flex; align-items: center; gap: clamp(14px, 2.5vw, 34px);
+           flex-wrap: wrap; font-size: .78rem; }
+    .nav a { color: var(--muted); text-decoration: none; }
+    .nav a:hover, .nav a:focus-visible { color: var(--accent); }
+    .nav .lang { padding: 7px 10px; border: 1px solid var(--line-hi);
+                 color: var(--ink); font-family: var(--mono); font-size: .7rem; }
+
+    .signal-strip { display: flex; align-items: center; gap: 10px; min-height: 47px;
+                    border-bottom: 1px solid var(--line); color: var(--muted);
+                    font-family: var(--mono); font-size: .67rem; }
+    .signal-strip p { margin: 0; }
+    .signal-dot { width: 7px; height: 7px; flex: 0 0 auto; border-radius: 50%;
+                  background: var(--accent); }
+    .strip-code { margin-inline-start: auto; color: var(--faint); direction: ltr;
+                  white-space: nowrap; }
+
+    .eyebrow, .section-kicker, .note-label {
+      margin: 0 0 16px; color: var(--accent); font-family: var(--mono);
+      font-size: .68rem; letter-spacing: .11em; text-transform: uppercase; }
+
+    .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, .42fr);
+            gap: 48px; padding-block: clamp(48px, 7vw, 84px) 64px; }
+    .hero h1 { max-width: 680px; margin: 0; font-family: var(--display);
+               font-size: clamp(2.6rem, 6vw, 4.6rem); font-weight: 500;
+               letter-spacing: -.045em; line-height: .95; text-wrap: balance; }
+    .hero h1 em { color: var(--accent); font-style: normal; }
+    /* The whole product in one sentence, above the archive it is evidence for. */
+    .claim { max-width: 22ch; margin: 26px 0 0; font-family: var(--display);
+             font-size: clamp(1.45rem, 2.6vw, 2.1rem); font-weight: 500;
+             line-height: 1.25; letter-spacing: -.02em; text-wrap: balance;
+             color: var(--ink); }
+    .claim em { font-style: normal; color: var(--accent); }
+    .lede { max-width: 550px; margin: 20px 0 0; color: var(--muted);
+            font-size: clamp(1rem, 1.7vw, 1.15rem); line-height: 1.85; }
+    .hero-note { align-self: end; padding-inline-start: 20px;
+                 border-inline-start: 2px solid var(--accent); color: var(--muted);
+                 font-size: .87rem; }
+    .hero-note strong { display: block; margin-bottom: 8px; color: var(--ink);
+                        font-family: var(--mono); font-size: .68rem; font-weight: 500;
+                        letter-spacing: .08em; text-transform: uppercase; }
+
+    .archive-section { padding-block: 12px 72px; }
+    .section-head { display: flex; align-items: end; justify-content: space-between;
+                    gap: 24px; margin-bottom: 23px; }
+    .section-head h2 { margin: 0; font-family: var(--display);
+                       font-size: clamp(1.7rem, 3vw, 2.4rem); font-weight: 500;
+                       letter-spacing: -.035em; line-height: 1; }
+    .section-meta { margin: 0; color: var(--muted); font-family: var(--mono);
+                    font-size: .68rem; text-align: start; direction: ltr; }
+
+    .archive-panel { border-top: 1px solid var(--line-hi); }
+    /* The filter is radio state plus sibling selectors: it works with scripting off,
+       and a reader who never loads the CSS still gets every row. */
+    .filter-state { position: absolute; width: 1px; height: 1px; overflow: hidden;
+                    clip-path: inset(50%); white-space: nowrap; }
+    .filters { display: flex; align-items: center; gap: 8px; min-height: 70px;
+               overflow-x: auto; border-bottom: 1px solid var(--line); }
+    .filters label { padding: 8px 13px; border: 1px solid transparent;
+                     color: var(--muted); cursor: pointer; font-family: var(--mono);
+                     font-size: .69rem; white-space: nowrap; direction: ltr; }
+    .filters label:hover { color: var(--ink); }
+
+    .table-wrap { width: 100%; overflow-x: auto; }
+    .archive-list { min-width: 720px; }
+    .table-head, .archive-row {
+      display: grid;
+      grid-template-columns: minmax(150px, 1.4fr) minmax(90px, .6fr)
+                             minmax(190px, 1.4fr) minmax(180px, 1fr) 35px;
+      align-items: center; gap: 20px; padding-inline: 18px; }
+    .table-head { min-height: 42px; color: var(--faint); font-family: var(--mono);
+                  font-size: .62rem; letter-spacing: .07em; text-transform: uppercase; }
+    .archive-row { min-height: 78px; border-top: 1px solid var(--line);
+                   text-decoration: none;
+                   transition: background 160ms ease, border-color 160ms ease; }
+    .archive-row:hover, .archive-row:focus-visible {
+      background: var(--surface-hi); border-color: var(--line-hi); }
+    .archive-row:last-child { border-bottom: 1px solid var(--line); }
+    .symbol { display: flex; align-items: baseline; gap: 12px; color: var(--ink);
+              font-family: var(--mono); font-size: .92rem; font-weight: 500;
+              letter-spacing: .04em; direction: ltr; }
+    .symbol::before { width: 6px; height: 6px; flex: 0 0 auto; border-radius: 50%;
+                      background: var(--accent); content: ""; }
+    .mono { color: var(--ink); font-family: var(--mono); font-size: .75rem;
+            letter-spacing: .03em; direction: ltr; }
+    .state { display: inline-flex; align-items: center; gap: 10px; justify-self: start;
+             padding: 6px 9px; font-family: var(--mono); font-size: .68rem;
+             letter-spacing: .04em; direction: ltr; }
+    .state::before { width: 6px; height: 6px; border-radius: 50%;
+                     background: currentColor; content: ""; }
+    .state.up { color: var(--up); background: var(--up-bg); }
+    .state.down { color: var(--down); background: var(--down-bg); }
+    .state.range { color: var(--range); background: var(--range-bg); }
+    .state.alert { color: var(--alert); background: var(--alert-bg); }
+    .state.unknown { color: var(--unknown); background: var(--unknown-bg); }
+    .arrow { color: var(--faint); font-size: 1.1rem; text-align: end;
+             transition: color 160ms ease, transform 160ms ease; }
+    .archive-row:hover .arrow, .archive-row:focus-visible .arrow { color: var(--accent); }
+    .empty { color: var(--muted); padding: 28px 18px; }
+
+    .notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px;
+             margin-bottom: 72px; background: var(--line);
+             border-block: 1px solid var(--line); }
+    .note { min-height: 178px; padding: 28px; background: var(--surface); }
+    .note h2 { margin: 0 0 12px; font-family: var(--display); font-size: 1.55rem;
+               font-weight: 500; letter-spacing: -.03em; }
+    .note p { max-width: 480px; margin: 0 0 14px; color: var(--muted); font-size: .9rem; }
+    .note a { color: var(--accent); font-family: var(--mono); font-size: .72rem;
+              letter-spacing: .05em; }
+
+    /* Report and disclaimer pages, in the same shell. */
+    .page { padding-block: clamp(40px, 6vw, 66px) 72px; }
+    .page h1 { margin: 0 0 .3rem; font-family: var(--display);
+               font-size: clamp(2rem, 4vw, 3rem); font-weight: 500;
+               letter-spacing: -.04em; line-height: 1; }
+    .page h1 .tf { color: var(--muted); font-family: var(--mono); font-size: 1rem;
+                   font-weight: 400; letter-spacing: .06em; }
+    .meta { margin: 0 0 1.75rem; color: var(--muted); font-family: var(--mono);
+            font-size: .72rem; letter-spacing: .04em; direction: ltr; }
+    .page p { color: var(--muted); max-width: 68ch; }
+    figure.cone { margin: 0 0 1.75rem; padding: 20px; background: var(--surface);
+                  border: 1px solid var(--line); overflow-x: auto; }
+    figure.cone svg { max-width: 100%; height: auto; display: block;
+                      margin-inline: auto; color: var(--ink); }
+    .message { background: var(--surface); border: 1px solid var(--line);
+               padding: 26px 28px; white-space: normal; }
+    pre.plain { white-space: pre-wrap; word-wrap: break-word; margin: 0;
+                font-family: var(--mono); font-size: .8rem; line-height: 1.85; }
+
+    footer { padding-block: 26px 38px; border-top: 1px solid var(--line-hi);
+             color: var(--muted); }
+    .footer-inner { display: flex; justify-content: space-between; gap: 28px;
+                    font-size: .75rem; }
+    .footer-inner p { margin: 0; }
+    .footer-inner .mono { color: var(--faint); }
+
+    a:focus-visible, .filters label:focus-visible,
+    .filter-state:focus-visible + label { outline: 2px solid var(--accent);
+                                          outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+    @media (max-width: 740px) {
+      .site-shell { width: min(100% - 30px, 1180px); }
+      .topbar { align-items: flex-start; flex-direction: column; gap: 16px;
+                padding-block: 21px; }
+      .nav { gap: 12px 20px; }
+      .hero { display: block; padding-block: 52px 56px; }
+      .hero-note { max-width: 420px; margin-top: 44px; }
+      .section-head { align-items: flex-start; flex-direction: column; gap: 13px; }
+      .notes { grid-template-columns: 1fr; }
+      .footer-inner { align-items: flex-start; flex-direction: column; gap: 9px; }
+      .data-cols { grid-template-columns: 1fr; gap: 20px; }
+      .factors-cols { grid-template-columns: 1fr; gap: 20px; }
+      .regime-band { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .stat { border-bottom: 1px solid var(--line); }
+    }
+
+    /* ── Structured report ── */
+    .report-page { padding-block: 0 72px; }
+    .section { padding-block: 24px; border-bottom: 1px solid var(--line); }
+    .section:last-child { border-bottom: none; }
+    .section-title { font-family: var(--mono); font-size: 9px; color: var(--accent);
+                     letter-spacing: .14em; text-transform: uppercase; margin-bottom: 16px;
+                     direction: ltr; }
+    .regime-band { padding-block: 28px; padding-inline-start: 20px;
+                   border-inline-start: 4px solid var(--regime-color, var(--accent));
+                   margin-block: 28px 0; display: grid;
+                   grid-template-columns: 1fr auto; gap: 20px 32px; align-items: start; }
+    .regime-band.down  { --regime-color: var(--down); }
+    .regime-band.up    { --regime-color: var(--up);   }
+    .regime-band.range { --regime-color: var(--range); }
+    .regime-eyebrow { font-family: var(--mono); font-size: 10px; color: var(--faint);
+                      letter-spacing: .12em; text-transform: uppercase; margin-bottom: 10px;
+                      direction: ltr; }
+    .regime-symbol { font-family: var(--display); font-size: clamp(40px, 8vw, 64px);
+                     font-weight: 700; letter-spacing: -.02em; line-height: 1;
+                     direction: ltr; color: var(--ink); }
+    .regime-tf { font-family: var(--mono); font-size: 18px; color: var(--muted);
+                 font-weight: 400; margin-inline-start: 10px; }
+    .regime-label { margin-top: 12px; display: inline-flex; align-items: center; gap: 8px;
+                    font-size: 13px; font-weight: 500; color: var(--regime-color, var(--accent)); }
+    .regime-label::before { content: ""; display: block; width: 8px; height: 8px;
+                            border-radius: 50%; background: currentColor; }
+    .regime-meta { text-align: end; direction: ltr; }
+    .regime-price { font-family: var(--display); font-size: clamp(28px, 5vw, 44px);
+                    font-weight: 600; letter-spacing: -.02em; color: var(--ink);
+                    font-variant-numeric: tabular-nums; }
+    .regime-change { font-family: var(--mono); font-size: 12px; margin-top: 4px; }
+    .regime-change.pos { color: var(--up); }
+    .regime-change.neg { color: var(--down); }
+    .regime-date { font-family: var(--mono); font-size: 10px; color: var(--faint);
+                   margin-top: 6px; letter-spacing: .06em; }
+    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                 border-top: 1px solid var(--line-hi); border-bottom: 1px solid var(--line-hi);
+                 margin-block: 0 28px; }
+    .stat { padding: 16px 18px; border-inline-end: 1px solid var(--line); }
+    .stat:last-child { border-inline-end: none; }
+    .stat-label { font-family: var(--mono); font-size: 9px; color: var(--accent);
+                  letter-spacing: .1em; text-transform: uppercase; margin-bottom: 7px;
+                  direction: ltr; }
+    .stat-value { font-family: var(--display); font-size: 24px; font-weight: 600;
+                  color: var(--ink); direction: ltr; font-variant-numeric: tabular-nums;
+                  letter-spacing: -.02em; }
+    .stat-value.ok   { color: var(--up);    }
+    .stat-value.warn { color: var(--range); }
+    .stat-value.bad  { color: var(--down);  }
+    .stat-value.acc  { color: var(--accent); }
+    .stat-note { font-family: var(--mono); font-size: 10px; color: var(--muted);
+                 margin-top: 4px; direction: ltr; }
+    .data-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .data-block-title { font-family: var(--mono); font-size: 9px; color: var(--muted);
+                        letter-spacing: .1em; text-transform: uppercase; padding-bottom: 8px;
+                        border-bottom: 1px solid var(--line-hi); margin-bottom: 0;
+                        direction: ltr; }
+    .dr { display: flex; justify-content: space-between; align-items: baseline;
+          gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+    .dr:last-child { border-bottom: none; }
+    .dk { font-size: 12px; color: var(--muted); }
+    .dv { font-family: var(--mono); font-size: 12px; font-weight: 500; color: var(--ink);
+          white-space: nowrap; direction: ltr; font-variant-numeric: tabular-nums; }
+    .dv.neg  { color: var(--down);   }
+    .dv.pos  { color: var(--up);     }
+    .dv.warn { color: var(--range);  }
+    .dv.acc  { color: var(--accent); }
+    .tf-list { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .tf-pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px;
+               background: var(--surface); border: 1px solid var(--line-hi); font-size: 12px; }
+    .tf-pill .tf-name { font-family: var(--mono); font-size: 10px; color: var(--faint); }
+    .tf-tag { font-family: var(--mono); font-size: 10px; font-weight: 500; padding: 2px 7px; }
+    .tf-tag.down  { color: var(--down);  background: var(--down-bg); }
+    .tf-tag.range { color: var(--range); background: var(--range-bg); }
+    .tf-tag.up    { color: var(--up);    background: var(--up-bg);   }
+    .tf-note-text { font-size: 12px; color: var(--muted); }
+    .factors-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .fblock-title { font-family: var(--mono); font-size: 9px; letter-spacing: .1em;
+                    text-transform: uppercase; padding-bottom: 8px;
+                    border-bottom: 1px solid var(--line-hi); margin-bottom: 0; }
+    .fblock-title.pro { color: var(--up);   }
+    .fblock-title.con { color: var(--down); }
+    .fi { display: flex; gap: 10px; align-items: flex-start; padding: 9px 0;
+          border-bottom: 1px solid var(--line); font-size: 12px;
+          color: var(--muted); line-height: 1.5; }
+    .fi:last-child { border-bottom: none; }
+    .fi-mark { font-family: var(--mono); font-weight: 600; flex: 0 0 auto; font-size: 13px; }
+    .fi-mark.pro { color: var(--up);   }
+    .fi-mark.con { color: var(--down); }
+    .fi-mark:not(.pro):not(.con) { color: var(--muted); }
+    .callout { margin-block: 0 28px; padding: 14px 18px;
+               border-inline-start: 3px solid var(--accent); background: var(--surface); }
+    .callout-label { font-family: var(--mono); font-size: 9px; color: var(--accent);
+                     letter-spacing: .14em; margin-bottom: 6px; direction: ltr; }
+    .callout p { margin: 0; color: var(--ink); font-size: 13px; line-height: 1.6; }
+    .disc { margin: 0 0 10px; max-width: 78ch; font-size: 12px; line-height: 1.7;
+            color: var(--muted); }
+    .page p.disc { max-width: none; }
+    .disc.warn { color: var(--range); }
+    .tbl-wrap { overflow-x: auto; margin: 2px 0 14px; }
+    table.dt { border-collapse: collapse; font-size: 12px; }
+    table.dt th { font-family: var(--mono); font-size: 9px; font-weight: 400; color: var(--muted);
+                  letter-spacing: .1em; text-transform: uppercase; text-align: start;
+                  padding: 6px 34px 8px 0; border-bottom: 1px solid var(--line-hi);
+                  white-space: nowrap; }
+    table.dt td { padding: 8px 34px 8px 0; border-bottom: 1px solid var(--line);
+                  color: var(--muted); }
+    table.dt tr:last-child td { border-bottom: none; }
+    table.dt .num { font-family: var(--mono); direction: ltr; text-align: right;
+                    white-space: nowrap; font-variant-numeric: tabular-nums; }
+    table.dt td.num { color: var(--ink); font-weight: 500; }
+    table.dt tr.pos td.num { color: var(--up); }
+    table.dt tr.neg td.num { color: var(--down); }
+    table.dt th:last-child, table.dt td:last-child { padding-inline-end: 0; }
+    .disc.mono-line { font-family: var(--mono); direction: ltr; font-size: 11px; }
+    details.more { border-bottom: 1px solid var(--line); }
+    details.more:last-child { border-bottom: none; }
+    details.more summary { cursor: pointer; padding-block: 12px; list-style: none;
+                           font-family: var(--mono); font-size: 10px; color: var(--muted);
+                           letter-spacing: .1em; text-transform: uppercase; direction: ltr;
+                           display: flex; align-items: center; gap: 10px; }
+    details.more summary::-webkit-details-marker { display: none; }
+    details.more summary::before { content: "+"; color: var(--accent); font-weight: 500; }
+    details.more[open] summary::before { content: "−"; }
+    details.more summary:hover { color: var(--ink); }
+    .more-body { padding-bottom: 14px; }
+  </style>
+  <!-- Cloudflare Web Analytics - cookieless, no consent banner required -->
+  <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon='{"token": "23ffa219aca54e0b9a7b6b1bfd9d00a2"}'></script>
+</head>
+<body>
+  <div class="site-shell">
+    <header class="topbar">
+      <a class="wordmark" href="../index.html">METRIC <span>RISK</span></a>
+      <nav class="nav" aria-label="التنقل الرئيسي">
+        <a href="../index.html">الرئيسية</a>
+        <a href="../calibration.html">سجل المعايرة</a>
+        <a href="../calibration-chart.html">الرسم البياني</a>
+        <a href="../comparison.html">مقارنة الأدوات</a>
+        <a href="../disclaimer.html">إخلاء المسؤولية</a>
+        <a href="../docs.html">التوثيق</a>
+        <a class="lang" href="gbpusd-20261029-1007-en.html" hreflang="en" lang="en">English</a>
+      </nav>
+    </header>
+
+    <div class="signal-strip">
+      <span class="signal-dot" aria-hidden="true"></span>
+      <p>محتوى تعليمي توعوي فقط — ليس توصية تداول. المخاطر المالية حقيقية؛ أدر رأس مالك بحكمة.</p>
+      <span class="strip-code">PUBLIC RECORD / METRIC RISK</span>
+    </div>
+
+    <main>
+  <article class="page report-page">
+      <div class="regime-band down">
+    <div>
+      <div class="regime-eyebrow">GBPUSD · 1D</div>
+      <div><span class="regime-symbol">GBPUSD</span><span class="regime-tf">1D</span></div>
+      <div class="regime-label">اتجاه هابط معتدل</div>
+    </div>
+    <div class="regime-meta">
+      <div class="regime-price">1.33250</div>
+      <div class="regime-change pos">+0.17%</div>
+      <div class="regime-date">2026-10-28 00:00 UTC</div>
+    </div>
+  </div>
+      <div class="stats-row">
+    <div class="stat">
+      <div class="stat-label">CONFIDENCE ◆</div>
+      <div class="stat-value bad">43</div>
+      <div class="stat-note">أعلى من 36.8% من الجلسات</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">VAR 95%</div>
+      <div class="stat-value warn">±0.53%</div>
+      <div class="stat-note">لكل شمعة</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">VOLATILITY</div>
+      <div class="stat-value">0.31%</div>
+      <div class="stat-note">EWMA</div>
+    </div>
+    
+  </div>
+    <div class="callout"><div class="callout-label">INVALIDATION</div><p>تسقط هذه القراءة بإغلاق فوق 1.34180 — عندها تنكسر البنية التي تستند إليها</p></div>
+    <figure class="cone"><svg viewBox="0 0 680 402" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GBPUSD probability cone" font-family="system-ui, sans-serif" font-size="11"><rect width="100%" height="100%" fill="none"/><text x="66" y="18" font-size="13" font-weight="600" fill="currentColor">GBPUSD — مخروط الاحتمالات (90%) · probability cone</text><line x1="66" y1="34" x2="66" y2="346" stroke="currentColor" stroke-opacity="0.5"/><line x1="66" y1="346" x2="552" y2="346" stroke="currentColor" stroke-opacity="0.5"/><line x1="66" y1="34" x2="552" y2="34" stroke="currentColor" stroke-opacity="0.12"/><text x="60" y="37" text-anchor="end" fill="currentColor" fill-opacity="0.75">1.36714</text><line x1="66" y1="112" x2="552" y2="112" stroke="currentColor" stroke-opacity="0.12"/><text x="60" y="115" text-anchor="end" fill="currentColor" fill-opacity="0.75">1.34934</text><line x1="66" y1="190" x2="552" y2="190" stroke="currentColor" stroke-opacity="0.12"/><text x="60" y="193" text-anchor="end" fill="currentColor" fill-opacity="0.75">1.33153</text><line x1="66" y1="268" x2="552" y2="268" stroke="currentColor" stroke-opacity="0.12"/><text x="60" y="271" text-anchor="end" fill="currentColor" fill-opacity="0.75">1.31372</text><line x1="66" y1="346" x2="552" y2="346" stroke="currentColor" stroke-opacity="0.12"/><text x="60" y="349" text-anchor="end" fill="currentColor" fill-opacity="0.75">1.29592</text><polygon points="66,185.8 90.3,156.7 187.5,120.7 309,93.7 552,55.5 552,324.5 309,283.8 187.5,255.1 90.3,216.8" fill="#2563eb" fill-opacity="0.16" stroke="#2563eb" stroke-opacity="0.55" stroke-width="1"/><polyline points="66,185.8 90.3,186.7 187.5,187.9 309,188.8 552,190" fill="none" stroke="#2563eb" stroke-opacity="0.7" stroke-width="1.5" stroke-dasharray="4 3"/><line x1="66" y1="202" x2="552" y2="202" stroke="#059669" stroke-opacity="0.8" stroke-width="1" stroke-dasharray="5 3"/><text x="558" y="205" fill="#059669">دعم 1.32880</text><line x1="66" y1="171" x2="552" y2="171" stroke="#dc2626" stroke-opacity="0.8" stroke-width="1" stroke-dasharray="5 3"/><text x="558" y="174" fill="#dc2626">مقاومة 1.33586</text><circle cx="66" cy="185.8" r="3.5" fill="currentColor"/><text x="72" y="179.8" fill="currentColor" font-weight="600">1.33250</text><polygon points="187.5,111.7 183,119.7 192,119.7" fill="none" stroke="#b45309" stroke-width="1.2"/><polygon points="309,84.7 304.5,92.7 313.5,92.7" fill="none" stroke="#b45309" stroke-width="1.2"/><polygon points="309,292.8 304.5,284.8 313.5,284.8" fill="none" stroke="#b45309" stroke-width="1.2"/><polygon points="552,46.5 547.5,54.5 556.5,54.5" fill="none" stroke="#b45309" stroke-width="1.2"/><polygon points="552,333.5 547.5,325.5 556.5,325.5" fill="none" stroke="#b45309" stroke-width="1.2"/><text x="66" y="382" fill="#b45309" fill-opacity="0.95">⚠ الحدود المُعلَّمة (△) لا تصمد كحدّ 95% على هذا الرمز عند ذلك الأفق · flagged edges did not hold</text><line x1="90.3" y1="346" x2="90.3" y2="350" stroke="currentColor" stroke-opacity="0.5"/><text x="90.3" y="364" text-anchor="middle" fill="currentColor" fill-opacity="0.75">1d</text><line x1="187.5" y1="346" x2="187.5" y2="350" stroke="currentColor" stroke-opacity="0.5"/><text x="187.5" y="364" text-anchor="middle" fill="currentColor" fill-opacity="0.75">5d</text><line x1="309" y1="346" x2="309" y2="350" stroke="currentColor" stroke-opacity="0.5"/><text x="309" y="364" text-anchor="middle" fill="currentColor" fill-opacity="0.75">10d</text><line x1="552" y1="346" x2="552" y2="350" stroke="currentColor" stroke-opacity="0.5"/><text x="552" y="364" text-anchor="middle" fill="currentColor" fill-opacity="0.75">20d</text></svg></figure>
+      <section class="section">
+    <div class="section-title">TECHNICAL</div>
+    <div class="data-cols">
+      <div>
+        <div class="data-block-title">MOMENTUM</div>
+        <div class="dr"><span class="dk">RSI (14)</span><span class="dv ">50.2</span></div>
+        <div class="dr"><span class="dk">MACD Histogram</span><span class="dv pos">0.00136</span></div>
+        <div class="dr"><span class="dk">ADX</span><span class="dv">24.1</span></div>
+        <div class="dr"><span class="dk">+DI / −DI</span><span class="dv">15.4 / 18.9</span></div>
+        <div class="dr"><span class="dk">Trend Score ◆</span><span class="dv neg">-48</span></div>
+        <div class="dr"><span class="dk">Momentum Score ◆</span><span class="dv pos">15</span></div>
+      </div>
+      <div>
+        <div class="data-block-title">RISK &amp; RANGE</div>
+        <div class="dr"><span class="dk">VaR 95%</span><span class="dv warn">±0.53%</span></div>
+        <div class="dr"><span class="dk">ES 95%</span><span class="dv warn">±0.65%</span></div>
+        <div class="dr"><span class="dk">ATR</span><span class="dv">0.00705</span></div>
+        <div class="dr"><span class="dk">Expected Range</span><span class="dv">1.32542 – 1.33958</span></div>
+        <div class="dr"><span class="dk">Obs. Range (90d)</span><span class="dv">1.31320 – 1.36750</span></div>
+        <div class="dr"><span class="dk">دعم</span><span class="dv pos">1.32880</span></div><div class="dr"><span class="dk">مقاومة</span><span class="dv neg">1.33586</span></div>
+      </div>
+    </div>
+  </section>
+      <section class="section">
+    <div class="section-title">TIMEFRAME ALIGNMENT</div>
+    <div class="tf-list"><div class="tf-pill"><span class="tf-name">1D</span><span class="tf-tag down">اتجاه هابط</span></div><div class="tf-pill"><span class="tf-name">1W</span><span class="tf-tag range">نطاق عرضي</span></div></div>
+    <p style="margin-top:12px;font-size:11px;color:var(--muted);font-family:var(--mono)">التوافق ◆: 50% &#183; الأطر المرصودة متضاربة في قراءة الحالة</p>
+  </section>
+      <section class="section">
+    <div class="section-title">SIGNALS</div>
+    <div class="factors-cols">
+      <div>
+        <div class="fblock-title pro">داعمة (2)</div>
+        <div class="fi"><span class="fi-mark pro">+</span><span>مؤشر قوة الاتجاه يتفق مع حالة السوق المكتشفة</span></div><div class="fi"><span class="fi-mark pro">+</span><span>النمط الحالي حديث ومستقر إحصائياً — لا مؤشرات على تغيّر قريب</span></div>
+      </div>
+      <div>
+        <div class="fblock-title con">متعارضة (2)</div>
+        <div class="fi"><span class="fi-mark con">−</span><span>الزخم قصير المدى (MACD) يعاكس حالة السوق المكتشفة</span></div><div class="fi"><span class="fi-mark con">−</span><span>الأطر الزمنية المرصودة متضاربة في قراءة حالة السوق — الصورة غير محسومة</span></div>
+      </div>
+    </div>
+  </section>
+      <section class="section">
+    <div class="section-title">CONTEXT</div>
+    <details class="more"><summary>MARKET STRUCTURE</summary><div class="more-body"><div class="tbl-wrap"><table class="dt"><thead><tr><th>الجانب</th><th>القراءة</th></tr></thead><tbody><tr><td>الحالة</td><td>اتجاه هابط معتدل (ثابتة 1 يوماً تقويمياً منذ 2026-10-28)</td></tr><tr><td>البنية</td><td>بنية غير واضحة — التسلسل مختلط أو غير مكتمل</td></tr><tr><td>الطور</td><td>NEUTRAL (موضع السعر في المدى 35.5%) — لا توقيع طور واضح — لا انضغاط ولا توسّع اتجاهي نظيف</td></tr><tr><td>حجم آخر شمعة</td><td>0.98&#215; ATR</td></tr><tr><td>نمط الشمعة</td><td>لا نمط مرصوداً على آخر الشموع</td></tr></tbody></table></div></div></details><details class="more"><summary>TREND &amp; MOMENTUM</summary><div class="more-body"><div class="tbl-wrap"><table class="dt"><thead><tr><th>المقياس</th><th class="num">القيمة</th><th>القراءة</th></tr></thead><tbody><tr><td>قوة الاتجاه (ADX)</td><td class="num">24.1</td><td>+DI 15.4 / −DI 18.9</td></tr><tr><td>درجة قوة الاتجاه ◆</td><td class="num">-48.3</td><td>من &#177;100 (بنية هابطة)</td></tr><tr><td>درجة الزخم ◆</td><td class="num">+15.3</td><td>من &#177;100 (بُعد RSI + ميل MACD + معدل التغير)</td></tr><tr><td>قوة الزخم (RSI)</td><td class="num">50.2</td><td>منتصف المدى</td></tr><tr><td>الزخم قصير المدى (MACD)</td><td class="num">0.00136</td><td>الهيستوغرام (خط MACD 0.00002 فوق خط الإشارة -0.00134)</td></tr><tr><td>الزخم الخام</td><td class="num">0.0134</td><td>الإغلاقات الأخيرة أعلى من السابقة</td></tr></tbody></table></div></div></details><details class="more"><summary>VOLATILITY, RISK &amp; REGIME</summary><div class="more-body"><p class="disc">التصنيف: TRENDING — التقلب الحالي عند الشريحة المئوية 45.6 من آخر 90 يوماً (1.01&#215; متوسط النافذة) — تقلب ضمن معدله مع بنية اتجاهية — سوق يتحرك باتجاه ضمن نطاق حركة معتاد</p><p class="disc">التعقيد: HIGH — أعلى من معتاد هذا الزوج (المئين 83.6 من سنته الأخيرة)</p><div class="tbl-wrap"><table class="dt"><thead><tr><th>المقياس</th><th class="num">القيمة</th><th>القراءة</th></tr></thead><tbody><tr><td>ATR</td><td class="num">0.00705</td><td>MEDIUM، -15.8% عن تقرير 2026-06-29 (قبل 122 يوماً)</td></tr><tr><td>متوسط ATR</td><td class="num">0.00721</td><td>ATR الحالي 0.00705 (تحت المعتاد)</td></tr><tr><td>VaR95</td><td class="num">&#177;0.53%</td><td>خسارة محتملة حتى هذا الحد في اليوم العادي &#183; المستوى: MEDIUM (التقلب فوق نطاقه الهادئ — لا من الرقم أعلاه)</td></tr><tr><td>CVaR95</td><td class="num">&#177;0.65%</td><td>متوسط الخسارة في أسوأ 5% من الأيام</td></tr><tr><td>الحد الإحصائي الأقصى</td><td class="num">1.32542 – 1.33958</td><td>95% — يُكسر ~يوماً من 20</td></tr><tr><td>VaR95 (افتراض طبيعي)</td><td class="num">&#177;0.49%</td><td>رفيق للمقارنة</td></tr><tr><td>CVaR95 (افتراض طبيعي)</td><td class="num">&#177;0.61%</td><td>رفيق للمقارنة</td></tr><tr><td>VaR95 (توزيعي-حر)</td><td class="num">&#177;0.47%</td><td>رفيق للمقارنة</td></tr><tr><td>تقلّب حديث (EWMA)</td><td class="num">&#177;0.31%</td><td>يومياً — 1.09&#215; خط الأساس (ترجيح أُسّي للأيام الأحدث)</td></tr><tr><td>نطاق اليوم العادي</td><td class="num">1.32833 – 1.33667</td><td>&#177;1σ مُرجّح حديثاً</td></tr><tr><td>الذيل المتطرّف: خسارة نادرة (1 من 100 يوم)</td><td class="num">&#177;0.73%</td><td>EVT — بلا افتراض توزيع طبيعي</td></tr><tr><td>الذيل المتطرّف: المتوسط</td><td class="num">&#177;0.79%</td><td></td></tr><tr><td>شكل الذيل ξ</td><td class="num">-0.5</td><td>ذيل محدود</td></tr><tr><td>GARCH(1,1): تقلب الغد</td><td class="num">&#177;0.29%</td><td>قراءة مرافقة</td></tr><tr><td>GARCH(1,1): الأمد الطويل</td><td class="num">&#177;0.29%</td><td></td></tr><tr><td>GARCH(1,1): الثبات α+β</td><td class="num">0.87</td><td>الأقرب لـ1 = عودة أبطأ للمعدل</td></tr></tbody></table></div><p class="disc">النمط السائد: عمره 35 يوماً (الأنماط المشابهة تدوم 66 يوماً في المتوسط) &#183; الصحة ◆ 64.6%</p></div></details><details class="more"><summary>PROBABILITY CONE (90%)</summary><div class="more-body"><p class="disc">مخروط الاحتمالات (90%): نطاق يتّسع مع √الزمن — كل حدّ يُكسر ~يوماً من 20. وصف لاتساع عدم اليقين، ليس توقّعاً سعرياً.</p><div class="tbl-wrap"><table class="dt"><thead><tr><th>الأفق</th><th class="num">الحد الأدنى</th><th class="num">الحد الأعلى</th><th>المعايرة</th></tr></thead><tbody><tr><td>بعد يوم واحد</td><td class="num">1.32542</td><td class="num">1.33914</td><td></td></tr><tr><td>بعد 5 أيام</td><td class="num">1.31666</td><td class="num">1.34736</td><td>⚠ الحدّ الأعلى يُكسر 4.1% بدل 5%</td></tr><tr><td>بعد 10 أيام</td><td class="num">1.31011</td><td class="num">1.35351</td><td>⚠ الحدّ الأدنى يُكسر 6.0% بدل 5% &#183; الحدّ الأعلى يُكسر 3.8% بدل 5%</td></tr><tr><td>بعد 20 يوماً</td><td class="num">1.30083</td><td class="num">1.36223</td><td>⚠ الحدّ الأدنى يُكسر 6.7% بدل 5% &#183; الحدّ الأعلى يُكسر 2.6% بدل 5%</td></tr></tbody></table></div><p class="disc warn">⚠ الحدود المُعلَّمة أعلاه لا تصمد كحدّ 95% على هذا الرمز عند ذلك الأفق — النسبة مقيسة من تاريخ الرمز نفسه (مسح walk-forward)، والرقم منشور بحدّه لا مطلقاً.</p><p class="disc">مخروط GARCH المرافق (90% — التقلب يعود لمعدله بدل افتراض √الزمن الثابت؛ لا يغذي الأرقام المعلنة، ويُدقَّق بجانبها):</p><div class="tbl-wrap"><table class="dt"><thead><tr><th>الأفق</th><th class="num">الحد الأدنى</th><th class="num">الحد الأعلى</th></tr></thead><tbody><tr><td>بعد يوم واحد</td><td class="num">1.32598</td><td class="num">1.33858</td></tr><tr><td>بعد 5 أيام</td><td class="num">1.31795</td><td class="num">1.34607</td></tr><tr><td>بعد 10 أيام</td><td class="num">1.31193</td><td class="num">1.35169</td></tr><tr><td>بعد 20 يوماً</td><td class="num">1.30345</td><td class="num">1.35961</td></tr></tbody></table></div></div></details><details class="more"><summary>FIBONACCI LEVELS</summary><div class="more-body"><p class="disc">الساق: صاعدة — 1.31320 → 1.34180</p><div class="tbl-wrap"><table class="dt"><thead><tr><th>النوع</th><th class="num">النسبة</th><th class="num">السعر</th></tr></thead><tbody><tr><td>ارتداد</td><td class="num">23.6%</td><td class="num">1.33505</td></tr><tr><td>ارتداد</td><td class="num">38.2%</td><td class="num">1.33087</td></tr><tr><td>ارتداد</td><td class="num">50%</td><td class="num">1.32750</td></tr><tr><td>ارتداد</td><td class="num">61.8%</td><td class="num">1.32413</td></tr><tr><td>ارتداد</td><td class="num">78.6%</td><td class="num">1.31932</td></tr><tr><td>امتداد</td><td class="num">127.2%</td><td class="num">1.34958</td></tr><tr><td>امتداد</td><td class="num">161.8%</td><td class="num">1.35947</td></tr></tbody></table></div><p class="disc">(أسعار ارتداد يتابعها المتعاملون — مراجع مراقبة فقط، ليست أهدافاً)</p></div></details><details class="more"><summary>FAIR VALUE GAPS</summary><div class="more-body"><p class="disc">فجوة قيمة عادلة لم تُغلق بعد — منطقة لم يتداول السعر داخلها منذ تكوّنها، راقب سلوكه إن عاد إليها</p><div class="tbl-wrap"><table class="dt"><thead><tr><th>الفجوة</th><th>الحالة</th><th class="num">العمر (شموع)</th><th class="num">الأسفل</th><th class="num">الأعلى</th></tr></thead><tbody><tr><td>هابطة</td><td>مفتوحة</td><td class="num">1</td><td class="num">1.33490</td><td class="num">1.33570</td></tr></tbody></table></div></div></details><details class="more"><summary>LIQUIDITY &amp; REFERENCE LEVELS</summary><div class="more-body"><p class="disc">من 282 تجمع سيولة تاريخي: 67% انتهى بجمع سيولة وارتداد لا كسر مؤكد (بتعريف: إغلاق يعود داخل المستوى في شمعة الاختراق نفسها أو في 3 شمعات بعدها) — القمم/القيعان المتساوية القريبة مناطق حساسة، راقب سلوك السعر عندها</p><div class="tbl-wrap"><table class="dt"><thead><tr><th>التجمّع</th><th class="num">اللمسات</th><th class="num">المستوى</th><th class="num">نهاية نطاق الوقف</th></tr></thead><tbody><tr><td>قمم متساوية (فوق السعر)</td><td class="num">4</td><td class="num">1.34240</td><td class="num">1.34416</td></tr><tr><td>قمم متساوية (فوق السعر)</td><td class="num">4</td><td class="num">1.35712</td><td class="num">1.35889</td></tr><tr><td>قمم متساوية (فوق السعر)</td><td class="num">2</td><td class="num">1.36744</td><td class="num">1.36920</td></tr><tr><td>قيعان متساوية (تحت السعر)</td><td class="num">5</td><td class="num">1.31281</td><td class="num">1.31105</td></tr><tr><td>قيعان متساوية (تحت السعر)</td><td class="num">3</td><td class="num">1.30267</td><td class="num">1.30090</td></tr><tr><td>قيعان متساوية (تحت السعر)</td><td class="num">7</td><td class="num">1.30039</td><td class="num">1.29863</td></tr></tbody></table></div><p class="disc">المستويات المرجعية:</p><div class="tbl-wrap"><table class="dt"><thead><tr><th>المصدر</th><th>الموضع</th><th class="num">البعد (ATR)</th><th class="num">المستوى</th></tr></thead><tbody><tr><td>قمة/قاع الجلسة السابقة</td><td>فوق السعر</td><td class="num">0.18</td><td class="num">1.33380</td></tr><tr><td>رقم مستدير</td><td>تحت السعر</td><td class="num">0.35</td><td class="num">1.33000</td></tr><tr><td>قمة/قاع الأسبوع السابق</td><td>تحت السعر</td><td class="num">0.43</td><td class="num">1.32950</td></tr><tr><td>قمة/قاع الجلسة السابقة</td><td>تحت السعر</td><td class="num">0.79</td><td class="num">1.32690</td></tr><tr><td>رقم مستدير</td><td>فوق السعر</td><td class="num">1.06</td><td class="num">1.34000</td></tr><tr><td>قمة/قاع الأسبوع السابق</td><td>فوق السعر</td><td class="num">1.32</td><td class="num">1.34180</td></tr><tr><td>قمة/قاع الشهر السابق</td><td>تحت السعر</td><td class="num">1.79</td><td class="num">1.31990</td></tr><tr><td>قمة/قاع الشهر السابق</td><td>فوق السعر</td><td class="num">3.43</td><td class="num">1.35670</td></tr></tbody></table></div><p class="disc">(نقاط مرجعية ومغناطيس سيولة، لا بنية مُختبَرة — للمراقبة فقط)</p></div></details><details class="more"><summary>CROSS-ASSET CORRELATION</summary><div class="more-body"><p class="disc">لا بيانات أصول مرتبطة متاحة من المزود الحالي</p></div></details><details class="more"><summary>US ECONOMIC BACKDROP</summary><div class="more-body"><p class="disc">مؤشر أسعار المستهلك (التضخم): 336.94 لإصدار 2026-09 — +0.59% عن إصدار 2026-08، اتجاه صاعد آخر الإصدارات</p><p class="disc">سعر الفائدة الفيدرالي: 3.75% لإصدار 2026-09 — +3.31% عن إصدار 2026-08 &#183; سنوياً -11.14%، اتجاه مستقر آخر الإصدارات</p><p class="disc">معدل البطالة: 4.2% لإصدار 2026-09 — +2.44% عن إصدار 2026-08، اتجاه مستقر آخر الإصدارات</p><p class="disc">الوظائف غير الزراعية (غير معدَّلة موسمياً): 159238.0 — سنوياً +509.0 ألف وظيفة (+0.32%)، اتجاه صاعد آخر الإصدارات</p></div></details><details class="more"><summary>SCHEDULED EVENTS (7 DAYS)</summary><div class="more-body"><p class="disc">لا أحداث عالية الأثر مسجّلة في التقويم للأيام السبعة القادمة</p></div></details><details class="more"><summary>ANOMALY DETECTION</summary><div class="more-body"><p class="disc">لا سلوك شاذ مرصود — السعر يتحرك ضمن حدوده الإحصائية المعتادة</p></div></details><details class="more"><summary>CONFIDENCE BREAKDOWN ◆</summary><div class="more-body"><p class="disc">ثقة القراءة ◆: 43.4 (التقرير السابق: 46.4، الاتجاه: falling)</p><div class="tbl-wrap"><table class="dt"><thead><tr><th>المكوّن</th><th class="num">الدرجة</th><th class="num">الوزن (%)</th></tr></thead><tbody><tr><td>قوة الاتجاه</td><td class="num">31.7</td><td class="num">30</td></tr><tr><td>ثبات التذبذب</td><td class="num">93.4</td><td class="num">20</td></tr><tr><td>صحّة النمط</td><td class="num">64.6</td><td class="num">25</td></tr><tr><td>التشابه التاريخي</td><td class="num">50</td><td class="num">10</td></tr></tbody></table></div><p class="disc">3 من 4 مكوّنات قابلة للقياس اليوم</p><p class="disc">التشابه التاريخي: قيمة محايدة مؤقتة وليست إشارة مقيسة بعد</p></div></details><details class="more"><summary>MARKET QUALITY ◆</summary><div class="more-body"><p class="disc">أدنى من وسيط هذا الرمز (أوضح من 39.2٪ من جلساته)</p><div class="tbl-wrap"><table class="dt"><thead><tr><th>المقياس</th><th class="num">القيمة</th></tr></thead><tbody><tr><td>جودة الاتجاه ◆</td><td class="num">48.3</td></tr><tr><td>وضوح الحركة ◆</td><td class="num">9.9</td></tr><tr><td>الضوضاء ◆</td><td class="num">92.8</td></tr></tbody></table></div></div></details><details class="more"><summary>STATISTICAL CONTEXT</summary><div class="more-body"><p class="disc">في 200 حالة تاريخية مشابهة (حركة 20 شمعة بلا اتجاه، مئين ATR متوسط)، كانت حركة الـ5 أيام التالية موجبة في 48% من الحالات بوسيط -0.06% — وللمقارنة، كانت موجبة في 49% من كل جلسات هذا الرمز (5039 جلسة)، أي أن التشابه أضاف -1 نقطة مئوية — سياق احتمالي من التاريخ، ليس تنبؤاً</p><div class="tbl-wrap"><table class="dt"><thead><tr><th>الموسمية — الشهر</th><th class="num">السنوات</th><th class="num">أغلق موجباً</th><th class="num">الوسيط</th><th class="num">فاصل الثقة 95%</th><th>الدلالة</th></tr></thead><tbody><tr><td>أكتوبر</td><td class="num">19</td><td class="num">47%</td><td class="num">-0.2%</td><td class="num">27% – 68%</td><td>لا</td></tr></tbody></table></div><p class="disc">لا دلالة إحصائية — الفاصل يشمل الـ50%، معلومة سياق لا أكثر</p><div class="tbl-wrap"><table class="dt"><thead><tr><th>الموسمية — اليوم</th><th class="num">الأيام</th><th class="num">متوسط يومي</th><th class="num">إحصاء t</th><th>الدلالة</th></tr></thead><tbody><tr><td>الأربعاء</td><td class="num">1017</td><td class="num">+0.02%</td><td class="num">1.17</td><td>لا — ضمن الضوضاء</td></tr></tbody></table></div></div></details><details class="more"><summary>MAX DRAWDOWN</summary><div class="more-body"><div class="tbl-wrap"><table class="dt"><thead><tr><th class="num">أعمق هبوط (آخر 90 شمعة)</th><th class="num">من القمة إلى القاع</th><th class="num">المدة تحت القمة</th><th>الحالة</th></tr></thead><tbody><tr><td class="num">−3.36%</td><td class="num">50 يوماً تقويمياً</td><td class="num">64 يوماً تقويمياً</td><td>لم يتعافَ بعد</td></tr></tbody></table></div></div></details><details class="more"><summary>SUPPORT &amp; RESISTANCE ZONES</summary><div class="more-body"><div class="tbl-wrap"><table class="dt"><thead><tr><th>المنطقة</th><th>الحالة</th><th class="num">الاختبارات</th><th class="num">المستوى</th><th class="num">أدنى النطاق</th><th class="num">أعلى النطاق</th></tr></thead><tbody><tr class="pos"><td>دعم 1</td><td>مُختبرة</td><td class="num">10</td><td class="num">1.32880</td><td class="num">1.32528</td><td class="num">1.33232</td></tr><tr class="neg"><td>مقاومة 1</td><td>مُختبرة</td><td class="num">8</td><td class="num">1.33586</td><td class="num">1.33250</td><td class="num">1.33938</td></tr><tr class="neg"><td>مقاومة 2</td><td>مُختبرة</td><td class="num">9</td><td class="num">1.34357</td><td class="num">1.34004</td><td class="num">1.34709</td></tr></tbody></table></div></div></details>
+  </section>
+      <section class="section">
+    <div class="section-title">SINCE THE LAST REPORT</div>
+    <p class="disc">المرجع: تقرير 2026-06-29 (قبل 122 يوماً)</p><div class="fi"><span class="fi-mark">•</span><span>تغيّرت حالة السوق: RANGING ← TRENDING_DOWN</span></div><div class="fi"><span class="fi-mark">•</span><span>التقلب انخفض: ATR قلّ بـ 15.8%</span></div>
+  </section>
+      <section class="section">
+    <div class="section-title">DISCLOSURES</div>
+    <p class="disc">المنهج المعتمد للمخاطرة: ملاءمة ذيل (EVT/GPD) مقروءة عند 95% — لا افتراض توزيع طبيعي</p><p class="disc">◆ من تركيب هذا المحرّك: مبنيّ على معادلتنا نحن، لا مقروء من مؤشر معياري. وكل ما بلا علامة (RSI &#183; ADX &#183; ATR &#183; MACD &#183; VaR &#183; فيبوناتشي) طريقة معيارية محسوبة على بياناتنا. ونسبة الخرق معلّمة لأن السجلّ خلفها سجلّنا — شُغّل إلى الأمام وسُجّل، ولم يُدّعَ.</p><p class="disc warn">⚠ هذا التحليل معلومات توعوية، ليس توصية تداول</p><p class="disc warn">⚠ المخاطر المالية حقيقية — أدر رأس مالك بحكمة</p><p class="disc mono-line">جودة بيانات المدخلات: 100/100 &#183; المحرّك v1.0.0 &#183; أُنتج 2026-10-29 10:07 UTC &#183; صالح حتى 2026-10-30 10:07 UTC</p>
+  </section>
+  </article>
+    </main>
+
+    <footer>
+      <div class="footer-inner">
+        <p>محتوى تعليمي توعوي فقط — ليس توصية تداول. المخاطر المالية حقيقية؛ أدر رأس مالك بحكمة.</p>
+        <p class="mono">METRIC RISK / PUBLIC ARCHIVE</p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

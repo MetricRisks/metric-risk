@@ -1,5 +1,12 @@
 [
   {
+    "File": "reports/gbpusd-20261029-1007.html",
+    "Symbol": "GBPUSD",
+    "Timeframe": "1D",
+    "GeneratedAt": "2026-10-29T10:07:10.7831463",
+    "Regime": "TRENDING_DOWN"
+  },
+  {
     "File": "reports/xauusd-20261027-1240.html",
     "Symbol": "XAUUSD",
     "Timeframe": "1D",
