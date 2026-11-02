@@ -1,5 +1,12 @@
 [
   {
+    "File": "reports/eurusd-20261102-1209.html",
+    "Symbol": "EURUSD",
+    "Timeframe": "1D",
+    "GeneratedAt": "2026-11-02T12:09:29.701739",
+    "Regime": "TRENDING_DOWN"
+  },
+  {
     "File": "reports/gbpusd-20261029-1007.html",
     "Symbol": "GBPUSD",
     "Timeframe": "1D",
