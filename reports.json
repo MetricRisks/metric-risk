@@ -1,5 +1,19 @@
 [
   {
+    "File": "reports/xauusd-20261123-1033.html",
+    "Symbol": "XAUUSD",
+    "Timeframe": "1D",
+    "GeneratedAt": "2026-11-23T10:33:21.8631508",
+    "Regime": "TRENDING_DOWN"
+  },
+  {
+    "File": "reports/eurusd-20261123-1032.html",
+    "Symbol": "EURUSD",
+    "Timeframe": "1D",
+    "GeneratedAt": "2026-11-23T10:32:52.5511785",
+    "Regime": "TRENDING_DOWN"
+  },
+  {
     "File": "reports/xauusd-20261119-0340.html",
     "Symbol": "XAUUSD",
     "Timeframe": "1D",
