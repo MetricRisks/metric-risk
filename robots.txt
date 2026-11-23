@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://metricrisks.github.io/metric-risk/sitemap.xml
