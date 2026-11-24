@@ -1,5 +1,12 @@
 [
   {
+    "File": "reports/eurusd-20261124-1308.html",
+    "Symbol": "EURUSD",
+    "Timeframe": "1D",
+    "GeneratedAt": "2026-11-24T13:08:18.6868878",
+    "Regime": "TRENDING_DOWN"
+  },
+  {
     "File": "reports/xauusd-20261123-1033.html",
     "Symbol": "XAUUSD",
     "Timeframe": "1D",
