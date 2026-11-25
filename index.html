@@ -44,7 +44,7 @@
       --unknown:    #8892a0; --unknown-bg: #1e2128;
       --display: "Space Grotesk", "Noto Sans Arabic", ui-sans-serif, sans-serif;
       --body:    "Space Grotesk", "Noto Sans Arabic", ui-sans-serif, sans-serif;
-      --mono: "DM Mono", ui-monospace, "Courier New", monospace;
+      --mono: "DM Mono", "Noto Sans Arabic", "Segoe UI", Tahoma, ui-sans-serif, sans-serif;
     }
 
     * { box-sizing: border-box; }
@@ -208,11 +208,6 @@
       .section-head { align-items: flex-start; flex-direction: column; gap: 13px; }
       .notes { grid-template-columns: 1fr; }
       .footer-inner { align-items: flex-start; flex-direction: column; gap: 9px; }
-      .data-cols { grid-template-columns: 1fr; gap: 20px; }
-      .factors-cols { grid-template-columns: 1fr; gap: 20px; }
-      .regime-band { grid-template-columns: 1fr; }
-      .stats-row { grid-template-columns: repeat(2, 1fr); }
-      .stat { border-bottom: 1px solid var(--line); }
     }
 
     /* ── Structured report ── */
@@ -290,7 +285,8 @@
     .tf-tag.down  { color: var(--down);  background: var(--down-bg); }
     .tf-tag.range { color: var(--range); background: var(--range-bg); }
     .tf-tag.up    { color: var(--up);    background: var(--up-bg);   }
-    .tf-note-text { font-size: 12px; color: var(--muted); }
+    .tf-note-text { margin-top: 12px; font-family: var(--mono); font-size: 11px;
+                    color: var(--muted); }
     .factors-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     .fblock-title { font-family: var(--mono); font-size: 9px; letter-spacing: .1em;
                     text-transform: uppercase; padding-bottom: 8px;
@@ -341,6 +337,78 @@
     details.more[open] summary::before { content: "−"; }
     details.more summary:hover { color: var(--ink); }
     .more-body { padding-bottom: 14px; }
+    figure.cone .cone-compact { display: none; }
+    /* Phone rules for the report. Keep them after the rules they override: placed above
+       them they lose, which is what left the report in two cramped columns on a phone. */
+    @media (max-width: 740px) {
+      .signal-strip { padding-block: 10px; font-size: 11.5px; }
+      .strip-code { display: none; }
+      .eyebrow, .section-kicker, .note-label, .hero-note strong, .section-meta,
+      .state { font-size: 11.5px; }
+      .nav .lang { font-size: 12.5px; }
+      .data-cols { grid-template-columns: 1fr; gap: 20px; }
+      .factors-cols { grid-template-columns: 1fr; gap: 20px; }
+      .regime-band { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .stat { border-bottom: 1px solid var(--line); }
+      .section-title, .stat-label, .data-block-title, .callout-label, .fblock-title,
+      table.dt th, details.more summary { font-size: 11px; }
+      .regime-eyebrow, .regime-date, .stat-note, .tf-pill .tf-name, .tf-tag,
+      .tf-note-text { font-size: 11.5px; }
+      figure.cone { padding: 10px 6px; }
+      figure.cone .cone-wide { display: none; }
+      figure.cone .cone-compact { display: block; }
+      figure.cone .cone-compact svg { max-width: 440px; }
+      /* The archive as two lines per report: a table as wide as a desktop's had to be
+         dragged sideways, with the date and state out of sight. */
+      .filters { flex-wrap: wrap; padding-block: 12px; }
+      .table-head { display: none; }
+      .archive-list { min-width: 0; }
+      .archive-row { grid-template-columns: auto auto minmax(0, 1fr) auto;
+                     grid-template-areas: "symbol tf state arrow"
+                                          "date date date arrow";
+                     gap: 6px 12px; min-height: 0; padding: 14px 4px; }
+      .archive-row > .symbol { grid-area: symbol; }
+      .archive-row > span.mono { grid-area: tf; }
+      .archive-row > time { grid-area: date; justify-self: start; color: var(--muted); }
+      .archive-row > .state { grid-area: state; justify-self: end; }
+      .archive-row > .arrow { grid-area: arrow; }
+    }
+    /* Arabic sentences leave the mono face to figures: it has no Arabic, and its
+       spaces, stops and brackets are a full cell wide, which pulls a sentence apart. */
+    .signal-strip, .eyebrow, .section-kicker, .note-label, .hero-note strong,
+    .section-meta, .note a, .table-head, .state, .stat-note, .tf-tag, .tf-note-text,
+    .fblock-title, table.dt th, table.dt th.num, .disc.mono-line {
+      font-family: var(--body); }
+    .nav { font-size: .9rem; }
+    .signal-strip { font-size: .82rem; }
+    .eyebrow, .section-kicker, .note-label, .hero-note strong {
+      font-size: .85rem; letter-spacing: normal; }
+    .claim, .section-head h2, .note h2, .page h1 { letter-spacing: normal; }
+    .claim { line-height: 1.5; }
+    .hero-note { font-size: .95rem; }
+    .note p { font-size: .95rem; }
+    .note a { font-size: .85rem; letter-spacing: normal; }
+    .section-meta { font-size: .82rem; direction: rtl; }
+    .filters label { font-size: .82rem; }
+    .table-head { color: var(--muted); font-size: .8rem; letter-spacing: normal; }
+    .state { font-size: .82rem; letter-spacing: normal; }
+    .footer-inner { font-size: .86rem; }
+    .regime-label { font-size: 15px; }
+    .stat-note { font-size: 12.5px; line-height: 1.6; text-align: left;
+                 unicode-bidi: plaintext; }
+    .dk { font-size: 14px; }
+    .dv { font-size: 13px; }
+    .tf-pill { font-size: 13px; }
+    .tf-tag { font-size: 12.5px; }
+    .tf-note-text { font-size: 14px; }
+    .fblock-title { font-size: 13px; letter-spacing: normal; }
+    .fi { font-size: 14px; line-height: 1.7; }
+    .callout p { font-size: 15px; line-height: 1.8; }
+    .disc { font-size: 14px; line-height: 1.85; }
+    .disc.mono-line { direction: rtl; font-size: 12.5px; }
+    table.dt { font-size: 13.5px; }
+    table.dt th { font-size: 12.5px; letter-spacing: normal; }
             #f-all:checked ~ .filters label[for="f-all"],
             #f-eurusd:checked ~ .filters label[for="f-eurusd"],
             #f-gbpusd:checked ~ .filters label[for="f-gbpusd"],
