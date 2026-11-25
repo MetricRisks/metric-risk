@@ -2,14 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://metricrisks.github.io/metric-risk/calibration-en.html</loc>
-    <lastmod>2026-11-24</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <xhtml:link rel="alternate" hreflang="ar" href="https://metricrisks.github.io/metric-risk/calibration.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://metricrisks.github.io/metric-risk/calibration-en.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://metricrisks.github.io/metric-risk/calibration.html"/>
   </url>
   <url>
     <loc>https://metricrisks.github.io/metric-risk/calibration.html</loc>
-    <lastmod>2026-11-24</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <xhtml:link rel="alternate" hreflang="ar" href="https://metricrisks.github.io/metric-risk/calibration.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://metricrisks.github.io/metric-risk/calibration-en.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://metricrisks.github.io/metric-risk/calibration.html"/>
@@ -535,6 +535,20 @@
     <xhtml:link rel="alternate" hreflang="ar" href="https://metricrisks.github.io/metric-risk/reports/eurusd-20261124-1308.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://metricrisks.github.io/metric-risk/reports/eurusd-20261124-1308-en.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://metricrisks.github.io/metric-risk/reports/eurusd-20261124-1308.html"/>
+  </url>
+  <url>
+    <loc>https://metricrisks.github.io/metric-risk/reports/eurusd-20261125-1530-en.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://metricrisks.github.io/metric-risk/reports/eurusd-20261125-1530.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://metricrisks.github.io/metric-risk/reports/eurusd-20261125-1530-en.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://metricrisks.github.io/metric-risk/reports/eurusd-20261125-1530.html"/>
+  </url>
+  <url>
+    <loc>https://metricrisks.github.io/metric-risk/reports/eurusd-20261125-1530.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://metricrisks.github.io/metric-risk/reports/eurusd-20261125-1530.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://metricrisks.github.io/metric-risk/reports/eurusd-20261125-1530-en.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://metricrisks.github.io/metric-risk/reports/eurusd-20261125-1530.html"/>
   </url>
   <url>
     <loc>https://metricrisks.github.io/metric-risk/reports/gbpusd-20260629-2105-en.html</loc>
