@@ -48,14 +48,14 @@
   </url>
   <url>
     <loc>https://metricrisks.github.io/metric-risk/disclaimer-en.html</loc>
-    <lastmod>2026-11-25</lastmod>
+    <lastmod>2026-11-27</lastmod>
     <xhtml:link rel="alternate" hreflang="ar" href="https://metricrisks.github.io/metric-risk/disclaimer.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://metricrisks.github.io/metric-risk/disclaimer-en.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://metricrisks.github.io/metric-risk/disclaimer.html"/>
   </url>
   <url>
     <loc>https://metricrisks.github.io/metric-risk/disclaimer.html</loc>
-    <lastmod>2026-11-25</lastmod>
+    <lastmod>2026-11-27</lastmod>
     <xhtml:link rel="alternate" hreflang="ar" href="https://metricrisks.github.io/metric-risk/disclaimer.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://metricrisks.github.io/metric-risk/disclaimer-en.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://metricrisks.github.io/metric-risk/disclaimer.html"/>
@@ -90,14 +90,14 @@
   </url>
   <url>
     <loc>https://metricrisks.github.io/metric-risk/index-en.html</loc>
-    <lastmod>2026-11-25</lastmod>
+    <lastmod>2026-11-27</lastmod>
     <xhtml:link rel="alternate" hreflang="ar" href="https://metricrisks.github.io/metric-risk/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://metricrisks.github.io/metric-risk/index-en.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://metricrisks.github.io/metric-risk/"/>
   </url>
   <url>
     <loc>https://metricrisks.github.io/metric-risk/</loc>
-    <lastmod>2026-11-25</lastmod>
+    <lastmod>2026-11-27</lastmod>
     <xhtml:link rel="alternate" hreflang="ar" href="https://metricrisks.github.io/metric-risk/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://metricrisks.github.io/metric-risk/index-en.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://metricrisks.github.io/metric-risk/"/>
@@ -549,6 +549,20 @@
     <xhtml:link rel="alternate" hreflang="ar" href="https://metricrisks.github.io/metric-risk/reports/eurusd-20261125-1530.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://metricrisks.github.io/metric-risk/reports/eurusd-20261125-1530-en.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://metricrisks.github.io/metric-risk/reports/eurusd-20261125-1530.html"/>
+  </url>
+  <url>
+    <loc>https://metricrisks.github.io/metric-risk/reports/eurusd-20261127-1030-en.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://metricrisks.github.io/metric-risk/reports/eurusd-20261127-1030.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://metricrisks.github.io/metric-risk/reports/eurusd-20261127-1030-en.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://metricrisks.github.io/metric-risk/reports/eurusd-20261127-1030.html"/>
+  </url>
+  <url>
+    <loc>https://metricrisks.github.io/metric-risk/reports/eurusd-20261127-1030.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://metricrisks.github.io/metric-risk/reports/eurusd-20261127-1030.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://metricrisks.github.io/metric-risk/reports/eurusd-20261127-1030-en.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://metricrisks.github.io/metric-risk/reports/eurusd-20261127-1030.html"/>
   </url>
   <url>
     <loc>https://metricrisks.github.io/metric-risk/reports/gbpusd-20260629-2105-en.html</loc>
@@ -1011,6 +1025,20 @@
     <xhtml:link rel="alternate" hreflang="ar" href="https://metricrisks.github.io/metric-risk/reports/xauusd-20261123-1033.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://metricrisks.github.io/metric-risk/reports/xauusd-20261123-1033-en.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://metricrisks.github.io/metric-risk/reports/xauusd-20261123-1033.html"/>
+  </url>
+  <url>
+    <loc>https://metricrisks.github.io/metric-risk/reports/xauusd-20261127-1030-en.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://metricrisks.github.io/metric-risk/reports/xauusd-20261127-1030.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://metricrisks.github.io/metric-risk/reports/xauusd-20261127-1030-en.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://metricrisks.github.io/metric-risk/reports/xauusd-20261127-1030.html"/>
+  </url>
+  <url>
+    <loc>https://metricrisks.github.io/metric-risk/reports/xauusd-20261127-1030.html</loc>
+    <lastmod>2026-11-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://metricrisks.github.io/metric-risk/reports/xauusd-20261127-1030.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://metricrisks.github.io/metric-risk/reports/xauusd-20261127-1030-en.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://metricrisks.github.io/metric-risk/reports/xauusd-20261127-1030.html"/>
   </url>
   <url>
     <loc>https://metricrisks.github.io/metric-risk/running-en.html</loc>
